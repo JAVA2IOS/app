@@ -17,10 +17,28 @@
       <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+      .pager li > a,
+      .pager li > span {
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 3px;
+        padding-right: 3px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 15px;
+        border: none;
+        /*color: #ffffff;*/
+        /*background-color: #337ab7;*/
+      }
+    </style>
   </head>
   <body>
     <div class="row" style="width: 98%;" >
       <div class="col-lg-4">
+        <!-- 左边导航栏 -->
         <div class="list-group">
             <a href="#" class="list-group-item active">
                 入门网站包
@@ -33,70 +51,99 @@
             </a>
         </div>
       </div>
+
       <div class="col-lg-8">
         <div class="panel panel-info">
-        <div class="panel-heading">
-        <div class="panel-title">表名</div>        
-      </div>
-        <div class="panel-body">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>21</td>
-                <td>22</td>
-                <td>23</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      <div class="row clearfix">
-        <div class="col-md-4 column">
-        </div>
-        <div class="col-md-8 column">
-          <ul class="pagination">
-            <li>
-               <a href="#">Prev</a>
-            </li>
-            <li>
-               <a href="#">1</a>
-            </li>
-            <li>
-               <a href="#">2</a>
-            </li>
-            <li>
-               <a href="#">3</a>
-            </li>
-            <li>
-               <a href="#">4</a>
-            </li>
-            <li>
-               <a href="#">5</a>
-            </li>
-            <li>
-               <a href="#">Next</a>
-            </li>
-          </ul>
+          <div class="panel-heading">
+            <div class="panel-title">表名</div>        
+          </div>
+          <!-- 表格 -->
+          <div class="panel-body">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th class="text-center">status</th>
+                  <th class="text-center">action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="warning">
+                  <td>21</td>
+                  <td>22</td>
+                  <td>23</td>
+                  <td class="text-center">
+                    <a href="#" class="tooltip-show" data-toggle="tooltip" title = "已注销"><span class="glyphicon glyphicon-ban-circle text-danger"></span></a>
+                  </td>
+                  <td class="text-center">
+                    <div class="row">
+                      <div class="col-md-8 col-md-offset-1">
+                        <a href="#" class="tooltip-show" data-toggle="tooltip" title = "修改"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="#" class="tooltip-show" data-toggle="tooltip" title = "注销"><span class="glyphicon glyphicon-trash"></span></a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="success">
+                  <td>21</td>
+                  <td>22</td>
+                  <td>23</td>
+                  <td class="text-center">
+                    <a href="#" class="tooltip-show" data-toggle="tooltip" title = "已激活"><span class="glyphicon glyphicon-ok text-success"></span></a>
+                  </td>
+                  <td class="text-center">
+                    <div class="row">
+                      <div class="col-md-8 col-md-offset-1">
+                        <a href="#" class="tooltip-show" data-toggle="tooltip" title = "修改"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="#" class="tooltip-show" data-toggle="tooltip" title = "注销"><span class="glyphicon glyphicon-trash text-danger"></span></a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 分页 -->
+          <div class="row clearfix">
+            <div class="col-md-12">
+              <ul class="pager">
+                <li>
+                   <a href="#"><span class="glyphicon glyphicon-chevron-left text-primary"></span></a>
+                </li>
+                <li>
+                   <a href="#">1</a>
+                </li>
+                <li>
+                   <a href="#">2</a>
+                </li>
+                <li>
+                   <a href="#">3</a>
+                </li>
+                <li>
+                   <a href="#">4</a>
+                </li>
+                <li>
+                   <a href="#">5</a>
+                </li>
+                <li>
+                   <a href="#"><span class="glyphicon glyphicon-chevron-right text-primary"></span></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-
-      </div>
-    </div>
-          
-
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function () { $("[data-toggle='tooltip']").tooltip(); });
+    </script>
   </body>
 </html>
