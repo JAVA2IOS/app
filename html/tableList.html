@@ -1,170 +1,177 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>Bootstrap demo template</title>
 
-    <!-- Bootstrap -->
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../bootstrap/css/codez.css" rel="stylesheet">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<title>Bootstrap demo template</title>
 
-    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
-    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
-    <!--[if lt IE 9]>
+		<!-- Bootstrap -->
+		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../bootstrap/css/codez.css" rel="stylesheet">
+
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
       <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css">
-      .pager li > a,
-      .pager li > span {
-        padding-top: 3px;
-        padding-bottom: 3px;
-        padding-left: 3px;
-        padding-right: 3px;
-        width: 30px;
-        height: 30px;
-        text-align: center;
-        border-radius: 50%;
-        font-size: 15px;
-        border: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-4">
+		<style type="text/css">
+			.pager li>a,
+			.pager li>span {
+				padding-top: 3px;
+				padding-bottom: 3px;
+				padding-left: 3px;
+				padding-right: 3px;
+				width: 30px;
+				height: 30px;
+				text-align: center;
+				border-radius: 50%;
+				font-size: 15px;
+				border: none;
+			}
+		</style>
+	</head>
 
-          <!-- 左边导航栏 -->
-          <div class="list-group">
-              <a href="#" class="list-group-item active">
-                  入门网站包
-              </a>
-              <a href="#" class="list-group-item">
-              您将通过网页进行免费域名注册。
-              </a>
-              <a href="#" class="list-group-item">
-                  dfd
-              </a>
-          </div>
-        </div>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-4">
 
-        <div class="col-lg-8">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <div class="panel-title">表名</div>        
-            </div>
+					<!-- 左边导航栏 -->
+					<div class="list-group">
+						<a href="#" class="list-group-item active">
+							入门网站包
+						</a>
+						<a href="#" class="list-group-item">
+							您将通过网页进行免费域名注册。
+						</a>
+						<a href="#" class="list-group-item">
+							dfd
+						</a>
+					</div>
+				</div>
 
-            <!-- 搜索栏 -->
-            <div class="panel-body">
-              <div style="padding: 10px 20px 10px;">
-                <form class="bs-example bs-example-form" role="form">
-                    <div class="row">
-                      <div class="col-lg-6 col-lg-offset-6">
-                          <div class="input-group">
-                            <input type="text" class="form-control" placeholder="">
-                              <span class="input-group-btn">
+				<div class="col-lg-8">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title">表名</div>
+						</div>
+
+						<!-- 搜索栏 -->
+						<div class="panel-body">
+							<div style="padding: 10px 20px 10px;">
+								<form class="bs-example bs-example-form" role="form">
+									<div class="row">
+										<div class="col-lg-6 col-lg-offset-6">
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="">
+												<span class="input-group-btn">
                                 <button class="btn btn-primary" type="button">
                                   <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                              </span>
-                          </div><!-- /input-group -->
-                      </div><!-- /.col-lg-6 -->
-                    </div>
-                </form>
-              </div>
+												</button>
+												</span>
+											</div>
+											<!-- /input-group -->
+										</div>
+										<!-- /.col-lg-6 -->
+									</div>
+								</form>
+							</div>
 
-              <!-- 表格 -->
-              <table class="table table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th class="text-center">status</th>
-                    <th class="text-center">action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="warning">
-                    <td>21</td>
-                    <td>22</td>
-                    <td>23</td>
-                    <td class="text-center">
-                      <a href="#" class="tooltip-show" data-toggle="tooltip" title = "已注销"><span class="glyphicon glyphicon-ban-circle text-danger"></span></a>
-                    </td>
-                    <td class="text-center">
-                      <div class="row">
-                        <div class="col-md-8 col-md-offset-1">
-                          <a href="#" class="tooltip-show" data-toggle="tooltip" title = "修改"><span class="glyphicon glyphicon-edit"></span></a>
-                          <a href="#" class="tooltip-show" data-toggle="tooltip" title = "注销"><span class="glyphicon glyphicon-trash"></span></a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="success">
-                    <td>21</td>
-                    <td>22</td>
-                    <td>23</td>
-                    <td class="text-center">
-                      <a href="#" class="tooltip-show" data-toggle="tooltip" title = "已激活"><span class="glyphicon glyphicon-ok text-success"></span></a>
-                    </td>
-                    <td class="text-center">
-                      <div class="row">
-                        <div class="col-md-8 col-md-offset-1">
-                          <a href="#" class="tooltip-show" data-toggle="tooltip" title = "修改"><span class="glyphicon glyphicon-edit"></span></a>
-                          <a href="#" class="tooltip-show" data-toggle="tooltip" title = "注销"><span class="glyphicon glyphicon-trash text-danger"></span></a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+							<!-- 表格 -->
+							<table class="table table-hover table-striped">
+								<thead>
+									<tr>
+										<th>1</th>
+										<th>2</th>
+										<th>3</th>
+										<th class="text-center">status</th>
+										<th class="text-center">action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="warning">
+										<td>21</td>
+										<td>22</td>
+										<td>23</td>
+										<td class="text-center">
+											<a href="#" class="tooltip-show" data-toggle="tooltip" title="已注销"><span class="glyphicon glyphicon-ban-circle text-danger"></span></a>
+										</td>
+										<td class="text-center">
+											<div class="row">
+												<div class="col-md-8 col-md-offset-1">
+													<a href="#" class="tooltip-show" data-toggle="tooltip" title="修改"><span class="glyphicon glyphicon-edit"></span></a>
+													<a href="#" class="tooltip-show" data-toggle="tooltip" title="注销"><span class="glyphicon glyphicon-trash"></span></a>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr class="success">
+										<td>21</td>
+										<td>22</td>
+										<td>23</td>
+										<td class="text-center">
+											<a href="#" class="tooltip-show" data-toggle="tooltip" title="已激活"><span class="glyphicon glyphicon-ok text-success"></span></a>
+										</td>
+										<td class="text-center">
+											<div class="row">
+												<div class="col-md-8 col-md-offset-1">
+													<a href="#" class="tooltip-show" data-toggle="tooltip" title="修改"><span class="glyphicon glyphicon-edit"></span></a>
+													<a href="#" class="tooltip-show" data-toggle="tooltip" title="注销"><span class="glyphicon glyphicon-trash text-danger"></span></a>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
-            <!-- 分页 -->
-            <div class="row clearfix">
-              <div class="col-md-12">
-                <ul class="pager">
-                  <li>
-                     <a href="#"><span aria-hidden="true">&laquo;</span></a>
-                  </li>
-                  <li>
-                     <a href="#">1</a>
-                  </li>
-                  <li>
-                     <a href="#">2</a>
-                  </li>
-                  <li>
-                     <a href="#">3</a>
-                  </li>
-                  <li>
-                     <a href="#">4</a>
-                  </li>
-                  <li>
-                     <a href="#">5</a>
-                  </li>
-                  <li>
-                     <a href="#"><span aria-hidden="true">&raquo;</span></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+						<!-- 分页 -->
+						<div class="row clearfix">
+							<div class="col-md-12">
+								<ul class="pager">
+									<li>
+										<a href="#"><span aria-hidden="true">&laquo;</span></a>
+									</li>
+									<li>
+										<a href="#">1</a>
+									</li>
+									<li>
+										<a href="#">2</a>
+									</li>
+									<li>
+										<a href="#">3</a>
+									</li>
+									<li>
+										<a href="#">4</a>
+									</li>
+									<li>
+										<a href="#">5</a>
+									</li>
+									<li>
+										<a href="#"><span aria-hidden="true">&raquo;</span></a>
+									</li>
+								</ul>
+							</div>
+						</div>
 
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-      $(function () { $("[data-toggle='tooltip']").tooltip(); });
-    </script>
-  </body>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+		<script src="../bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("[data-toggle='tooltip']").tooltip();
+			});
+		</script>
+	</body>
+
 </html>
