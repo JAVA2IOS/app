@@ -17,51 +17,106 @@
       <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+      .panel-group .panel+.panel {
+        margin-top: 0px;
+        padding-top: 0px;
+      }
+      .panel {
+        border-radius: 0px;
+        /*border-color: red;*/
+      }
+    </style>
 	</head>
 
 	<body>
 		<div class="container">
 			<div class="row">
 				<!-- 侧边导航栏 -->
-				<div class="col-lg-4 col-md-4">
-					<div>导航一<span class="pull-right glyphicon glyphicon-chevron-left" data-toggle="collapse" data-target="#childOne"></span></div>
-					<div id="childOne" class="list-group collapse in">
-						<li>
-							<a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-							<ul class="nav nav-second-level collapse">
-								<li>
-									<a href="panels-wells.html">Panels and Wells</a>
-								</li>
-								<li>
-									<a href="buttons.html">Buttons</a>
-								</li>
-								<li>
-									<a href="notifications.html">Notifications</a>
-								</li>
-								<li>
-									<a href="typography.html">Typography</a>
-								</li>
-								<li>
-									<a href="icons.html"> Icons</a>
-								</li>
-								<li>
-									<a href="grid.html">Grid</a>
-								</li>
-							</ul>
-							<!-- /.nav-second-level -->
-						</li>
-						<!-- 
-              <a href="#" class="list-group-item">
-                  导航项一</span>
-              </a>
-              <a href="#" class="list-group-item">
-              导航项二<span class="pull-right glyphicon glyphicon-chevron-down"></span>
-              </a>
-              <a href="#" class="list-group-item">
-                  dfd
-              </a> -->
-					</div>
-				</div>
+				<div class="col-lg-3 col-md-3">
+
+          <ul id="main-nav" class="nav nav-pills nav-stacked">
+            <li>
+                <a href="#">
+                    <span class="glyphicon glyphicon-th-large"></span>
+                    &nbsp;首页
+                </a>
+            </li>
+            <li>
+                <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
+                    <i class="glyphicon glyphicon-cog"></i>
+                    &nbsp;系统管理
+                    <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                </a>
+                <ul id="systemSetting" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;用户管理</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>&nbsp;菜单管理</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>&nbsp;角色管理</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-edit"></i>&nbsp;修改密码</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;日志查看</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-credit-card"></i>
+                    &nbsp;物料管理
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-globe"></i>
+                    &nbsp;分发配置
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-calendar"></i>
+                    &nbsp;图表统计
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-fire"></i>
+                    &nbsp;关于系统
+                </a>
+            </li>
+        </ul>
+
+
+                <!-- 折叠面板 -->
+          <!-- <div class="panel-group panel-group-success">
+
+             <div class="panel">
+                <div class="panel-heading" data-toggle="collapse" data-target = "#collapseOne-success">
+                  <h5>导航栏 <span class="glyphicon glyphicon-chevron-down pull-right"></span></h5>
+                </div>
+                <div name = "p-item" id="collapseOne-success" class="list-group panel-collapse" style="padding-top: 1px; padding-bottom: 2px;">
+                    <a href="#" class="list-group-item active">
+                      免费域名注册
+                    </a>
+                    <a href="#" class="list-group-item">24*7 支持</a>
+                    <a href="#" class="list-group-item">免费 Window 空间托管</a>
+                    <a href="#" class="list-group-item">图像的数量</a>
+                    <a href="#" class="list-group-item">每年更新成本</a>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-heading" data-toggle="collapse" data-target = "#collapseTwo-success">
+                  <h5>导航栏 <span class="glyphicon glyphicon-chevron-down pull-right"></span></h5>
+                </div>
+                <div name = "p-item" id="collapseTwo-success" class="list-group panel-collapse in" style="padding-top: 1px; padding-bottom: 2px;">
+                    <a href="#" class="list-group-item active">
+                      免费域名注册
+                    </a>
+                    <a href="#" class="list-group-item">24*7 支持</a>
+                    <a href="#" class="list-group-item">免费 Window 空间托管</a>
+                    <a href="#" class="list-group-item">图像的数量</a>
+                    <a href="#" class="list-group-item">每年更新成本</a>
+                </div>
+              </div>
+          </div> -->
+
 			</div>
 		</div>
 
@@ -69,6 +124,29 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var collapseObj = $("div[name='p-item']");
+        for (var i = 0; i < collapseObj.length; i++) {
+          var domObj = $(collapseObj[i]);
+          // domObj.collapse('toggle', domObj);
+        }
+      });
+      $("div[name='p-item']").on("hide.bs.collapse", function(args) {
+        var iconDom = $(this).siblings().children().children();
+        if (iconDom.is('.glyphicon-chevron-down')) {
+          iconDom.removeClass('glyphicon-chevron-down');
+          iconDom.addClass('glyphicon-chevron-right');
+        }
+      });
+      $("div[name='p-item']").on("show.bs.collapse", function(args) {
+        var iconDom = $(this).siblings().children().children();
+        if (iconDom.is(".glyphicon-chevron-right")) {
+          iconDom.removeClass("glyphicon-chevron-right");
+          iconDom.addClass("glyphicon-chevron-down");
+        }
+      });
+    </script>
 	</body>
 
 </html>
