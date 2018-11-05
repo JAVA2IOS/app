@@ -10,7 +10,7 @@
 
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
+		<link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
 
 		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
@@ -18,121 +18,65 @@
       <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css">
-      .secondmenu {
-        padding-left: 10px;
-      }
-      .nav-divider {
-        margin-top: 0px;
-        margin-bottom: 0px;
-      }
-
-      .navbar-inverse {
-        background-color: #367BAA;
-        border-color: #367BAA;
-      }
-      .navbar-inverse .navbar-brand {
-        color: #ffffff;
-      }
-
-    </style>
+		<style type="text/css">
+			.secondmenu {
+				padding-left: 10px;
+			}
+			
+			.nav-divider {
+				margin-top: 0px;
+				margin-bottom: 0px;
+			}
+			
+			.navbar-inverse {
+				background-color: #367BAA;
+				border-color: #367BAA;
+			}
+			
+			.navbar-inverse .navbar-brand {
+				color: #ffffff;
+			}
+		</style>
 	</head>
 
 	<body>
-    <nav class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <div class="navbar-head">
-          <a href="#" class="navbar-brand">Admin dashBoard</a>
-        </div>
+		<nav class="navbar navbar-fixed-top navbar-inverse">
+			<div class="container">
+				<div class="navbar-head">
+					<a href="#" class="navbar-brand">Admin dashBoard</a>
+				</div>
 
-        <!-- 设置信息 -->
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a href="#"><span class="glyphicon glyphicon-user" style="color: #ffffff;"></span></a>
-          </li>
-          <li id="log-alert" data-toggle="modal" data-target="#ad-alert">
-            <a id="log-out" href="javascript:;" class="tooltip-show" data-toggle="tooltip" title="退出" data-placement="bottom"><span class="glyphicon glyphicon-log-out" style="color: #ffffff;"></span></a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-		<div class="container-fluid"  style="margin-top: 60px;">
-			<div class="row">
-				<!-- 侧边导航栏 -->
-				<div class="col-lg-3 col-md-3">
-
-          <ul id="main-nav" class="nav nav-default nav-stacked">
-            <li>
-                <a href="#">
-                    <span class="glyphicon glyphicon-th-large"></span>
-                    &nbsp;软件参数
-                </a>
-            </li>
-            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
-            <li style="margin-top: 0px; margin-bottom: 0px;">
-                <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
-                    <i class="glyphicon glyphicon-cog"></i>
-                    &nbsp;压铸机管理
-                    <span class="pull-right glyphicon glyphicon-chevron-down"></span>
-                </a>
-                <ul id="systemSetting" class="nav nav-list collapse secondmenu" style="height: 0px;">
-                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;压铸机</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>&nbsp;数据库</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>&nbsp;计数器</a></li>
-                </ul>
-            </li>
-            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
-            <li style="margin-top: 0px; margin-bottom: 0px;">
-                <a href="#">
-                    <i class="glyphicon glyphicon-credit-card"></i>
-                    &nbsp;控制参数
-                </a>
-            </li>
-            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
-            <li style="margin-top: 0px; margin-bottom: 0px;">
-                <a href="#">
-                    <i class="glyphicon glyphicon-globe"></i>
-                    &nbsp;压铸机智能化控制
-                </a>
-            </li>
-            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
-            <li style="margin-top: 0px; margin-bottom: 0px;">
-                <a href="#controlData" class="nav-header collapsed" data-toggle="collapse">
-                    <i class="glyphicon glyphicon-calendar"></i>
-                    &nbsp;控制数据
-                </a>
-                <ul id="controlData" class="nav nav-list collapse secondmenu" style="height: 0px;">
-                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;控制传感器</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>&nbsp;自动压铸机</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>&nbsp;压铸计数器</a></li>
-                </ul>
-            </li>
-            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
-            <li style="margin-top: 0px; margin-bottom: 0px;">
-                <a href="#">
-                    <i class="fa fa-users fa-w"></i>
-                    &nbsp;安全管理
-                </a>
-            </li>
-        </ul>
+				<!-- 设置信息 -->
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="#"><span class="glyphicon glyphicon-user" style="color: #ffffff;"></span></a>
+					</li>
+					<li id="log-alert" data-toggle="modal" data-target="#ad-alert">
+						<a id="log-out" href="javascript:;" class="tooltip-show" data-toggle="tooltip" title="退出" data-placement="bottom"><span class="glyphicon glyphicon-log-out" style="color: #ffffff;"></span></a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container-fluid" style="margin-top: 60px;">
+			<div id="sideBar" class="row">
+				<!-- iframe插入 -->
+				<div class="embed-responsive embed-responsive-16by9">
+					<iframe id="contentFrame" class="embed-responsive-item"></iframe>
+				</div>
 			</div>
 
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe id="contentFrame" class="embed-responsive-item"></iframe>
-      </div>
-		</div>
-
-		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-		<script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../bootstrap/js/admin.js"></script>
-    <script type="text/javascript">
-      $(function() {
-        directRoutersToUserList();
-        $("[data-toggle='tooltip']").tooltip();
-      });
-    </script>
+			<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+			<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+			<script src="../bootstrap/js/bootstrap.min.js"></script>
+			<script src="../bootstrap/js/admin.js"></script>
+			<script type="text/javascript">
+				$(function() {
+					CodeZComponents.sideBar("#sideBar");
+					directRoutersToUserList();
+					$("[data-toggle='tooltip']").tooltip();
+				});
+			</script>
 	</body>
 
 </html>
