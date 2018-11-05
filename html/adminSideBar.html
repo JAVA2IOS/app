@@ -10,6 +10,7 @@
 
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
 
 		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
@@ -18,133 +19,118 @@
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
-      .panel-group .panel+.panel {
+      .secondmenu {
+        padding-left: 10px;
+      }
+      .nav-divider {
         margin-top: 0px;
-        padding-top: 0px;
+        margin-bottom: 0px;
       }
-      .panel {
-        border-radius: 0px;
-        /*border-color: red;*/
+
+      .navbar-inverse {
+        background-color: #367BAA;
+        border-color: #367BAA;
       }
+      .navbar-inverse .navbar-brand {
+        color: #ffffff;
+      }
+
     </style>
 	</head>
 
 	<body>
-		<div class="container">
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+        <div class="navbar-head">
+          <a href="#" class="navbar-brand">Admin dashBoard</a>
+        </div>
+
+        <!-- 设置信息 -->
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#"><span class="glyphicon glyphicon-user" style="color: #ffffff;"></span></a>
+          </li>
+          <li id="log-alert" data-toggle="modal" data-target="#ad-alert">
+            <a id="log-out" href="javascript:;" class="tooltip-show" data-toggle="tooltip" title="退出" data-placement="bottom"><span class="glyphicon glyphicon-log-out" style="color: #ffffff;"></span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+		<div class="container-fluid"  style="margin-top: 60px;">
 			<div class="row">
 				<!-- 侧边导航栏 -->
 				<div class="col-lg-3 col-md-3">
 
-          <ul id="main-nav" class="nav nav-pills nav-stacked">
+          <ul id="main-nav" class="nav nav-default nav-stacked">
             <li>
                 <a href="#">
                     <span class="glyphicon glyphicon-th-large"></span>
-                    &nbsp;首页
+                    &nbsp;软件参数
                 </a>
             </li>
-            <li>
+            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
+            <li style="margin-top: 0px; margin-bottom: 0px;">
                 <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
                     <i class="glyphicon glyphicon-cog"></i>
-                    &nbsp;系统管理
+                    &nbsp;压铸机管理
                     <span class="pull-right glyphicon glyphicon-chevron-down"></span>
                 </a>
                 <ul id="systemSetting" class="nav nav-list collapse secondmenu" style="height: 0px;">
-                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;用户管理</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>&nbsp;菜单管理</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>&nbsp;角色管理</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-edit"></i>&nbsp;修改密码</a></li>
-                    <li><a href="#"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;日志查看</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;压铸机</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>&nbsp;数据库</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>&nbsp;计数器</a></li>
                 </ul>
             </li>
-            <li>
+            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
+            <li style="margin-top: 0px; margin-bottom: 0px;">
                 <a href="#">
                     <i class="glyphicon glyphicon-credit-card"></i>
-                    &nbsp;物料管理
+                    &nbsp;控制参数
                 </a>
             </li>
-            <li>
+            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
+            <li style="margin-top: 0px; margin-bottom: 0px;">
                 <a href="#">
                     <i class="glyphicon glyphicon-globe"></i>
-                    &nbsp;分发配置
+                    &nbsp;压铸机智能化控制
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
+            <li style="margin-top: 0px; margin-bottom: 0px;">
+                <a href="#controlData" class="nav-header collapsed" data-toggle="collapse">
                     <i class="glyphicon glyphicon-calendar"></i>
-                    &nbsp;图表统计
+                    &nbsp;控制数据
                 </a>
+                <ul id="controlData" class="nav nav-list collapse secondmenu" style="height: 0px;">
+                    <li><a href="#"><i class="glyphicon glyphicon-user"></i>&nbsp;控制传感器</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-th-list"></i>&nbsp;自动压铸机</a></li>
+                    <li><a href="#"><i class="glyphicon glyphicon-asterisk"></i>&nbsp;压铸计数器</a></li>
+                </ul>
             </li>
-            <li>
+            <li class="nav-divider" style="margin-top: 0px; margin-bottom: 0px;"></li>
+            <li style="margin-top: 0px; margin-bottom: 0px;">
                 <a href="#">
-                    <i class="glyphicon glyphicon-fire"></i>
-                    &nbsp;关于系统
+                    <i class="fa fa-users fa-w"></i>
+                    &nbsp;安全管理
                 </a>
             </li>
         </ul>
-
-
-                <!-- 折叠面板 -->
-          <!-- <div class="panel-group panel-group-success">
-
-             <div class="panel">
-                <div class="panel-heading" data-toggle="collapse" data-target = "#collapseOne-success">
-                  <h5>导航栏 <span class="glyphicon glyphicon-chevron-down pull-right"></span></h5>
-                </div>
-                <div name = "p-item" id="collapseOne-success" class="list-group panel-collapse" style="padding-top: 1px; padding-bottom: 2px;">
-                    <a href="#" class="list-group-item active">
-                      免费域名注册
-                    </a>
-                    <a href="#" class="list-group-item">24*7 支持</a>
-                    <a href="#" class="list-group-item">免费 Window 空间托管</a>
-                    <a href="#" class="list-group-item">图像的数量</a>
-                    <a href="#" class="list-group-item">每年更新成本</a>
-                </div>
-              </div>
-
-              <div class="panel">
-                <div class="panel-heading" data-toggle="collapse" data-target = "#collapseTwo-success">
-                  <h5>导航栏 <span class="glyphicon glyphicon-chevron-down pull-right"></span></h5>
-                </div>
-                <div name = "p-item" id="collapseTwo-success" class="list-group panel-collapse in" style="padding-top: 1px; padding-bottom: 2px;">
-                    <a href="#" class="list-group-item active">
-                      免费域名注册
-                    </a>
-                    <a href="#" class="list-group-item">24*7 支持</a>
-                    <a href="#" class="list-group-item">免费 Window 空间托管</a>
-                    <a href="#" class="list-group-item">图像的数量</a>
-                    <a href="#" class="list-group-item">每年更新成本</a>
-                </div>
-              </div>
-          </div> -->
-
 			</div>
+
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe id="contentFrame" class="embed-responsive-item"></iframe>
+      </div>
 		</div>
 
 		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../bootstrap/js/admin.js"></script>
     <script type="text/javascript">
       $(function() {
-        var collapseObj = $("div[name='p-item']");
-        for (var i = 0; i < collapseObj.length; i++) {
-          var domObj = $(collapseObj[i]);
-          // domObj.collapse('toggle', domObj);
-        }
-      });
-      $("div[name='p-item']").on("hide.bs.collapse", function(args) {
-        var iconDom = $(this).siblings().children().children();
-        if (iconDom.is('.glyphicon-chevron-down')) {
-          iconDom.removeClass('glyphicon-chevron-down');
-          iconDom.addClass('glyphicon-chevron-right');
-        }
-      });
-      $("div[name='p-item']").on("show.bs.collapse", function(args) {
-        var iconDom = $(this).siblings().children().children();
-        if (iconDom.is(".glyphicon-chevron-right")) {
-          iconDom.removeClass("glyphicon-chevron-right");
-          iconDom.addClass("glyphicon-chevron-down");
-        }
+        directRoutersToUserList();
+        $("[data-toggle='tooltip']").tooltip();
       });
     </script>
 	</body>
