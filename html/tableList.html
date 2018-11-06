@@ -32,6 +32,10 @@
 				font-size: 15px;
 				border: none;
 			}
+			body {
+				/*background-color: #adadad;*/
+				padding-top: 10px;
+			}
 		</style>
 	</head>
 
@@ -102,7 +106,7 @@
 										<div class="row">
 											<div class="col-md-8 col-md-offset-1">
 												<a href="#" class="tooltip-show" data-toggle="tooltip" title="修改"><span class="glyphicon glyphicon-edit"></span></a>
-												<a href="#" class="tooltip-show" data-toggle="tooltip" title="注销"><span class="fa fa-user-times text-danger fa-w"></span></a>
+												<a href="#" class="tooltip-show" data-toggle="tooltip" title="注销"><span class="fa fa-user-times text-danger fa-fw"></span></a>
 											</div>
 										</div>
 									</td>
@@ -113,30 +117,7 @@
 
 					<!-- 分页 -->
 					<div class="row clearfix">
-						<div class="col-md-12">
-							<ul class="pager">
-								<li>
-									<a href="#"><span aria-hidden="true">&laquo;</span></a>
-								</li>
-								<li>
-									<a href="#">1</a>
-								</li>
-								<li>
-									<a href="#">2</a>
-								</li>
-								<li>
-									<a href="#">3</a>
-								</li>
-								<li>
-									<a href="#">4</a>
-								</li>
-								<li>
-									<a href="#">5</a>
-								</li>
-								<li>
-									<a href="#"><span aria-hidden="true">&raquo;</span></a>
-								</li>
-							</ul>
+						<div id="pageCounter" class="col-md-12">
 						</div>
 					</div>
 
@@ -147,9 +128,16 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
+		<script src="../bootstrap/js/admin.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("[data-toggle='tooltip']").tooltip();
+				CodeZComponents.footerPager($("#pageCounter"), {
+					totalPage : 8,
+					totalCount : 75,
+					currentIndex : 0,
+					perCount : 10
+				});
 			});
 		</script>
 	</body>
