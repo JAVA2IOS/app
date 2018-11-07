@@ -14,6 +14,8 @@
 		<link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
 		<link href="../bootstrap/css/bootstrap-table.css" rel="stylesheet">
 		<link href="../bootstrap/css/toastr.min.css" rel="stylesheet">
+		<link href="../bootstrap/css/PNotify.css" rel="stylesheet">
+
 		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
 		<!--[if lt IE 9]>
@@ -21,19 +23,6 @@
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
 		<style type="text/css">
-			/*.pager li>a,
-			.pager li>span {
-				padding-top: 3px;
-				padding-bottom: 3px;
-				padding-left: 3px;
-				padding-right: 3px;
-				width: 30px;
-				height: 30px;
-				text-align: center;
-				border-radius: 50%;
-				font-size: 15px;
-				border: none;
-			}*/
 			body {
 				padding-top: 10px;
 			}
@@ -46,8 +35,8 @@
 				<div class="panel-heading">
 				</div>
 				<div class="panel-body">
-					<div id = "toolbar" class="btn-group">
-					    <button type="button" class="btn btn-default tootip-show" data-toggle = "tooltip" title = "新增用户"><span class="fa fa-user-plus fa-fw"></span></button>
+					<div id="toolbar" class="btn-group">
+						<button type="button" class="btn btn-default tootip-show" data-toggle="tooltip" title="新增用户"><span class="fa fa-user-plus fa-fw"></span></button>
 					</div>
 					<div id="table-container"></div>
 				</div>
@@ -61,12 +50,17 @@
 		<script src="../bootstrap/js/bootstrap-table.js"></script>
 		<script src="../bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
 		<script src="../bootstrap/js/toastr.min.js"></script>
+		<script src="../bootstrap/js/PNotify.js"></script>
 		<script src="../bootstrap/js/admin.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("[data-toggle='tooltip']").tooltip();
 				CodeZComponents.tablePlugins($("#table-container"));
-				CodeZComponents.notifications();
+				new PNotify({
+					title: "提示",
+					text: "这是一个提示tip"
+				});
+				CodeZComponents.showNotice("提示", "这是一个提示tip", "success", 1000 * 1000);
 			});
 		</script>
 	</body>
