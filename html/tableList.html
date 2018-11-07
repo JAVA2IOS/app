@@ -12,6 +12,7 @@
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link href="../bootstrap/css/codez.css" rel="stylesheet">
 		<link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
+		<link href="../bootstrap/css/bootstrap-table.css" rel="stylesheet">
 		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
 		<!--[if lt IE 9]>
@@ -19,7 +20,7 @@
       <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
     <![endif]-->
 		<style type="text/css">
-			.pager li>a,
+			/*.pager li>a,
 			.pager li>span {
 				padding-top: 3px;
 				padding-bottom: 3px;
@@ -31,9 +32,8 @@
 				border-radius: 50%;
 				font-size: 15px;
 				border: none;
-			}
+			}*/
 			body {
-				/*background-color: #adadad;*/
 				padding-top: 10px;
 			}
 		</style>
@@ -41,103 +41,29 @@
 
 	<body>
 		<div class="container-fluid">
-			<div class="panel panel-info">
-					<div class="panel-heading">
-						<div class="panel-title">表名</div>
-					</div>
-
-					<!-- 搜索栏 -->
-					<div class="panel-body">
-						<div style="padding: 10px 20px 10px;">
-							<form class="bs-example bs-example-form" role="form">
-								<div class="row">
-									<div class="col-lg-6 col-lg-offset-6">
-										<div class="input-group">
-											<input type="text" class="form-control" placeholder="">
-											<span class="input-group-btn">
-	                        <button class="btn btn-primary" type="button">
-	                          <span class="glyphicon glyphicon-search"></span>
-											</button>
-											</span>
-										</div>
-										<!-- /input-group -->
-									</div>
-									<!-- /.col-lg-6 -->
-								</div>
-							</form>
-						</div>
-
-						<!-- 表格 -->
-						<table class="table table-hover table-striped" style="margin-top: 30px;">
-							<thead>
-								<tr>
-									<th>1</th>
-									<th>2</th>
-									<th>3</th>
-									<th class="text-center">status</th>
-									<th class="text-center">action</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="warning">
-									<td>21</td>
-									<td>22</td>
-									<td>23</td>
-									<td class="text-center">
-										<a href="#" class="tooltip-show" data-toggle="tooltip" title="已注销"><span class="glyphicon glyphicon-ban-circle text-danger"></span></a>
-									</td>
-									<td class="text-center">
-										<div class="row">
-											<div class="col-md-8 col-md-offset-1">
-												<a href="#" class="tooltip-show" data-toggle="tooltip" title="修改"><span class="glyphicon glyphicon-edit"></span></a>
-												<a href="#" class="tooltip-show" data-toggle="tooltip" title="注销"><span class="glyphicon glyphicon-trash"></span></a>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr class="success">
-									<td>21</td>
-									<td>22</td>
-									<td>23</td>
-									<td class="text-center">
-										<a href="#" class="tooltip-show" data-toggle="tooltip" title="已激活"><span class="glyphicon glyphicon-ok text-success"></span></a>
-									</td>
-									<td class="text-center">
-										<div class="row">
-											<div class="col-md-8 col-md-offset-1">
-												<a href="#" class="tooltip-show" data-toggle="tooltip" title="修改"><span class="glyphicon glyphicon-edit"></span></a>
-												<a href="#" class="tooltip-show" data-toggle="tooltip" title="注销"><span class="fa fa-user-times text-danger fa-fw"></span></a>
-											</div>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-
-					<!-- 分页 -->
-					<div class="row clearfix">
-						<div id="pageCounter" class="col-md-12">
-						</div>
-					</div>
-
+			<div class="panel">
+				<div class="panel-heading">
 				</div>
+				<div class="panel-body">
+					<div id = "toolbar" class="btn-group">
+					    <button type="button" class="btn btn-default tootip-show" data-toggle = "tooltip" title = "新增用户"><span class="fa fa-user-plus fa-fw"></span></button>
+					</div>
+					<div id="table-container"></div>
+				</div>
+			</div>
 		</div>
 
 		<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
+		<script src="../bootstrap/js/bootstrap-table.js"></script>
+		<script src="../bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
 		<script src="../bootstrap/js/admin.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("[data-toggle='tooltip']").tooltip();
-				CodeZComponents.footerPager($("#pageCounter"), {
-					totalPage : 8,
-					totalCount : 75,
-					currentIndex : 0,
-					perCount : 10
-				});
+				CodeZComponents.tablePlugins($("#table-container"));
 			});
 		</script>
 	</body>
