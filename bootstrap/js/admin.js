@@ -1,31 +1,107 @@
-$("#userMan").click(function() {
-	directRoutersToUserList();
-});
+// 参数管理
+var CodeZ = {
+	// 导航栏标签
+	NAV_SOFTPARAMETER: {
+		CONTROL_CFG: "nav_ctrlCfg",
+		DATABASE_CONNECT: "nav_databaseConnect"
+	},
+	NAV_MACHINEMAN: {
+		SENSOR: "nav_ctrlSensor",
+		MACHINE: "nav_machine",
+		COUNTER: "nav_tag_counter"
+	},
+	NAV_CONTROLPARAMETER: "nav_control_parameter",
+	NAV_AUTO_CONTROL: "nav_auto_control",
+	NAV_CONTROL_DATA: "nav_control_data",
+	NAV_SECURITY_MAN: {
+		USERMAN: "nav_usr_man",
+		ROLEMAN: "nav_role_man"
+	},
+
+	// 导航栏地址
+	URI_SOFTPARAMETER: {
+		CONTROL_CFG: "controlCfg.html",
+		DATABASE_CONNECT: "#"
+	},
+	URI_MACHINEMAN: {
+		SENSOR: "#",
+		MACHINE: "#",
+		COUNTER: "#"
+	},
+	URI_CONTROLPARAMETER: "#",
+	URI_AUTO_CONTROL: "#",
+	URI_CONTROL_DATA: "#",
+	URI_SECURITY_MAN: {
+		USERMAN: "tableList.html",
+		ROLEMAN: "#"
+	},
+}
 
 $("#toolbar").click(function() {
-	CodeZComponents.showErrorTip({title : "不好啦", type : "error", text : "失败了，_(:зゝ∠)_"});
+	CodeZComponents.showErrorTip({
+		title: "不好啦",
+		type: "error",
+		text: "失败了，_(:зゝ∠)_"
+	});
 });
+
+function navSrc(tag) {
+	switch(tag) {
+		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
+			directRoutersUri(CodeZ.URI_SOFTPARAMETER.CONTROL_CFG);
+			break;
+		case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
+			directRoutersUri(CodeZ.URI_SOFTPARAMETER.DATABASE_CONNECT);
+			break;
+		case CodeZ.NAV_MACHINEMAN.SENSOR:
+			directRoutersUri(CodeZ.URI_MACHINEMAN.SENSOR);
+			break;
+		case CodeZ.NAV_MACHINEMAN.MACHINE:
+			directRoutersUri(CodeZ.URI_MACHINEMAN.MACHINE);
+			break;
+		case CodeZ.NAV_MACHINEMAN.COUNTER:
+			directRoutersUri(CodeZ.URI_MACHINEMAN.COUNTER);
+			break;
+		case CodeZ.NAV_CONTROLPARAMETER:
+			directRoutersUri(CodeZ.URI_CONTROLPARAMETER);
+			break;
+		case CodeZ.NAV_AUTO_CONTROL:
+			directRoutersUri(CodeZ.URI_AUTO_CONTROL);
+			break;
+		case CodeZ.NAV_CONTROL_DATA:
+			directRoutersUri(CodeZ.URI_CONTROL_DATA);
+			break;
+		case CodeZ.NAV_SECURITY_MAN.USERMAN:
+			directRoutersUri(CodeZ.URI_SECURITY_MAN.USERMAN);
+			break;
+		case CodeZ.NAV_SECURITY_MAN.USERMAN:
+			directRoutersUri(CodeZ.URI_SECURITY_MAN.USERMAN);
+			break;
+		default:
+			break;
+	}
+}
 
 function banObject(data) {
 	BootstrapDialog.show({
-            title: "<span class=\"fa fa-check-circle fa-fw\"></span>",
-            message: '是否确认注销该用户',
-            type : BootstrapDialog.TYPE_PRIMARY,
-            cssClass : "login-dialog",
-            data : data,
-            buttons: [{
-                label: '确定',
-                action: function(dialog) {
-                    dialog.close();
-                    // dialog.getData("df");
-                }
-            }, {
-                label: '取消',
-                action: function(dialog) {
-                    dialog.close();
-                }
-            }]
-        });
+		title: "<span class=\"fa fa-check-circle fa-fw\"></span>",
+		message: '是否确认注销该用户',
+		type: BootstrapDialog.TYPE_PRIMARY,
+		cssClass: "login-dialog",
+		data: data,
+		buttons: [{
+			label: '确定',
+			action: function(dialog) {
+				dialog.close();
+				// dialog.getData("df");
+			}
+		}, {
+			label: '取消',
+			action: function(dialog) {
+				dialog.close();
+			}
+		}]
+	});
 	// BootstrapDialog.confirm("确认提示框");
 	// BootstrapDialog.warning("警告框");
 	// BootstrapDialog.danger("危险框");
@@ -52,9 +128,9 @@ function configureListener(fn) {
 }
 
 // 跳转到表格列表
-function directRoutersToUserList() {
+function directRoutersUri(uri) {
 	var obj = $("#contentFrame");
-	obj.attr('src', 'tableList.html');
+	obj.attr('src', uri);
 }
 
 var CodeZComponents = {
@@ -359,14 +435,14 @@ var CodeZComponents = {
 							"node": {
 								"text": "控制配置",
 								"iconCss": "fa fa-cogs fa-fw",
-								"target": "cfg"
+								"target": CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG
 							}
 						},
 						{
 							"node": {
 								"text": "数据库连接",
 								"iconCss": "fa fa-database fa-fw",
-								"target": "dbConnect"
+								"target": CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT
 							}
 						}
 					]
@@ -382,21 +458,21 @@ var CodeZComponents = {
 							"node": {
 								"text": "控制传感器",
 								"iconCss": "fa fa-microchip fa-fw",
-								"target": "sensor"
+								"target": CodeZ.NAV_MACHINEMAN.SENSOR
 							}
 						},
 						{
 							"node": {
 								"text": "自动压铸机",
 								"iconCss": "fa fa-magnet fa-fw",
-								"target": "autoMan"
+								"target": CodeZ.NAV_MACHINEMAN.MACHINE
 							}
 						},
 						{
 							"node": {
 								"text": "压铸计数器",
 								"iconCss": "fa fa-cubes fa-fw",
-								"target": "counter"
+								"target": CodeZ.NAV_MACHINEMAN.COUNTER
 							}
 						}
 					]
@@ -405,21 +481,21 @@ var CodeZComponents = {
 					"node": {
 						"text": "控制参数",
 						"iconCss": "fa fa-wrench fa-fw",
-						"target": "controlParameters"
+						"target": CodeZ.NAV_CONTROLPARAMETER
 					}
 				},
 				{
 					"node": {
 						"text": "压铸机智能化控制",
 						"iconCss": "fa fa-sitemap fa-fw",
-						"target": "machineMan"
+						"target": CodeZ.NAV_AUTO_CONTROL
 					}
 				},
 				{
 					"node": {
 						"text": "控制数据",
 						"iconCss": "fa fa-support fa-fw",
-						"target": "dataMan"
+						"target": CodeZ.NAV_CONTROL_DATA
 					}
 				},
 				{
@@ -433,14 +509,14 @@ var CodeZComponents = {
 							"node": {
 								"text": "用户管理",
 								"iconCss": "fa fa-users fa-fw",
-								"target": "userMan"
+								"target": CodeZ.NAV_SECURITY_MAN.USERMAN
 							}
 						},
 						{
 							"node": {
 								"text": "权限管理",
 								"iconCss": "fa fa-key fa-fw",
-								"target": "roleMan"
+								"target": CodeZ.NAV_SECURITY_MAN.ROLEMAN
 							}
 						}
 					]
@@ -468,7 +544,7 @@ var CodeZComponents = {
 		// 添加监听事件
 		configureListener(function() {
 			$("a[name='navTitle']").on("click", function() {
-				console.info($(this).data("bindData"));
+				navSrc($(this).data("bindData"));
 				$(".active").removeClass("active");
 				$(this).parent().attr("class", "active");
 			});
@@ -879,33 +955,35 @@ var CodeZComponents = {
 
 	notifications: function(title, text, icon, type = 'info', delay = 1000 * 2) {
 		PNotify.alert({
-			type : type,
-			title : title,
+			type: type,
+			title: title,
 			styling: "bootstrap4",
 			icons: "fontawesome4",
-			icon : icon,
-			text : text,
-			delay : delay,
+			icon: icon,
+			text: text,
+			delay: delay,
 		});
 	},
 
-	showSuccessTip : function({data}) {
+	showSuccessTip: function({
+		data
+	}) {
 		this.notifications(data.title, data.text, "fa fa-check-circle fa-fw", "success", data.delay);
 	},
 
-	showNoticeTip : function(data) {
+	showNoticeTip: function(data) {
 		this.notifications(data.title, data.text, "fa fa-exclamation-circle fa-fw", "notice", data.delay);
 	},
 
-	showInfoTip : function(data) {
+	showInfoTip: function(data) {
 		this.notifications(data.title, data.text, "fa fa-info-circle fa-fw", "info", data.delay);
 	},
 
-	showErrorTip : function(data) {
+	showErrorTip: function(data) {
 		this.notifications(data.title, data.text, "fa fa-frown-o fa-fw ", "error", data.delay);
 	},
 
-	showConfirmTip : function(data) {
+	showConfirmTip: function(data) {
 		this.notifications(data.title, data.text, data.icon, data.type, data.delay);
 	}
 }
