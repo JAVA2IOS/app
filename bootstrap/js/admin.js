@@ -2,6 +2,36 @@ $("#userMan").click(function() {
 	directRoutersToUserList();
 });
 
+$("#toolbar").click(function() {
+	CodeZComponents.showErrorTip({title : "不好啦", type : "error", text : "失败了，_(:зゝ∠)_"});
+});
+
+function banObject(data) {
+	BootstrapDialog.show({
+            title: "<span class=\"fa fa-check-circle fa-fw\"></span>",
+            message: '是否确认注销该用户',
+            type : BootstrapDialog.TYPE_PRIMARY,
+            cssClass : "login-dialog",
+            data : data,
+            buttons: [{
+                label: '确定',
+                action: function(dialog) {
+                    dialog.close();
+                    // dialog.getData("df");
+                }
+            }, {
+                label: '取消',
+                action: function(dialog) {
+                    dialog.close();
+                }
+            }]
+        });
+	// BootstrapDialog.confirm("确认提示框");
+	// BootstrapDialog.warning("警告框");
+	// BootstrapDialog.danger("危险框");
+	// BootstrapDialog.success("成功框");
+}
+
 // 请求服务
 function postRequest(uri, parameters, callback) {
 	$.ajax({
@@ -741,7 +771,6 @@ var CodeZComponents = {
 				field: "status",
 				title: "状态",
 				align: "center",
-				sortable: true,
 				formatter: function(value, row, index) {
 					if(value == "1" || value == 1) {
 						return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"已激活\"><span class= \"fa fa-check fa-fw text-success\"></span></a>";
@@ -773,7 +802,7 @@ var CodeZComponents = {
 						console.info("编辑");
 					},
 					"click .cancel": function(e, value, row, index) {
-						console.info("注销");
+						banObject(row);
 					},
 					"click .activited": function(e, value, row, index) {
 						console.info("启用");
@@ -848,32 +877,35 @@ var CodeZComponents = {
 	 * 通知插件封装, notifications
 	 * ======================================================================== */
 
-	notifications: function() {
-		toastr.success("成功样式");
-		toastr.warning("警告样式");
-
+	notifications: function(title, text, icon, type = 'info', delay = 1000 * 2) {
+		PNotify.alert({
+			type : type,
+			title : title,
+			styling: "bootstrap4",
+			icons: "fontawesome4",
+			icon : icon,
+			text : text,
+			delay : delay,
+		});
 	},
 
-	showNotice: function(title, text, type = 'info', delay = 1000 * 10) {
-		PNotify.alert({
-			title : title,
-			styling: "bootstrap3",
-			text : text,
-			type : type,
-			delay : delay,
-			stack : {'dir1':'down', 'firstpos1':25}
-		});
-		
-		PNotify.notice({
-			
-		});
-		
-		PNotify.success({
-			title : "dfd"
-		});
-		
-		PNotify.error({
-			
-		})
+	showSuccessTip : function({data}) {
+		this.notifications(data.title, data.text, "fa fa-check-circle fa-fw", "success", data.delay);
+	},
+
+	showNoticeTip : function(data) {
+		this.notifications(data.title, data.text, "fa fa-exclamation-circle fa-fw", "notice", data.delay);
+	},
+
+	showInfoTip : function(data) {
+		this.notifications(data.title, data.text, "fa fa-info-circle fa-fw", "info", data.delay);
+	},
+
+	showErrorTip : function(data) {
+		this.notifications(data.title, data.text, "fa fa-frown-o fa-fw ", "error", data.delay);
+	},
+
+	showConfirmTip : function(data) {
+		this.notifications(data.title, data.text, data.icon, data.type, data.delay);
 	}
 }

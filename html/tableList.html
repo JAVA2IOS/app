@@ -13,8 +13,7 @@
 		<link href="../bootstrap/css/codez.css" rel="stylesheet">
 		<link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
 		<link href="../bootstrap/css/bootstrap-table.css" rel="stylesheet">
-		<link href="../bootstrap/css/toastr.min.css" rel="stylesheet">
-		<link href="../bootstrap/css/PNotify.css" rel="stylesheet">
+		<link href="../bootstrap/css/bootstrap-dialog.css" rel="stylesheet">
 
 		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
@@ -26,6 +25,9 @@
 			body {
 				padding-top: 10px;
 			}
+			.modal-backdrop {
+		        background-color:rgba(255,255,255,0);
+	      	}
 		</style>
 	</head>
 
@@ -35,9 +37,7 @@
 				<div class="panel-heading">
 				</div>
 				<div class="panel-body">
-					<div id="toolbar" class="btn-group">
-						<button type="button" class="btn btn-default tootip-show" data-toggle="tooltip" title="新增用户"><span class="fa fa-user-plus fa-fw"></span></button>
-					</div>
+					<button id="toolbar" type="button" class="btn tooltip-show" data-toggle="tooltip" title="新增"><span class="fa fa-user-plus fa-fw text-primary"></span></button>
 					<div id="table-container"></div>
 				</div>
 			</div>
@@ -49,18 +49,13 @@
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script src="../bootstrap/js/bootstrap-table.js"></script>
 		<script src="../bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
-		<script src="../bootstrap/js/toastr.min.js"></script>
-		<script src="../bootstrap/js/PNotify.js"></script>
 		<script src="../bootstrap/js/admin.js"></script>
+		<script src="../bootstrap/js/pnotify/pnotify.js"></script>
+		<script src="../bootstrap/js/bootstrap-dialog.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("[data-toggle='tooltip']").tooltip();
 				CodeZComponents.tablePlugins($("#table-container"));
-				new PNotify({
-					title: "提示",
-					text: "这是一个提示tip"
-				});
-				CodeZComponents.showNotice("提示", "这是一个提示tip", "success", 1000 * 1000);
 			});
 		</script>
 	</body>
