@@ -34,9 +34,10 @@
 	<body>
 		<div class="container-fluid">
 			<div class="panel">
-				<div class="panel-heading">
+				<div class="panel-heading" style="border-bottom:dashed 1px #c2c2c2; margin-left: 20px; margin-right: 20px; height: 100px;">
+					<div class="panel-title">&nbsp;<h4>用户管理</h4></div>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" style="margin-top: 30px;">
 					<button id="toolbar" type="button" class="btn tooltip-show" data-toggle="tooltip" title="新增"><span class="fa fa-user-plus fa-fw text-primary"></span></button>
 					<div id="table-container"></div>
 				</div>
@@ -49,13 +50,18 @@
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script src="../bootstrap/js/bootstrap-table.js"></script>
 		<script src="../bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
-		<script src="../bootstrap/js/admin.js"></script>
 		<script src="../bootstrap/js/pnotify/pnotify.js"></script>
 		<script src="../bootstrap/js/bootstrap-dialog.js"></script>
+		<script src="../bootstrap/js/codez-components.js"></script>
+		<script src="../bootstrap/js/user-man.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("[data-toggle='tooltip']").tooltip();
-				CodeZComponents.tablePlugins($("#table-container"));
+				UserMan.configureUserList();
+				// 绑定监听
+			  $(".dialog-form").bind('input propertychange',function(){
+			    console.info(args);
+			  });
 			});
 		</script>
 	</body>

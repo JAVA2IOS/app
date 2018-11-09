@@ -37,14 +37,7 @@ var CodeZ = {
 	},
 }
 
-$("#toolbar").click(function() {
-	CodeZComponents.showErrorTip({
-		title: "不好啦",
-		type: "error",
-		text: "失败了，_(:зゝ∠)_"
-	});
-});
-
+// 导航栏跳转
 function navSrc(tag) {
 	switch(tag) {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
@@ -82,58 +75,35 @@ function navSrc(tag) {
 	}
 }
 
-function banObject(data) {
-	BootstrapDialog.show({
-		title: "<span class=\"fa fa-check-circle fa-fw\"></span>",
-		message: '是否确认注销该用户',
-		type: BootstrapDialog.TYPE_PRIMARY,
-		cssClass: "login-dialog",
-		data: data,
-		buttons: [{
-			label: '确定',
-			action: function(dialog) {
-				dialog.close();
-				// dialog.getData("df");
-			}
-		}, {
-			label: '取消',
-			action: function(dialog) {
-				dialog.close();
-			}
-		}]
-	});
-	// BootstrapDialog.confirm("确认提示框");
-	// BootstrapDialog.warning("警告框");
-	// BootstrapDialog.danger("危险框");
-	// BootstrapDialog.success("成功框");
-}
-
-// 请求服务
-function postRequest(uri, parameters, callback) {
-	$.ajax({
-		url: uri,
-		data: parameters,
-		success: function(result) {
-			if(callback != undefined) {
-				callback(result);
-			}
-		}
-	});
-}
-
-function configureListener(fn) {
-	if(fn != undefined) {
-		fn();
-	}
-}
-
 // 跳转到表格列表
 function directRoutersUri(uri) {
 	var obj = $("#contentFrame");
 	obj.attr('src', uri);
 }
 
+
+/*
+* css配置
+*/
 var CodeZComponents = {
+	// 请求服务
+	postRequest : function(uri, parameters, callback) {
+		$.ajax({
+			url: uri,
+			data: parameters,
+			success: function(result) {
+				if(callback != undefined) {
+					callback(result);
+				}
+			}
+		});
+	},
+
+	configureListener :function(fn) {
+		if(fn != undefined) {
+			fn();
+		}
+	},
 
 	// 配置css样式
 	configureDecoration: function(domObj, data) {
@@ -343,6 +313,7 @@ var CodeZComponents = {
 						var hrefObj = this.addHref({
 							href: '#' + node.href,
 							css: 'nav-header collapsed',
+							style : 'padding-right:0px;',
 							collapse: true,
 							value: " &nbsp;" + node.text,
 							name: "toggled",
@@ -526,9 +497,7 @@ var CodeZComponents = {
 
 		var domObj = $(divDomId);
 
-		var divObj = this.addDiv({
-			css: "col-lg-3 col-md-3"
-		});
+		var divObj = this.addDiv();
 
 		var ulObj = this.addUl({
 			id: 'main-nav',
@@ -542,7 +511,7 @@ var CodeZComponents = {
 		domObj.prepend(divObj);
 
 		// 添加监听事件
-		configureListener(function() {
+		this.configureListener(function() {
 			$("a[name='navTitle']").on("click", function() {
 				navSrc($(this).data("bindData"));
 				$(".active").removeClass("active");
@@ -691,7 +660,7 @@ var CodeZComponents = {
 
 		parentDom.append(pageObj);
 
-		configureListener(function() {
+		this.configureListener(function() {
 			var domHtm = "a[name='" + domName + "']";
 			$(domHtm).on("click", function() {
 				console.info($(this).data("bindData"));
@@ -741,23 +710,9 @@ var CodeZComponents = {
 	},
 
 	// 表格插件
-	tablePlugins: function(parentDom) {
+	tablePlugins: function(parentDom, uri = undefined, queryParams = undefined, rowStyle = undefined, showSearch = true, refresh = undefined, currentPage = 1, pageSize = 10, showPager = true, column = [], datas = []) {
 
 		/*
-		classes: 'table table-hover',
-        sortClass: undefined,
-        locale: undefined,
-        height: undefined,
-        undefinedText: '-',
-        sortName: undefined,
-        sortOrder: 'asc',
-        sortStable: false,
-        rememberOrder: false,
-        striped: false,
-        columns: [[]],
-        data: [],
-        totalField: 'total',
-        dataField: 'rows',
         method: 'get',
         url: undefined,
         ajax: undefined,
@@ -771,181 +726,44 @@ var CodeZComponents = {
         queryParamsType: 'limit', // undefined
         responseHandler: function (res) {
             return res;
-        },
-        pagination: false,
-        onlyInfoPagination: false,
-        paginationLoop: true,
-        sidePagination: 'client', // client or server
-        totalRows: 0, // server side need to set
-        pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
-        paginationHAlign: 'right', //right, left
-        paginationVAlign: 'bottom', //bottom, top, both
-        paginationDetailHAlign: 'left', //right, left
-        paginationPreText: '&lsaquo;',
-        paginationNextText: '&rsaquo;',
-        search: false,
-        searchOnEnterKey: false,
-        strictSearch: false,
-        searchAlign: 'right',
-        selectItemName: 'btSelectItem',
-        showHeader: true,
-        showFooter: false,
-        showColumns: false,
-        showPaginationSwitch: false,
-        showRefresh: false,
-        showToggle: false,
-        showFullscreen: false,
-        smartDisplay: true,
-        escape: false,
-        minimumCountColumns: 1,
-        idField: undefined,
-        uniqueId: undefined,
-        cardView: false,
-        detailView: false,
+        }
 		*/
+	  	if (parentDom == undefined) {
+		    return;
+	  	}
 		parentDom.bootstrapTable({
 			cache: true,
 			classes: 'table table-hover table-striped',
-			rowStyle: function(row, index) {
-				if(row.status == 1 || row.status == "1") {
-					return {
-						classes: "success"
-					};
-				} else {
-					return {
-						classes: "danger"
-					};
-				}
-				// return {};
+			columns : column,
+			data : datas,
+			iconsPrefix: "fa",
+			icons : {
+				refresh : "fa-refresh fa-fw",
+				paginationSwitchDown : "fa-caret-down fa-fw",
+				paginationSwitchUp : "fa-caret-up fa-fw"
 			},
-			search: true,
-			searchOnEnterKey: true,
+			method: 'post',
+			url: uri,
+			rowStyle : function(row, index) {
+				return rowStyle(row, index);
+			},
+			search: showSearch,
+			showRefresh: true,
 			sidePagination: "client",
 			striped: true,
 			toolbar: "#toolbar",
-			pageNumber: 1,
-			pageSize: 5,
-			pagination: true,
+			onRefresh: function (params) {
+				parentDom.bootstrapTable("destroy");
+				refresh(params);
+				return true;
+			},
+			pageNumber: currentPage,
+			pageSize: pageSize,
+			pagination: showPager,
 			paginationLoop: false,
 			paginationPreText: "<span class=\"glyphicon glyphicon-chevron-left\"></span>",
 			paginationNextText: '<span class=\"glyphicon glyphicon-chevron-right\"></span>',
-			columns: [{
-				field: "id",
-				title: "用户ID",
-				width: 1000
-			}, {
-				field: "account",
-				title: "账号",
-				width: 1000
-			}, {
-				field: "userName",
-				title: "用户",
-				width: 1000
-			}, {
-				field: "status",
-				title: "状态",
-				align: "center",
-				formatter: function(value, row, index) {
-					if(value == "1" || value == 1) {
-						return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"已激活\"><span class= \"fa fa-check fa-fw text-success\"></span></a>";
-					} else {
-						return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"未激活\"><span class= \"fa fa-ban fa-fw text-warning\"></span></a>";
-					}
-				},
-				width: 1000
-			}, {
-				field: "action",
-				title: "操作",
-				width: 500,
-				formatter: function(value, row, index) {
-					if(row.status == "1" || row.status == 1) {
-						return "<div class=\"row\">" +
-							"<div class=\"col-md-12\">" +
-							"<a href=\"#\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-pencil fa-fw\"></span></a>" +
-							"<a href=\"#\" class=\"tooltip-show cancel\" data-toggle=\"tooltip\" title=\"注销\"><span class=\"fa fa-user-times text-danger fa-fw\"></span></a>" +
-							"</div></div>";
-					}
-					return "<div class=\"row\">" +
-						"<div class=\"col-md-12\">" +
-						"<a href=\"#\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-pencil fa-fw\"></span></a>" +
-						"<a href=\"#\" class=\"tooltip-show activited\" data-toggle=\"tooltip\" title=\"启用\"><span class=\"fa fa-circle-o-notch fa-fw text-success\"></span></a>" +
-						"</div></div>";
-				},
-				events: {
-					"click .edit": function(e, value, row, index) {
-						console.info("编辑");
-					},
-					"click .cancel": function(e, value, row, index) {
-						banObject(row);
-					},
-					"click .activited": function(e, value, row, index) {
-						console.info("启用");
-					}
-				}
-			}],
-			data: [{
-				id: 1,
-				account: "admin01",
-				userName: "12",
-				status: "1",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "dfw",
-				status: "0",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "yahoo",
-				status: 0,
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "no",
-				status: 1,
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "khzo",
-				status: "0",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "khzo",
-				status: "0",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "khzo",
-				status: "0",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "khzo",
-				status: "0",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "khzo",
-				status: "激活",
-				action: ""
-			}, {
-				id: 1,
-				account: "admin01",
-				userName: "khzo",
-				status: "激活",
-				action: ""
-			}]
+			queryParams : queryParams,
 		});
 	},
 
@@ -965,9 +783,9 @@ var CodeZComponents = {
 		});
 	},
 
-	showSuccessTip: function({
+	showSuccessTip: function(
 		data
-	}) {
+	) {
 		this.notifications(data.title, data.text, "fa fa-check-circle fa-fw", "success", data.delay);
 	},
 

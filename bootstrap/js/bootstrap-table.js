@@ -879,8 +879,10 @@
                     j === 0 && column.fieldIndex ? ' data-not-first-th' : '',
                     '>');
 
+                // html.push(sprintf('<div class="th-inner %s">', that.options.sortable && column.sortable ?
+                //     'sortable both' : ''));
                 html.push(sprintf('<div class="th-inner %s">', that.options.sortable && column.sortable ?
-                    'sortable both' : ''));
+                    'sortable' : ''));
 
                 text = that.options.escape ? escapeHTML(column.title) : column.title;
 
@@ -902,7 +904,11 @@
                 }
 
                 html.push(text);
-                html.push('</div>');
+                if (that.options.sortable && column.sortable) {
+                    html.push('<span class="fa fa-sort pull-right" style= "margin-top:5px;"></span></div>');
+                }else {
+                    html.push('</div>');
+                }
                 html.push('<div class="fht-cell"></div>');
                 html.push('</div>');
                 html.push('</th>');
@@ -2174,7 +2180,16 @@
         var that = this;
 
         $.each(this.$header.find('th'), function (i, th) {
-            $(th).find('.sortable').removeClass('desc asc').addClass($(th).data('field') === that.options.sortName ? that.options.sortOrder : 'both');
+            // $(th).find('.sortable').removeClass('desc asc').addClass($(th).data('field') === that.options.sortName ? that.options.sortOrder : 'both');
+            var arrowClass = 'fa fa-sort pull-right';;
+            if ($(th).data('field') === that.options.sortName) {
+                if (that.options.sortOrder === 'asc') {
+                    arrowClass = 'fa fa-sort-amount-asc pull-right';
+                }else if (that.options.sortOrder === 'desc') {
+                    arrowClass = 'fa fa-sort-amount-desc pull-right';
+                }
+            }
+            $(th).find('.sortable').children().attr("class", arrowClass);
         });
     };
 

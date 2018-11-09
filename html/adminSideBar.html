@@ -60,25 +60,36 @@
 			</div>
 		</nav>
 		<div class="container-fluid navbar-default" style="margin-top: 50px; padding-left: 0px;">
-			<div id="sideBar" class="row">
-				<!-- iframe插入 -->
-				<div class="embed-responsive embed-responsive-16by9">
-					<iframe id="contentFrame" class="embed-responsive-item"></iframe>
-				</div>
-			</div>
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <div class="col-lg-12"  style="height: 30px; margin-top: 10px; padding-right: 0px;">
+            <a href="#" class="refreshPage pull-right" style="margin-top: 5px; margin-bottom: 5px;"><span class="fa fa-refresh fa-fw"></span></a>
+          </div>
+          <div id="sideBar" class="col-lg-12" style="padding-right: 0px;">
+          </div>
+        </div>
+
+        <!-- iframe插入 -->
+        <div class="embed-responsive embed-responsive-16by9" style="padding-top: 0px;">
+          <iframe id="contentFrame" class="embed-responsive-item"></iframe>
+        </div>
+      </div>
 
 			<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 			<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-			<script src="../bootstrap/js/bootstrap.min.js"></script>
+      <script src="../bootstrap/js/bootstrap.min.js"></script>
+      <script src="../bootstrap/js/pnotify/pnotify.js"></script>
       <script src="../bootstrap/js/bootstrap-table.js"></script>
       <script src="../bootstrap/js/bootstrap-table-zh-CN.min.js"></script>
-			<script src="../bootstrap/js/admin.js"></script>
+      <script src="../bootstrap/js/codez-components.js"></script>
 			<script type="text/javascript">
 				$(function() {
 					CodeZComponents.sideBar("#sideBar");
-					directRoutersToUserList();
-					$("[data-toggle='tooltip']").tooltip();
+          $("[data-toggle='tooltip']").tooltip();
+          $(".refreshPage").click(function(data){
+            $("#contentFrame").attr("src", $("#contentFrame").attr("src")).ready();
+          });
 				});
 			</script>
 	</body>
