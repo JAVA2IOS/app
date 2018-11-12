@@ -10,6 +10,7 @@
 
 		<!-- Bootstrap -->
 		<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../bootstrap/css/font-awesome.min.css" rel="stylesheet">
 
 		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
 		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
@@ -72,7 +73,7 @@
 				<div class="form-group" style="margin-top: 30px;">
 					<div class="col-sm-offset-3 col-sm-9">
 						<button type="button" class="btn btn-default" style="margin-left: 30%;">取消</button>
-						<button type="submit" class="btn btn-primary">确定</button>
+						<button type="button" class="btn btn-primary">确定</button>
 					</div>
 				</div>
 			</form>
@@ -82,7 +83,14 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
+		<script src="../bootstrap/js/pnotify/pnotify.js"></script>
+		<script src="../bootstrap/js/codez-components.js"></script>
 		<script type="text/javascript">
+			$(function() {
+				$('.btn-primary').click(function() {
+					CodeZComponents.showSuccessTip({text : '新增成功'});
+				});
+			});
 		</script>
 	</body>
 

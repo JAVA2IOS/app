@@ -1,26 +1,26 @@
 // 参数管理
 var CodeZ = {
 	// 标识符
-	TAG_USER_LIST: 'tag_user_list',
-	TAG_USER_EDIT: 'tag_user_edit',
-	TAG_USER_ADD: 'tag_user_add',
+	TAG_USER_LIST : 'tag_user_list',
+	TAG_USER_EDIT : 'tag_user_edit',
+	TAG_USER_ADD : 'tag_user_add',
 	
 	// HTML
-	HTML_PAGE_CTRL_CFG: 'controlCfg.html',
-	HTML_PAGE_DATABASE_CONNECT: 'controlCfg.html',
-	HTML_PAGE_SENSOR: 'controlCfg.html',
-	HTML_PAGE_MACHINE: 'controlCfg.html',
-	HTML_PAGE_COUNTER: 'controlCfg.html',
-	HTML_PAGE_CONTROLPARAMETER: 'controlCfg.html',
-	HTML_PAGE_AUTO_CONTROL: 'controlCfg.html',
-	HTML_PAGE_CONTROL_DATA: 'controlCfg.html',
-	HTML_PAGE_USERMAN: 'userman.html',
+	HTML_PAGE_CTRL_CFG : 'controlCfg.html',
+	HTML_PAGE_DATABASE_CONNECT : 'controlCfg.html',
+ 	HTML_PAGE_SENSOR : 'controlCfg.html',
+ 	HTML_PAGE_MACHINE : 'controlCfg.html',
+ 	HTML_PAGE_COUNTER : 'controlCfg.html',
+ 	HTML_PAGE_CONTROLPARAMETER : 'controlCfg.html',
+ 	HTML_PAGE_AUTO_CONTROL : 'controlCfg.html',
+ 	HTML_PAGE_CONTROL_DATA : 'controlCfg.html',
+ 	HTML_PAGE_USERMAN : undefined,
 
-	HTML_PAGE_ROLEMAN: 'controlCfg.html',
-	HTML_PAGE_USER_LIST: 'tableList.html',
-	HTML_PAGE_USER_EDIT: 'userEdit.html',
-	HTML_PAGE_USER_ADD: 'userEdit.html',
-
+ 	HTML_PAGE_ROLEMAN : 'controlCfg.html',
+ 	HTML_PAGE_USER_LIST : 'tableList.html',
+ 	HTML_PAGE_USER_EDIT : 'userEdit.html',
+ 	HTML_PAGE_USER_ADD : 'userEdit.html',
+	
 	// 导航栏标签
 	NAV_SOFTPARAMETER: {
 		CONTROL_CFG: "nav_ctrlCfg",
@@ -41,20 +41,20 @@ var CodeZ = {
 
 	// 导航栏地址
 	URI_SOFTPARAMETER: {
-		CONTROL_CFG: HTML_PAGE_CTRL_CFG,
-		DATABASE_CONNECT: HTML_PAGE_DATABASE_CONNECT
+		CONTROL_CFG: 'controlCfg.html',
+		DATABASE_CONNECT: 'logList.html',
 	},
 	URI_MACHINEMAN: {
-		SENSOR: HTML_PAGE_SENSOR,
-		MACHINE: HTML_PAGE_MACHINE,
-		COUNTER: HTML_PAGE_COUNTER
+		SENSOR: undefined,
+		MACHINE: undefined,
+		COUNTER: undefined,
 	},
-	URI_CONTROLPARAMETER: HTML_PAGE_CONTROLPARAMETER,
-	URI_AUTO_CONTROL: HTML_PAGE_AUTO_CONTROL,
-	URI_CONTROL_DATA: HTML_PAGE_CONTROL_DATA,
+	URI_CONTROLPARAMETER: undefined,
+	URI_AUTO_CONTROL: undefined,
+	URI_CONTROL_DATA: undefined,
 	URI_SECURITY_MAN: {
-		USERMAN: HTML_PAGE_USERMAN,
-		ROLEMAN: HTML_PAGE_ROLEMAN
+		USERMAN: 'userman.html',
+		ROLEMAN: undefined
 	},
 }
 
@@ -88,8 +88,8 @@ function navSrc(tag) {
 		case CodeZ.NAV_SECURITY_MAN.USERMAN:
 			directRoutersUri(CodeZ.URI_SECURITY_MAN.USERMAN);
 			break;
-		case CodeZ.NAV_SECURITY_MAN.USERMAN:
-			directRoutersUri(CodeZ.URI_SECURITY_MAN.USERMAN);
+		case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
+			directRoutersUri(CodeZ.URI_SECURITY_MAN.ROLEMAN);
 			break;
 		default:
 			break;
@@ -113,6 +113,27 @@ function directHref(uri) {
  * css配置
  */
 var CodeZComponents = {
+
+	getCurrentDate : function(date = undefined) {
+		var date = new Date();
+		if (date == undefined) {
+			var date = new Date(inputTime);
+		}
+        var y = date.getFullYear();  
+        var m = date.getMonth() + 1;  
+        m = m < 10 ? ('0' + m) : m;  
+        var d = date.getDate();  
+        d = d < 10 ? ('0' + d) : d;  
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;  
+        second = second < 10 ? ('0' + second) : second; 
+        
+        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
+	},
+
 	// 请求服务
 	postRequest: function(uri, parameters, callback) {
 		$.ajax({
@@ -798,7 +819,7 @@ var CodeZComponents = {
 	 * 通知插件封装, notifications
 	 * ======================================================================== */
 
-	notifications: function(title, text, icon, type = 'info', delay = 1000 * 2) {
+	notifications: function(title = '提示', text, icon, type = 'info', delay = 1000 * 2) {
 		PNotify.alert({
 			type: type,
 			title: title,

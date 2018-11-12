@@ -35,14 +35,17 @@
 	<body>
 		<div class="container-fluid">
 			<div class="panel" style="background-color: #F5F5F5;">
-				<div class="panel-heading" style="border-bottom:dashed 1px #c2c2c2; margin-left: 15px; margin-right: 15px;margin-bottom: 0px;background-color: #FFFFFF;">
+				<div id="breadNav" class="panel-heading" style="border-bottom:dashed 1px #c2c2c2; margin-left: 15px; margin-right: 15px;margin-bottom: 0px;background-color: #FFFFFF;">
 					<div class="panel-title">&nbsp;
 						<h4>用户管理</h4></div>
-					<ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 0px;">
-						<li id="userNav">
-							<a href="#" class="userNav">用户列表</a>
+					<!-- <ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 0px;">
+						<li>
+							<a href="#">用户列表</a>
 						</li>
-					</ul>
+						<li class="active">
+							<a href="#">用户列表</a>
+						</li>
+					</ul> -->
 				</div>
 				<div class="panel-body" style="padding-top: 0px;">
 					<!-- iframe插入 -->
@@ -65,7 +68,12 @@
 		<script src="../bootstrap/js/user-man.js"></script>
 		<script type="text/javascript">
 			$(function() {
-				addIframe('#userFrame', CodeZ.USERLIST);
+				BreadMenu.init('breadNav', [{
+					tag : CodeZ.TAG_USER_LIST,
+					href : CodeZ.HTML_PAGE_USER_LIST,
+					title : '用户列表',
+				}]);
+				addIframe('#userFrame', CodeZ.HTML_PAGE_USER_LIST);
 				$("[data-toggle='tooltip']").tooltip();
 			});
 		</script>

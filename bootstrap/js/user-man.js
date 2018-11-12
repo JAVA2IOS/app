@@ -1,54 +1,94 @@
 // 用户安全管理
 
 $("#toolbar").click(function() {
-	directHref(CodeZ.HTML_PAGE_USER_ADD);
+  console.info($('.breadcrumb',parent.document));
+  BreadMenu.updateBread($('.breadcrumb'), {
+    tag : CodeZ.TAG_USER_ADD,
+    href : CodeZ.HTML_PAGE_USER_ADD,
+    title : '新增用户',
+  });
+  directHref(CodeZ.HTML_PAGE_USER_ADD);
 });
 
+// 面包屑导航栏
+var BreadMenu = {
+  addItem: function(data) {
+    var item = CodeZComponents.addLi({
+      css : 'userNav',
+      data: data,
+    });
+
+    if(data.actived) {
+      item.attr('class', 'active');
+      item.html(data.title);
+    }else {
+      var href = CodeZComponents.addHref({
+        css: 'breadItem',
+        value: data.title,
+      });
+      item.append(href);
+    }
+
+    return item;
+  },
+  /*
+   * {
+   *  tag : '',
+   *  href : '',
+   *  title : ''
+   * }
+   */
+  init: function(parentDomId, data) {
+    var parentDom = $('#' + parentDomId);
+    var breadMenu = $('<ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 0px;"></ul>');
+    data.forEach(function(i, index){
+      var actived = false;
+      if (index == parseInt(data.length - 1)) {
+        actived = true;
+      }
+      i.actived = actived;
+      breadMenu.append(BreadMenu.addItem(i));
+    });
+
+    parentDom.append(breadMenu);
+
+    return parentDom;
+  },
+  
+  updateBread : function(ulDom, data) {
+    console.info(ulDom);
+    var childs = ulDom.children();
+    var existed = false;
+
+    for (var i = 0; i < childs.length; i++) {
+       var liDom = childs[i];
+       var bindData = liDom.data('bindData');
+       if (bindData.tag == data.tag) {
+        liDom.empty();
+        liDom.attr('class', 'active');
+        liDom.html(bindData.title);
+        existed = true;
+        liDom.nextAll().remove();
+        break;
+       }
+    }
+
+    if (!existed) {
+      var lastActiveDom = ulDom.find('.active');
+      var bindData = lastActiveDom.data('bindData');
+      lastActiveDom.removeClass('active');
+      lastActiveDom.append(CodeZComponents.addHref({
+          css: 'breadItem',
+          value: data.title,
+      }));
+      
+      ulDom.append(this.addItem(data, true));
+    }
+  },
+}
+
 var UserMan = {
-
-	// 面包屑导航栏
-	var BreadMenu = {
-
-			addItem: funciton(data, actived = false) {
-				var item = $('<li id="userNav"></li>');
-
-				var href = CodeZComponents.addHref({
-					css: 'breadItem',
-					value: data.title,
-					data: data,
-				});
-				
-				if(actived) {
-					href.addClass('active');
-				}
-
-				item.append(href);
-
-				return item;
-			},
-			/*
-			 * {
-			 * 	tag : '',
-			 *  href : '',
-			 * 	title : ''
-			 * }
-			 */
-			init: function(parentDomId, data) {
-				var parentDom = $('#' + parentDomId);
-				var breadMenu = $('<ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 0px;"></ul>');
-				for(int i = 0; i < data.length; i++) {
-					parentDom.append(this.addItem(data[i]), i == data.length - 1 ? true : false);
-				}
-				return parentDom;
-			},
-			
-			updateBread : function(parentDomId, data) {
-				
-			},
-		},
-
 		banObject: function(data) {
-			console.info(data);
 			BootstrapDialog.show({
 				title: BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING],
 				message: '是否确认注销该用户',
@@ -101,7 +141,7 @@ var UserMan = {
 				column: [{
 					field: "id",
 					title: "用户ID",
-					width: 1000
+					width: 1000,
 				}, {
 					field: "account",
 					title: "账号",
