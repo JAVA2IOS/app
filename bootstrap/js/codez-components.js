@@ -1,35 +1,43 @@
 // 参数管理
 var CodeZ = {
+	RQUEST_URI: '/machineControlSys/service/Routers.php',
+
+	ACTION_LOGIN: 'usrLogin',
+	ACTION_LOGOUT: 'usrLogout',
+	ACTION_USR_LIST: 'usrList',
+
 	// 标识符
-	TAG_CONTROL_CFG_LIST : 'tag_control_cfg_list',
-	TAG_CONTROL_CFG_EDIT : 'tag_control_cfg_edit',
-	TAG_CONTROL_CFG_ADD : 'tag_control_cfg_add',
+	TAG_CONTROL_CFG_LIST: 'tag_control_cfg_list',
+	TAG_CONTROL_CFG_EDIT: 'tag_control_cfg_edit',
+	TAG_CONTROL_CFG_ADD: 'tag_control_cfg_add',
 
-	TAG_DATABASE_LIST : 'tag_database_list',
-	TAG_DATABASE_EDIT : 'tag_database_edit',
-	TAG_DATABASE_ADD : 'tag_database_add',
+	TAG_DATABASE_LIST: 'tag_database_list',
+	TAG_DATABASE_EDIT: 'tag_database_edit',
+	TAG_DATABASE_ADD: 'tag_database_add',
 
-	TAG_USER_LIST : 'tag_user_list',
-	TAG_USER_EDIT : 'tag_user_edit',
-	TAG_USER_ADD : 'tag_user_add',
-	
+	TAG_USER_LIST: 'tag_user_list',
+	TAG_USER_EDIT: 'tag_user_edit',
+	TAG_USER_ADD: 'tag_user_add',
+
 	// HTML
-	HTML_PAGE_CTRL_CFG : 'controlCfg.html',
-	HTML_PAGE_CTRL_CFG_LIST : 'controlCfgList.html',
-	HTML_PAGE_DATABASE_CONNECT : 'database.html',
- 	HTML_PAGE_SENSOR : 'sensor.html',
- 	HTML_PAGE_MACHINE : 'machine.html',
- 	HTML_PAGE_COUNTER : 'counter.html',
- 	HTML_PAGE_CONTROLPARAMETER : 'controlParameters.html',
- 	HTML_PAGE_AUTO_CONTROL : 'autoControl.html',
- 	HTML_PAGE_CONTROL_DATA : 'controlData.html',
- 	HTML_PAGE_USERMAN : undefined,
+	HTML_PAGE_INDEX: 'adminSideBar.html',
+	HTML_PAGE_LOGIN: 'login.html',
+	HTML_PAGE_CTRL_CFG: 'controlCfg.html',
+	HTML_PAGE_CTRL_CFG_LIST: 'controlCfgList.html',
+	HTML_PAGE_DATABASE_CONNECT: 'database.html',
+	HTML_PAGE_SENSOR: 'sensor.html',
+	HTML_PAGE_MACHINE: 'machine.html',
+	HTML_PAGE_COUNTER: 'counter.html',
+	HTML_PAGE_CONTROLPARAMETER: 'controlParameters.html',
+	HTML_PAGE_AUTO_CONTROL: 'autoControl.html',
+	HTML_PAGE_CONTROL_DATA: 'controlData.html',
+	HTML_PAGE_USERMAN: undefined,
 
- 	HTML_PAGE_ROLEMAN : 'roleMan.html',
- 	HTML_PAGE_USER_LIST : 'tableList.html',
- 	HTML_PAGE_USER_EDIT : 'userEdit.html',
- 	HTML_PAGE_USER_ADD : 'userEdit.html',
-	
+	HTML_PAGE_ROLEMAN: 'roleMan.html',
+	HTML_PAGE_USER_LIST: 'tableList.html',
+	HTML_PAGE_USER_EDIT: 'userEdit.html',
+	HTML_PAGE_USER_ADD: 'userEdit.html',
+
 	// 导航栏标签
 	NAV_SOFTPARAMETER: {
 		CONTROL_CFG: "nav_ctrlCfg",
@@ -105,6 +113,27 @@ function navSrc(tag) {
 	}
 }
 
+function goLogin() {
+	window.top.location.href = CodeZ.HTML_PAGE_LOGIN;
+}
+
+// 登录拦截
+function loginFilter() {
+	BootstrapDialog.show({
+		title: BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING],
+		message: '登录信息失效，请重新登录',
+		type: BootstrapDialog.TYPE_PRIMARY,
+		cssClass: "login-dialog",
+		buttons: [{
+			label: '登录',
+			action: function(dialog) {
+				dialog.close();
+				goLogin();
+			}
+		}]
+	});
+}
+
 // 跳转到表格列表
 function directRoutersUri(uri) {
 	addIframe('#contentFrame', uri);
@@ -133,13 +162,13 @@ var BreadMenu = {
 		} else {
 			var href = CodeZComponents.addHref({
 				css: 'breadItem',
-				href : 'javascript:;',
+				href: 'javascript:;',
 				value: data.title,
 			});
 			href.attr('onClick', 'check()');
 			item.append(href);
 		}
-
+		
 		return item;
 	},
 	/*
@@ -168,7 +197,7 @@ var BreadMenu = {
 		var childs = ulDom.children();
 		var existed = false;
 		if(childs.length > 1) {
-			childs.each(function(args){
+			childs.each(function(args) {
 				var liDom = $(this);
 				var bindData = liDom.constructor.data;
 				if(bindData.tag == data.tag) {
@@ -193,18 +222,19 @@ var BreadMenu = {
 		if(!existed) {
 			var lastActiveDom = ulDom.find('.active');
 			var text = lastActiveDom.html();
+			var lastData = lastActiveDom.constructor.data;
 			$(lastActiveDom).removeClass('active');
 			lastActiveDom.empty();
+			lastActiveDom.constructor.data = lastData;
 			var hrefDom = CodeZComponents.addHref({
 				css: 'breadItem',
 				value: text,
-				href : 'javascript:;',
+				href: 'javascript:;',
 			})
 			hrefDom.attr('onClick', 'check()');
 			$(lastActiveDom).append(hrefDom);
-			
+
 			ulDom.append(this.addItem(data));
-			
 		}
 	},
 }
@@ -214,34 +244,46 @@ var BreadMenu = {
  */
 var CodeZComponents = {
 
-	getCurrentDate : function(date = undefined) {
+	getCurrentDate: function(date = undefined) {
 		var date = new Date();
-		if (date == undefined) {
+		if(date == undefined) {
 			var date = new Date(inputTime);
 		}
-        var y = date.getFullYear();  
-        var m = date.getMonth() + 1;  
-        m = m < 10 ? ('0' + m) : m;  
-        var d = date.getDate();  
-        d = d < 10 ? ('0' + d) : d;  
-        var h = date.getHours();
-        h = h < 10 ? ('0' + h) : h;
-        var minute = date.getMinutes();
-        var second = date.getSeconds();
-        minute = minute < 10 ? ('0' + minute) : minute;  
-        second = second < 10 ? ('0' + second) : second; 
-        
-        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;  
+		var y = date.getFullYear();
+		var m = date.getMonth() + 1;
+		m = m < 10 ? ('0' + m) : m;
+		var d = date.getDate();
+		d = d < 10 ? ('0' + d) : d;
+		var h = date.getHours();
+		h = h < 10 ? ('0' + h) : h;
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+		minute = minute < 10 ? ('0' + minute) : minute;
+		second = second < 10 ? ('0' + second) : second;
+
+		return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
 	},
 
 	// 请求服务
-	postRequest: function(uri, parameters, callback) {
+	postRequest: function(parameters, callback) {
 		$.ajax({
-			url: uri,
+			type: 'post',
+			url: CodeZ.RQUEST_URI,
 			data: parameters,
 			success: function(result) {
+				var data = JSON.parse(result);
+				if(!data.success) {
+					if(data.data) {
+						if(data.data.code != undefined) {
+							if(data.data.code == '-10000') {
+								loginFilter();
+								return;
+							}
+						}
+					}
+				}
 				if(callback != undefined) {
-					callback(result);
+					callback(data);
 				}
 			}
 		});
@@ -272,7 +314,6 @@ var CodeZComponents = {
 
 		if(data.data != undefined) {
 			domObj.data("bindData", data.data);
-			domObj.constructor.data = data;
 		}
 
 		if(data.collapse != undefined) {
@@ -891,21 +932,21 @@ var CodeZComponents = {
 				paginationSwitchUp: "fa-caret-up fa-fw"
 			},
 			method: post,
-			onLoadError : function(data) {
-				if (loadFailed != undefined) {
+			onLoadError: function(data) {
+				if(loadFailed != undefined) {
 					loadFailed(data);
 				}
 				return data;
 			},
-			onLoadSuccess : function(data) {
-				if (loadSuccess != undefined) {
-					loadSuccess(data);
+			onLoadSuccess: function(res) {
+				if(loadSuccess != undefined) {
+					loadSuccess(res);
 				}
-				return data;
+				return res;
 			},
 			url: uri,
 			rowStyle: function(row, index) {
-				if (rowStyle == undefined) {
+				if(rowStyle == undefined) {
 					return false;
 				}
 				return rowStyle(row, index);
@@ -920,24 +961,24 @@ var CodeZComponents = {
 				refresh(params);
 				return true;
 			},
-			onCheck : function(row, e) {
-				if (onCheckRow != undefined) {
+			onCheck: function(row, e) {
+				if(onCheckRow != undefined) {
 					onCheckRow(row, e);
 				}
 			},
-			onClickRow : function(row, e, field) {
-				if (clickRow != undefined) {
+			onClickRow: function(row, e, field) {
+				if(clickRow != undefined) {
 					clickRow(row, e, field);
 				}
 			},
-			onUncheck : function(row, e) {
-				if (onUnCheckRow != undefined) {
+			onUncheck: function(row, e) {
+				if(onUnCheckRow != undefined) {
 					onUnCheckRow(row, e);
 				}
 			},
 			pageNumber: currentPage,
 			pageSize: pageSize,
-			pageList : 'All',
+			pageList: 'All',
 			pagination: showPager,
 			paginationLoop: false,
 			paginationPreText: "<span class=\"glyphicon glyphicon-chevron-left\"></span>",

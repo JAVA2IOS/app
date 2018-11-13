@@ -1,85 +1,112 @@
 // 用户安全管理
 
+function usrLogin() {
+	CodeZComponents.postRequest({
+		action: CodeZ.ACTION_LOGIN,
+		user: $('#form-username').val(),
+		pwd: $('#password').val()
+	}, function(data) {
+		if(data.success) {
+			window.location.href = CodeZ.HTML_PAGE_INDEX;
+		} else {
+			CodeZComponents.showErrorTip({
+				text: data.error
+			});
+		}
+	});
+}
+
 $("#toolbar").click(function() {
-  changeToUserDetailInfo({
-    tag: CodeZ.TAG_USER_ADD,
-    href: CodeZ.HTML_PAGE_USER_ADD,
-    title: '新增用户',
-    actived : true,
-  });
+	changeToUserDetailInfo({
+		tag: CodeZ.TAG_USER_ADD,
+		href: CodeZ.HTML_PAGE_USER_ADD,
+		title: '新增用户',
+		actived: true,
+	});
 });
 
 // 修改用户
 function editUser(data) {
-  changeToUserDetailInfo({
-      tag: CodeZ.TAG_USER_EDIT,
-      href: CodeZ.HTML_PAGE_USER_EDIT,
-      title: '修改用户',
-      actived : true,
-      bindData : data
-    });
+	var bindData = {
+		tag: CodeZ.TAG_USER_EDIT,
+		href: CodeZ.HTML_PAGE_USER_EDIT,
+		title: '修改用户',
+		actived: true,
+		bindData: data
+	};
+	$.session.set('bindData', JSON.stringify(bindData));
+	changeToUserDetailInfo(bindData);
 }
 
 function userList() {
-  changeToUserDetailInfo({
-    tag : CodeZ.TAG_USER_LIST,
-    href : CodeZ.HTML_PAGE_USER_LIST,
-    title : '用户列表',
-    actived : true,
-  });
+	changeToUserDetailInfo({
+		tag: CodeZ.TAG_USER_LIST,
+		href: CodeZ.HTML_PAGE_USER_LIST,
+		title: '用户列表',
+		actived: true,
+	});
 }
 
 function changeToUserDetailInfo(data) {
-  var ulDom = $(window.parent.document).find('.breadcrumb');
-  BreadMenu.updateBread(ulDom, data);
-  // BreadMenu.updateBread($('.breadcrumb'), data);
-  directHref(data.href);
+	var ulDom = $(window.parent.document).find('.breadcrumb');
+	BreadMenu.updateBread(ulDom, data);
+	directHref(data.href);
 }
 
 function editData() {
-  // var liDom = $(window.parent.document).find('li .active');
-  // if(liDom.constructor.data != undefined) {
-  //   if (liDom.constructor.data.tag == CodeZ.TAG_USER_EDIT) {
-  //     var userObj = liDom.constructor.data.bindData;
-  //     $('#userName').val(userObj.userName);
-  //     $('#account').val(userObj.account);
-  //     $('#password').val(userObj.password);
-  //     $('#userRole').val(userObj.role.roleId);
-  //   }
-  //   return;
-  // }
-
-  $('#userName').val('userName');
-  $('#userAccount').val('admin');
-  $('#userpassword').val('default123');
-  $('#dep').val('部门');
-  $('#userRole').val('0');
+	var ulDom = $(window.parent.document).find('.active');
+	var dataObj = JSON.parse($.session.get('bindData'));
+	if(dataObj != undefined) {
+		if(dataObj.tag == CodeZ.TAG_USER_EDIT) {
+			console.info('111');
+			var userObj = dataObj.bindData;
+			console.info(userObj);
+			$('#userName').val(userObj.userName);
+			$('#userRole').val(userObj.role.roleId);
+			$('#userAccount').val(userObj.userAccount);
+			$('#userpassword').val(userObj.password);
+			$('#dep').val(userObj.dep);
+		}
+		return;
+	}
 }
 
-function check(){
-	addIframe($('#userFrame'),$(event.target).constructor.data.href)
+function check() {
+	addIframe($('#userFrame'), $(event.target).constructor.data.href)
 	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
 }
 
+// 更新用户信息
+function updateUser(userObj, callback) {}
+
 var UserMan = {
-  // 注销用户
+	// 注销用户
 	banObject: function(data, fn) {
 		BootstrapDialog.show({
 			title: BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING],
 			message: '是否确认注销该用户',
 			type: BootstrapDialog.TYPE_PRIMARY,
 			cssClass: "login-dialog",
-			data: {'bindData' : data},
+			data: {
+				'bindData': data
+			},
 			buttons: [{
 				label: '确定',
 				action: function(dialog) {
 					dialog.close();
-          CodeZComponents.showSuccessTip({title : '提示',text : '注销成功'});
-          var user = dialog.getData('bindData');
-          user.deleted = 1;
-          if (fn) {
-            fn(user);
-          }
+					CodeZComponents.showSuccessTip({
+						title: '提示',
+						text: '注销成功'
+					});
+					var user = dialog.getData('bindData');
+					user.deleted = 1;
+					updateUser(user, function(success) {
+						if(success) {
+							if(fn) {
+								fn(user);
+							}
+						}
+					});
 				}
 			}, {
 				label: '取消',
@@ -93,68 +120,66 @@ var UserMan = {
 		// BootstrapDialog.danger("危险框");
 	},
 
-  // 激活用户
-  activeObject: function(data, fn) {
-    CodeZComponents.showSuccessTip({title : '提示',text : '激活成功'});
-    var user = data;
-    user.deleted = 0;
-    if (fn) {
-      fn(user);
-    }
-  },
+	// 激活用户
+	activeObject: function(data, fn) {
+		CodeZComponents.showSuccessTip({
+			title: '提示',
+			text: '激活成功'
+		});
+		var user = data;
+		user.deleted = 0;
+		if(fn) {
+			fn(user);
+		}
+	},
 
-  /*
-  {
-    uri : ,
-    params : {},
-    rowStyle : fn,
-    column : [],
-    pageSize : ,
-    localData : [],
-    showSearch : true,
-    refresh : true,
-    currentPage : 1,
-    showPager : true
-  }
-  */
+	/*
+	{
+	  uri : ,
+	  params : {},
+	  rowStyle : fn,
+	  column : [],
+	  pageSize : ,
+	  localData : [],
+	  showSearch : true,
+	  refresh : true,
+	  currentPage : 1,
+	  showPager : true
+	}
+	*/
 	configureUserList: function() {
-    var dataRow = new Array();
-    for (var i = 0; i < parseInt(Math.random(1, 1000) * 1000); i++) {
-      var user = new User();
-      user.userId = parseInt(Math.random(1, 1000) * 1000);
-      user.userName = 'admin';
-      user.account = 'admin' + parseInt(Math.random(100, 1000) * 100) + '';
-      user.password = 'password123';
-      user.dep = '部门' + Math.random(100, 1000) * 100 + '';
-      user.deleted = parseInt(Math.random(10, 100) * 100 % 2);
-      var role = new Role();
-      role.roleId = parseInt(Math.random(10, 100) * 100 / 2);
-      role.roleName = role.roleId ? '系统管理员' : '普通用户';
-      role.description = '角色描述';
-      role.deleted = parseInt(Math.random(10, 100) * 100 % 2);
-      user.role = role;
+		CodeZComponents.postRequest({
+			action: CodeZ.ACTION_USR_LIST
+		}, function(data) {
+			if(data.success) {
+				var dataRow = data.data;
+				UserMan.showUserList(dataRow);
+			}
+		});
 
-      dataRow.push(user);
-    }
+	},
 
+	showUserList: function(dataList) {
 		var datas = {
-			queryParams: function(params) {
-				return {action : 'usrList'};
-			},
-			// uri: '/machineControlSys/service/Routers.php',
 			parentDom: $("#table-container"),
 			pageSize: 8,
 			refresh: function(params) {
 				UserMan.configureUserList();
 			},
+			loadSuccessFn: function(data) {
+				console.info(data);
+			},
+			loadFailedFn: function(success) {
+				console.info(success);
+			},
 			rowStyle: function(row, index) {
-				if(row == undefined){
+				if(row == undefined) {
 					return {};
 				}
 				if(row.deleted == 1 || row.deleted == "1") {
-          return {
-            classes: "danger"
-          };
+					return {
+						classes: "danger"
+					};
 				}
 				return {};
 			},
@@ -163,7 +188,7 @@ var UserMan = {
 				title: "用户ID",
 				width: 1000,
 			}, {
-				field: "account",
+				field: "userAccount",
 				title: "账号",
 				width: 1000
 			}, {
@@ -177,9 +202,9 @@ var UserMan = {
 				sortable: true,
 				formatter: function(value, row, index) {
 					if(value == 1 || value == '1') {
-            return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"未激活\"><span class= \"fa fa-ban fa-fw text-warning\"></span></a>";
+						return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"未激活\"><span class= \"fa fa-ban fa-fw text-warning\"></span></a>";
 					} else {
-            return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"已激活\"><span class= \"fa fa-check fa-fw text-success\"></span></a>";
+						return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"已激活\"><span class= \"fa fa-check fa-fw text-success\"></span></a>";
 					}
 				},
 				width: 1000
@@ -206,18 +231,24 @@ var UserMan = {
 						editUser(row);
 					},
 					"click .cancel": function(e, value, row, index) {
-						UserMan.banObject(row, function(data){
-              datas.parentDom.bootstrapTable('updateRow', {index : index, row : data});
-            });
+						UserMan.banObject(row, function(data) {
+							datas.parentDom.bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+						});
 					},
 					"click .activited": function(e, value, row, index) {
-            UserMan.activeObject(row, function(data) {
-              datas.parentDom.bootstrapTable('updateRow', {index : index, row : data});
-            })
+						UserMan.activeObject(row, function(data) {
+							datas.parentDom.bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+						})
 					}
 				}
 			}],
-      datas : dataRow,
+			datas: dataList,
 		};
 
 		CodeZComponents.tablePlugins(datas.parentDom, datas.uri, datas.queryParams, datas.rowStyle, datas.showSearch, datas.refresh, datas.currentPage, datas.pageSize, datas.showPager, datas.column, datas.datas);
