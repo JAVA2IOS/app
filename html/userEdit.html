@@ -85,11 +85,18 @@
 		<script src="../bootstrap/js/bootstrap.min.js"></script>
 		<script src="../bootstrap/js/pnotify/pnotify.js"></script>
 		<script src="../bootstrap/js/codez-components.js"></script>
+		<script src="../bootstrap/js/model.js"></script>
+		<script src="../bootstrap/js/user-man.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$('.btn-primary').click(function() {
 					CodeZComponents.showSuccessTip({text : '新增成功'});
+					userList();
 				});
+				$('.btn-default').click(function() {
+					userList();
+				});
+				editData();
 			});
 		</script>
 	</body>

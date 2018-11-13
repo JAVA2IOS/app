@@ -33,9 +33,9 @@
 	</head>
 
 	<body>
-		<div class="container-fluid">
+		<div class="container-fluid" style="height: 100%;">
 				<div class="panel-body" style="margin-top: 30px;">
-					<button id="toolbar" type="button" class="btn tooltip-show" data-toggle="tooltip" title="新增"><span class="fa fa-user-plus fa-fw text-primary"></span></button>
+					<!-- <button id="toolbar" type="button" class="btn tooltip-show" data-toggle="tooltip" title="新增"><span class="fa fa-user-plus fa-fw text-primary"></span></button> -->
 					<div id="table-container"></div>
 				</div>
 		</div>
@@ -50,11 +50,11 @@
 		<script src="../bootstrap/js/bootstrap-dialog.js"></script>
 		<script src="../bootstrap/js/codez-components.js"></script>
 		<script src="../bootstrap/js/model.js"></script>
-		<script src="../bootstrap/js/user-man.js"></script>
+		<script src="../bootstrap/js/softMan.js"></script>
 		<script type="text/javascript">
 			$(function() {
 				$("[data-toggle='tooltip']").tooltip();
-				UserMan.configureUserList();
+				SoftMan.showControlCfgList();
 			});
 		</script>
 	</body>

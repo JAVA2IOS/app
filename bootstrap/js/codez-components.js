@@ -1,22 +1,31 @@
 // 参数管理
 var CodeZ = {
 	// 标识符
+	TAG_CONTROL_CFG_LIST : 'tag_control_cfg_list',
+	TAG_CONTROL_CFG_EDIT : 'tag_control_cfg_edit',
+	TAG_CONTROL_CFG_ADD : 'tag_control_cfg_add',
+
+	TAG_DATABASE_LIST : 'tag_database_list',
+	TAG_DATABASE_EDIT : 'tag_database_edit',
+	TAG_DATABASE_ADD : 'tag_database_add',
+
 	TAG_USER_LIST : 'tag_user_list',
 	TAG_USER_EDIT : 'tag_user_edit',
 	TAG_USER_ADD : 'tag_user_add',
 	
 	// HTML
 	HTML_PAGE_CTRL_CFG : 'controlCfg.html',
-	HTML_PAGE_DATABASE_CONNECT : 'controlCfg.html',
- 	HTML_PAGE_SENSOR : 'controlCfg.html',
- 	HTML_PAGE_MACHINE : 'controlCfg.html',
- 	HTML_PAGE_COUNTER : 'controlCfg.html',
- 	HTML_PAGE_CONTROLPARAMETER : 'controlCfg.html',
- 	HTML_PAGE_AUTO_CONTROL : 'controlCfg.html',
- 	HTML_PAGE_CONTROL_DATA : 'controlCfg.html',
+	HTML_PAGE_CTRL_CFG_LIST : 'controlCfgList.html',
+	HTML_PAGE_DATABASE_CONNECT : 'database.html',
+ 	HTML_PAGE_SENSOR : 'sensor.html',
+ 	HTML_PAGE_MACHINE : 'machine.html',
+ 	HTML_PAGE_COUNTER : 'counter.html',
+ 	HTML_PAGE_CONTROLPARAMETER : 'controlParameters.html',
+ 	HTML_PAGE_AUTO_CONTROL : 'autoControl.html',
+ 	HTML_PAGE_CONTROL_DATA : 'controlData.html',
  	HTML_PAGE_USERMAN : undefined,
 
- 	HTML_PAGE_ROLEMAN : 'controlCfg.html',
+ 	HTML_PAGE_ROLEMAN : 'roleMan.html',
  	HTML_PAGE_USER_LIST : 'tableList.html',
  	HTML_PAGE_USER_EDIT : 'userEdit.html',
  	HTML_PAGE_USER_ADD : 'userEdit.html',
@@ -42,19 +51,19 @@ var CodeZ = {
 	// 导航栏地址
 	URI_SOFTPARAMETER: {
 		CONTROL_CFG: 'controlCfg.html',
-		DATABASE_CONNECT: 'logList.html',
+		DATABASE_CONNECT: 'database.html',
 	},
 	URI_MACHINEMAN: {
-		SENSOR: undefined,
-		MACHINE: undefined,
-		COUNTER: undefined,
+		SENSOR: 'sensor.html',
+		MACHINE: 'machine.html',
+		COUNTER: 'counter.html',
 	},
-	URI_CONTROLPARAMETER: undefined,
-	URI_AUTO_CONTROL: undefined,
-	URI_CONTROL_DATA: undefined,
+	URI_CONTROLPARAMETER: 'controlParameters.html',
+	URI_AUTO_CONTROL: 'autoControl.html',
+	URI_CONTROL_DATA: 'controlData.html',
 	URI_SECURITY_MAN: {
 		USERMAN: 'userman.html',
-		ROLEMAN: undefined
+		ROLEMAN: 'roleMan.html'
 	},
 }
 
@@ -107,6 +116,97 @@ function addIframe(parentDom, uri) {
 
 function directHref(uri) {
 	location.href = uri;
+}
+
+// 面包屑导航栏
+var BreadMenu = {
+	addItem: function(data) {
+		var item = CodeZComponents.addLi({
+			css: 'userNav',
+			data: data,
+		});
+		item.constructor.data = data;
+
+		if(data.actived) {
+			item.attr('class', 'active');
+			item.html(data.title);
+		} else {
+			var href = CodeZComponents.addHref({
+				css: 'breadItem',
+				href : 'javascript:;',
+				value: data.title,
+			});
+			href.attr('onClick', 'check()');
+			item.append(href);
+		}
+
+		return item;
+	},
+	/*
+	 * {
+	 *  tag : '',
+	 *  href : '',
+	 *  title : ''
+	 * }
+	 */
+	init: function(parentDomId, data) {
+		var parentDom = $('#' + parentDomId);
+		var breadMenu = $('<ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 15px;"></ul>');
+		data.forEach(function(i, index) {
+			var actived = false;
+			if(index == parseInt(data.length - 1)) {
+				actived = true;
+			}
+			i.actived = actived;
+			breadMenu.append(BreadMenu.addItem(i));
+		});
+
+		parentDom.append(breadMenu);
+	},
+
+	updateBread: function(ulDom, data) {
+		var childs = ulDom.children();
+		var existed = false;
+		if(childs.length > 1) {
+			childs.each(function(args){
+				var liDom = $(this);
+				var bindData = liDom.constructor.data;
+				if(bindData.tag == data.tag) {
+					liDom.empty();
+					liDom.attr('class', 'active');
+					liDom.html(bindData.title);
+					existed = true;
+					liDom.nextAll().remove();
+					return false;
+				}
+			});
+		} else {
+			if(childs.constructor.data.tag == data.tag) {
+				childs.empty();
+				childs.attr('class', 'active');
+				childs.html(childs.constructor.data.title);
+				existed = true;
+				childs.nextAll().remove();
+			}
+		}
+
+		if(!existed) {
+			var lastActiveDom = ulDom.find('.active');
+			var text = lastActiveDom.html();
+			$(lastActiveDom).removeClass('active');
+			lastActiveDom.empty();
+			var hrefDom = CodeZComponents.addHref({
+				css: 'breadItem',
+				value: text,
+				href : 'javascript:;',
+			})
+			hrefDom.attr('onClick', 'check()');
+			$(lastActiveDom).append(hrefDom);
+			
+			ulDom.append(this.addItem(data));
+			
+		}
+	},
 }
 
 /*
@@ -172,6 +272,7 @@ var CodeZComponents = {
 
 		if(data.data != undefined) {
 			domObj.data("bindData", data.data);
+			domObj.constructor.data = data;
 		}
 
 		if(data.collapse != undefined) {
@@ -758,8 +859,7 @@ var CodeZComponents = {
 	},
 
 	// 表格插件
-	tablePlugins: function(parentDom, uri = undefined, queryParams = undefined, rowStyle = undefined, showSearch = true, refresh = undefined, currentPage = 1, pageSize = 10, showPager = true, column = [], datas = []) {
-
+	tablePlugins: function(parentDom, uri = undefined, queryParams = undefined, rowStyle = undefined, showSearch = true, refresh = undefined, currentPage = 1, pageSize = 10, showPager = true, column = [], datas = [], loadSuccess = undefined, loadFailed = undefined, clickRow = undefined, onCheckRow = undefined, onUnCheckRow = undefined, post = 'post') {
 		/*
         method: 'get',
         url: undefined,
@@ -790,9 +890,24 @@ var CodeZComponents = {
 				paginationSwitchDown: "fa-caret-down fa-fw",
 				paginationSwitchUp: "fa-caret-up fa-fw"
 			},
-			method: 'post',
+			method: post,
+			onLoadError : function(data) {
+				if (loadFailed != undefined) {
+					loadFailed(data);
+				}
+				return data;
+			},
+			onLoadSuccess : function(data) {
+				if (loadSuccess != undefined) {
+					loadSuccess(data);
+				}
+				return data;
+			},
 			url: uri,
 			rowStyle: function(row, index) {
+				if (rowStyle == undefined) {
+					return false;
+				}
 				return rowStyle(row, index);
 			},
 			search: showSearch,
@@ -805,8 +920,24 @@ var CodeZComponents = {
 				refresh(params);
 				return true;
 			},
+			onCheck : function(row, e) {
+				if (onCheckRow != undefined) {
+					onCheckRow(row, e);
+				}
+			},
+			onClickRow : function(row, e, field) {
+				if (clickRow != undefined) {
+					clickRow(row, e, field);
+				}
+			},
+			onUncheck : function(row, e) {
+				if (onUnCheckRow != undefined) {
+					onUnCheckRow(row, e);
+				}
+			},
 			pageNumber: currentPage,
 			pageSize: pageSize,
+			pageList : 'All',
 			pagination: showPager,
 			paginationLoop: false,
 			paginationPreText: "<span class=\"glyphicon glyphicon-chevron-left\"></span>",

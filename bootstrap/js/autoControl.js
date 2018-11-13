@@ -1,7 +1,6 @@
 // 用户安全管理
 
 $("#toolbar").click(function() {
-	var ulDom = $(window.parent.document).find('.breadcrumb');
   changeToUserDetailInfo({
     tag: CodeZ.TAG_USER_ADD,
     href: CodeZ.HTML_PAGE_USER_ADD,
@@ -61,6 +60,100 @@ function check(){
 	addIframe($('#userFrame'),$(event.target).constructor.data.href)
 	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
 }
+
+// 面包屑导航栏
+var BreadMenu = {
+	addItem: function(data) {
+		var item = CodeZComponents.addLi({
+			css: 'userNav',
+			data: data,
+		});
+		item.constructor.data = data;
+
+		if(data.actived) {
+			item.attr('class', 'active');
+			item.html(data.title);
+		} else {
+			var href = CodeZComponents.addHref({
+				css: 'breadItem',
+				href : 'javascript:;',
+				value: data.title,
+			});
+			href.attr('onClick', 'check()');
+			item.append(href);
+		}
+
+		return item;
+	},
+	/*
+	 * {
+	 *  tag : '',
+	 *  href : '',
+	 *  title : ''
+	 * }
+	 */
+	init: function(parentDomId, data) {
+		var parentDom = $('#' + parentDomId);
+		var breadMenu = $('<ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 15px;"></ul>');
+		data.forEach(function(i, index) {
+			var actived = false;
+			if(index == parseInt(data.length - 1)) {
+				actived = true;
+			}
+			i.actived = actived;
+			breadMenu.append(BreadMenu.addItem(i));
+		});
+
+		parentDom.append(breadMenu);
+	},
+
+	updateBread: function(ulDom, data) {
+		var childs = ulDom.children();
+		var existed = false;
+		if(childs.length > 1) {
+			childs.each(function(args){
+				var liDom = $(this);
+				var bindData = liDom.constructor.data;
+				if(bindData.tag == data.tag) {
+					liDom.empty();
+					liDom.attr('class', 'active');
+					liDom.html(bindData.title);
+					existed = true;
+					liDom.nextAll().remove();
+					return false;
+				}
+			});
+		} else {
+			if(childs.constructor.data.tag == data.tag) {
+				childs.empty();
+				childs.attr('class', 'active');
+				childs.html(childs.constructor.data.title);
+				existed = true;
+				childs.nextAll().remove();
+			}
+		}
+
+		if(!existed) {
+			var lastActiveDom = ulDom.find('.active');
+			var text = lastActiveDom.html();
+			$(lastActiveDom).removeClass('active');
+			lastActiveDom.empty();
+			var hrefDom = CodeZComponents.addHref({
+				css: 'breadItem',
+				value: text,
+				href : 'javascript:;',
+			})
+			hrefDom.attr('onClick', 'check()');
+			$(lastActiveDom).append(hrefDom);
+			
+			ulDom.append(this.addItem(data));
+			
+		}
+	},
+}
+
+
+
 
 var UserMan = {
   // 注销用户
