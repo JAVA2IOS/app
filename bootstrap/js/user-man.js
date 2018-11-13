@@ -1,7 +1,6 @@
 // 用户安全管理
 
 $("#toolbar").click(function() {
-	var ulDom = $(window.parent.document).find('.breadcrumb');
   changeToUserDetailInfo({
     tag: CodeZ.TAG_USER_ADD,
     href: CodeZ.HTML_PAGE_USER_ADD,
