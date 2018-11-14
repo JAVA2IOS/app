@@ -5,8 +5,12 @@ var CodeZ = {
 	ACTION_LOGIN: 'usrLogin',
 	ACTION_LOGOUT: 'usrLogout',
 	ACTION_USR_LIST: 'usrList',
-	ACTION_USR_EDIT: '',
-	ACTION_USR_ADD: '',
+	ACTION_USR_EDIT: 'usrEdit',
+	ACTION_USR_ADD: 'usrRegist',
+	
+	ACTION_PORT_ADD: 'portAdd',
+	ACTION_PORT_LIST: 'portList',
+	ACTION_PORT_EDIT: 'portEdit',
 
 	// 标识符
 	TAG_CONTROL_CFG_LIST: 'tag_control_cfg_list',
@@ -153,12 +157,6 @@ function directHref(uri) {
 	location.href = uri;
 }
 
-// 面包屑导航选择跳转
-function breadItemTransfer(){
-	addIframe($('#contentFrame'),$(event.target).constructor.data.href)
-	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
-}
-
 // 面包屑导航栏
 var BreadMenu = {
 	addItem: function(data) {
@@ -283,6 +281,7 @@ var CodeZComponents = {
 			url: CodeZ.RQUEST_URI,
 			data: parameters,
 			success: function(result) {
+				console.info(result);
 				var data = JSON.parse(result);
 				if(!data.success) {
 					if(data.data) {
@@ -1013,8 +1012,7 @@ var CodeZComponents = {
 		PNotify.defaultStack.firstpos2 = 5;
 		PNotify.defaultStack.spacing1 = 15;
 		PNotify.defaultStack.spacing2 = 5;
-		PNotify.defaultStack.context = window.document.body;
-		// PNotify.defaultStack.context = window.top.document.body;
+		 PNotify.defaultStack.context = window.top.body;
 		PNotify.alert({
 			type: type,
 			title: title,
