@@ -5,25 +5,30 @@ var CodeZ = {
 	ACTION_LOGIN: 'usrLogin',
 	ACTION_LOGOUT: 'usrLogout',
 	ACTION_USR_LIST: 'usrList',
+	ACTION_USR_EDIT: '',
+	ACTION_USR_ADD: '',
 
 	// 标识符
 	TAG_CONTROL_CFG_LIST: 'tag_control_cfg_list',
 	TAG_CONTROL_CFG_EDIT: 'tag_control_cfg_edit',
 	TAG_CONTROL_CFG_ADD: 'tag_control_cfg_add',
+	TAG_CONTROL_CFG_INFO: 'tag_control_cfg_info',
 
 	TAG_DATABASE_LIST: 'tag_database_list',
 	TAG_DATABASE_EDIT: 'tag_database_edit',
 	TAG_DATABASE_ADD: 'tag_database_add',
+	TAG_DATABASE_INFO: 'tag_database_info',
 
 	TAG_USER_LIST: 'tag_user_list',
 	TAG_USER_EDIT: 'tag_user_edit',
 	TAG_USER_ADD: 'tag_user_add',
 
 	// HTML
-	HTML_PAGE_INDEX: 'adminSideBar.html',
+	HTML_PAGE_INDEX: 'index.html',
 	HTML_PAGE_LOGIN: 'login.html',
 	HTML_PAGE_CTRL_CFG: 'controlCfg.html',
 	HTML_PAGE_CTRL_CFG_LIST: 'controlCfgList.html',
+	HTML_PAGE_CTRL_CFG_INFO: 'controlCfgInfo.html',
 	HTML_PAGE_DATABASE_CONNECT: 'database.html',
 	HTML_PAGE_SENSOR: 'sensor.html',
 	HTML_PAGE_MACHINE: 'machine.html',
@@ -113,6 +118,7 @@ function navSrc(tag) {
 	}
 }
 
+// 跳转到登录页面
 function goLogin() {
 	window.top.location.href = CodeZ.HTML_PAGE_LOGIN;
 }
@@ -145,6 +151,12 @@ function addIframe(parentDom, uri) {
 
 function directHref(uri) {
 	location.href = uri;
+}
+
+// 面包屑导航选择跳转
+function breadItemTransfer(){
+	addIframe($('#contentFrame'),$(event.target).constructor.data.href)
+	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
 }
 
 // 面包屑导航栏
@@ -231,7 +243,7 @@ var BreadMenu = {
 				value: text,
 				href: 'javascript:;',
 			})
-			hrefDom.attr('onClick', 'check()');
+			hrefDom.attr('onClick', 'breadItemTransfer()');
 			$(lastActiveDom).append(hrefDom);
 
 			ulDom.append(this.addItem(data));
@@ -900,7 +912,7 @@ var CodeZComponents = {
 	},
 
 	// 表格插件
-	tablePlugins: function(parentDom, uri = undefined, queryParams = undefined, rowStyle = undefined, showSearch = true, refresh = undefined, currentPage = 1, pageSize = 10, showPager = true, column = [], datas = [], loadSuccess = undefined, loadFailed = undefined, clickRow = undefined, onCheckRow = undefined, onUnCheckRow = undefined, post = 'post') {
+	tablePlugins: function(parentDom, uri = undefined, queryParams = undefined, rowStyle = undefined, showSearch = true, refresh = undefined, currentPage = 1, pageSize = 10, showPager = true, column = [], datas = [], loadSuccess = undefined, loadFailed = undefined, clickRow = undefined, onCheckRow = undefined, onUnCheckRow = undefined, post = 'post', showDetail = false, detailFn = undefined) {
 		/*
         method: 'get',
         url: undefined,
@@ -976,6 +988,12 @@ var CodeZComponents = {
 					onUnCheckRow(row, e);
 				}
 			},
+			detailView : showDetail,
+			detailFormatter : function(index, row) {
+				if (detailFn != undefined) {
+					detailFn(index, row);
+				}
+			},
 			pageNumber: currentPage,
 			pageSize: pageSize,
 			pageList: 'All',
@@ -992,6 +1010,11 @@ var CodeZComponents = {
 	 * ======================================================================== */
 
 	notifications: function(title = '提示', text, icon, type = 'info', delay = 1000 * 2) {
+		PNotify.defaultStack.firstpos2 = 5;
+		PNotify.defaultStack.spacing1 = 15;
+		PNotify.defaultStack.spacing2 = 5;
+		PNotify.defaultStack.context = window.document.body;
+		// PNotify.defaultStack.context = window.top.document.body;
 		PNotify.alert({
 			type: type,
 			title: title,

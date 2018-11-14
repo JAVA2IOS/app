@@ -16,6 +16,20 @@ function usrLogin() {
 	});
 }
 
+function usrLogout() {
+  CodeZComponents.postRequest({
+    action : CodeZ.ACTION_LOGOUT,
+  }, function(data) {
+    goLogin();
+  });
+}
+
+$('#log-out').click(function() {
+  usrLogout();
+  // e.g static
+  goLogin();
+});
+
 $("#toolbar").click(function() {
 	changeToUserDetailInfo({
 		tag: CodeZ.TAG_USER_ADD,
@@ -54,13 +68,10 @@ function changeToUserDetailInfo(data) {
 }
 
 function editData() {
-	var ulDom = $(window.parent.document).find('.active');
 	var dataObj = JSON.parse($.session.get('bindData'));
 	if(dataObj != undefined) {
 		if(dataObj.tag == CodeZ.TAG_USER_EDIT) {
-			console.info('111');
 			var userObj = dataObj.bindData;
-			console.info(userObj);
 			$('#userName').val(userObj.userName);
 			$('#userRole').val(userObj.role.roleId);
 			$('#userAccount').val(userObj.userAccount);
@@ -71,10 +82,10 @@ function editData() {
 	}
 }
 
-function check() {
-	addIframe($('#userFrame'), $(event.target).constructor.data.href)
-	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
-}
+// function check() {
+// 	addIframe($('#userFrame'), $(event.target).constructor.data.href)
+// 	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
+// }
 
 // 更新用户信息
 function updateUser(userObj, callback) {}
