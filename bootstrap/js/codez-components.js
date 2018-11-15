@@ -26,6 +26,12 @@ var CodeZ = {
 		EDIT: '',
 	},
 
+	ACTION_MACHINE : {
+		ADD: '',
+		LIST: '',
+		EDIT: '',
+	},
+
 	// 标识符
 	TAG_CONTROL_CFG_LIST: 'tag_control_cfg_list',
 	TAG_CONTROL_CFG_EDIT: 'tag_control_cfg_edit',
@@ -43,10 +49,23 @@ var CodeZ = {
 
 	TAG_SENSOR : {
 		INDEX : 'tag_sensor_index',
+		INDEXTILE : '传感器管理',
 		LIST : 'tag_sensor_list',
+		LISTTITLE : '传感器管理',
 		ADD : 'tag_sensor_add',
+		ADDTITLE : '新增传感器',
 		EDIT : 'tag_sensor_edit',
+		EDITTITLE : '修改传感器',
 		INFO : 'tag_sensor_info',
+		INFOTITLE : '传感器信息',
+	},
+
+	TAG_MACHINE : {
+		INDEX : 'tag_machine_index',
+		LIST : 'tag_machine_list',
+		ADD : 'tag_machine_add',
+		EDIT : 'tag_machine_edit',
+		INFO : 'tag_machine_info',
 	},
 
 	// HTML
@@ -63,8 +82,12 @@ var CodeZ = {
 		LIST: 'sensorList.html',
 		INFO: 'sensorInfo.html',
 	},
+	HTML_PAGE_MACHINE : {
+		INDEX : 'machine.html',
+		LIST: 'machineList.html',
+		INFO: 'machineInfo.html',
+	}
 
-	HTML_PAGE_MACHINE: 'machine.html',
 	HTML_PAGE_COUNTER: 'counter.html',
 	HTML_PAGE_CONTROLPARAMETER: 'controlParameters.html',
 	HTML_PAGE_AUTO_CONTROL: 'autoControl.html',
@@ -113,8 +136,53 @@ var CodeZ = {
 	},
 }
 
+var SessionMan = {
+	configureDataSource : function(tag) {
+		switch(tag) {
+			case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
+
+			case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
+
+				break;
+			case CodeZ.NAV_MACHINEMAN.SENSOR:
+			{
+				//传感器处理
+				$.session.set('tag', CodeZ.TAG_SENSOR);
+				$.session.set('action', CodeZ.ACTION_SENSOR);
+				$.session.set('page', CodeZ.HTML_PAGE_SENSOR);
+				$.session.set('cacheKey', tag + '_key');
+			}
+			break;
+			case CodeZ.NAV_MACHINEMAN.MACHINE:
+
+				break;
+			case CodeZ.NAV_MACHINEMAN.COUNTER:
+
+				break;
+			case CodeZ.NAV_CONTROLPARAMETER:
+
+				break;
+			case CodeZ.NAV_AUTO_CONTROL:
+
+				break;
+			case CodeZ.NAV_CONTROL_DATA:
+
+				break;
+			case CodeZ.NAV_SECURITY_MAN.USERMAN:
+
+				break;
+			case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
+
+				break;
+			default:
+				break;
+		}
+	},
+}
+
 // 导航栏跳转
 function navSrc(tag) {
+	SessionMan.configureDataSource(tag);
 	switch(tag) {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
 			directRoutersUri(CodeZ.URI_SOFTPARAMETER.CONTROL_CFG);
