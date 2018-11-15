@@ -7,10 +7,24 @@ var CodeZ = {
 	ACTION_USR_LIST: 'usrList',
 	ACTION_USR_EDIT: 'usrEdit',
 	ACTION_USR_ADD: 'usrRegist',
-	
-	ACTION_PORT_ADD: 'portAdd',
-	ACTION_PORT_LIST: 'portList',
-	ACTION_PORT_EDIT: 'portEdit',
+
+	ACTION_PORT : {
+		ADD: 'portAdd',
+		LIST: 'portList',
+		EDIT: 'portEdit',
+	},
+
+	ACTION_DATA_BASE : {
+		ADD: '',
+		LIST: '',
+		EDIT: '',
+	},
+
+	ACTION_SENSOR : {
+		ADD: '',
+		LIST: '',
+		EDIT: '',
+	},
 
 	// 标识符
 	TAG_CONTROL_CFG_LIST: 'tag_control_cfg_list',
@@ -27,6 +41,14 @@ var CodeZ = {
 	TAG_USER_EDIT: 'tag_user_edit',
 	TAG_USER_ADD: 'tag_user_add',
 
+	TAG_SENSOR : {
+		INDEX : 'tag_sensor_index',
+		LIST : 'tag_sensor_list',
+		ADD : 'tag_sensor_add',
+		EDIT : 'tag_sensor_edit',
+		INFO : 'tag_sensor_info',
+	},
+
 	// HTML
 	HTML_PAGE_INDEX: 'index.html',
 	HTML_PAGE_LOGIN: 'login.html',
@@ -34,7 +56,14 @@ var CodeZ = {
 	HTML_PAGE_CTRL_CFG_LIST: 'controlCfgList.html',
 	HTML_PAGE_CTRL_CFG_INFO: 'controlCfgInfo.html',
 	HTML_PAGE_DATABASE_CONNECT: 'database.html',
-	HTML_PAGE_SENSOR: 'sensor.html',
+	HTML_PAGE_DATABASE_LIST: 'dataBaseList.html',
+
+	HTML_PAGE_SENSOR : { 
+		INDEX: 'sensor.html',
+		LIST: 'sensorList.html',
+		INFO: 'sensorInfo.html',
+	},
+
 	HTML_PAGE_MACHINE: 'machine.html',
 	HTML_PAGE_COUNTER: 'counter.html',
 	HTML_PAGE_CONTROLPARAMETER: 'controlParameters.html',
@@ -550,6 +579,7 @@ var CodeZComponents = {
 						});
 
 						var hrefObj = this.addHref({
+							href : 'javascript:;',
 							value: " &nbsp;" + node.text,
 							name: "navTitle",
 							data: node.target
@@ -715,8 +745,11 @@ var CodeZComponents = {
 		this.configureListener(function() {
 			$("a[name='navTitle']").on("click", function() {
 				navSrc($(this).data("bindData"));
-				$(".active").removeClass("active");
-				$(this).parent().attr("class", "active");
+				var activedDom = $('#main-nav').find(".active");
+				if (activedDom) {
+					activedDom.removeClass("active");
+				}
+				$(this).attr("class", "active");
 			});
 
 			$("a[name='toggled']").on("click", function() {

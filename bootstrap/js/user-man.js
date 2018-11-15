@@ -61,6 +61,7 @@ function userList() {
 
 function changeToUserDetailInfo(data) {
 	var ulDom = $(window.parent.document).find('.breadcrumb');
+	ulDom.show();
 	BreadMenu.updateBread(ulDom, data);
 	directHref(data.href);
 }
@@ -218,6 +219,8 @@ var UserMan = {
 	}
 	*/
 	configureUserList: function() {
+		var ulDom = $(window.parent.document).find('.breadcrumb');
+		ulDom.show();
 		CodeZComponents.postRequest({
 			action: CodeZ.ACTION_USR_LIST
 		}, function(data) {
@@ -226,7 +229,6 @@ var UserMan = {
 				UserMan.showUserList(dataRow);
 			}
 		});
-
 	},
 
 	showUserList: function(dataList) {

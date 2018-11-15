@@ -1,319 +1,442 @@
-// 用户安全管理
+// 软件参数管理
 
-$("#toolbar").click(function() {
-  changeToUserDetailInfo({
-    tag: CodeZ.TAG_USER_ADD,
-    href: CodeZ.HTML_PAGE_USER_ADD,
-    title: '新增用户',
-    actived : true,
-  });
+var breadMenuTag = {
+	sensorIndex : {
+		tag : CodeZ.TAG_SENSOR.INDEX,
+		href : CodeZ.HTML_PAGE_SENSOR.INDEX,
+		title : '传感器管理',
+		actived : true,
+	},
+	sensorList : {
+		tag : CodeZ.TAG_SENSOR.LIST,
+		href : CodeZ.HTML_PAGE_SENSOR.LIST,
+		title : '添加配置',
+		actived : true,
+	},
+	sensorAdd : {
+		tag : CodeZ.TAG_SENSOR.ADD,
+		href : CodeZ.HTML_PAGE_SENSOR.ADD,
+		title : '传感器注册',
+		actived : true,
+	},
+	upateSensor : {
+		tag : CodeZ.TAG_SENSOR.EDIT,
+		href : CodeZ.HTML_PAGE_SENSOR.INFO,
+		title : '传感器配置',
+		actived : true,
+	},
+	infoSensor : {
+		tag : CodeZ.TAG_SENSOR.INFO,
+		href : CodeZ.HTML_PAGE_SENSOR.INFO,
+		title : '传感器信息',
+		actived : true,
+	},
+
+	dataBaseList : {
+		tag : CodeZ.TAG_DATABASE_LIST,
+		href : CodeZ.HTML_PAGE_DATABASE_CONNECT,
+		title : '数据库列表',
+		actived : true,
+	},
+
+	addDataBase : {
+		tag : CodeZ.TAG_DATABASE_ADD,
+		href : CodeZ.HTML_PAGE_DATABASE_CONNECT,
+		title : '新增数据库',
+		actived : true,
+	},
+
+	updateDataBase : {
+		tag : CodeZ.TAG_DATABASE_EDIT,
+		href : CodeZ.HTML_PAGE_CTRL_CFG_INFO,
+		title : '更改数据库',
+		actived : true,
+	},
+
+	infoDataBase : {
+		tag : CodeZ.TAG_DATABASE_INFO,
+		href : CodeZ.HTML_PAGE_CTRL_CFG_INFO,
+		title : '数据库详情',
+		actived : true,
+	},
+}
+
+/*
+* ================
+* 传感器管理
+* ================
+*/
+// 传感器首页跳转
+function sensorIndexPage() {
+	$.session.remove('sensorData');
+	var frameDom = $(window.top.document).find('#contentFrame');
+	frameDom.attr('src', CodeZ.HTML_PAGE_SENSOR.INDEX);
+}
+
+// 传感器列表
+function sensorList() {
+	BreadMenu.init('breadNav', [breadMenuTag.sensorList]);
+	addIframe('#contentFrame', CodeZ.HTML_PAGE_SENSOR.LIST);
+}
+
+// 新增传感器
+function addSensor(newSensorData, callback) {
+	updateSensor(CodeZ.ACTION_SENSOR.ADD, newSensorData, '新增成功', fn);
+}
+
+// 更新传感器信息
+function updateSensor(tag, updatedData, successTip = '更新成功', callback) {
+	CodeZComponents.postRequest({
+		action : tag,
+		sensor : JSON.stringify(updatedData)
+	},function(data){
+		if(data.success) {
+			CodeZComponents.showSuccessTip({
+				title: '提示',
+				text: successTip,
+			});
+			if(callback) {
+				callback(data);
+			}
+		} else {
+			CodeZComponents.showErrorTip({
+				title: '提示',
+				text: data.error,
+			});
+		}
+	});
+}
+
+// 断开或者启用传感器
+function connectedSensor(connectedData, connect = false, fn) {
+	updateSensor(CodeZ.ACTION_SENSOR.EDIT, connectedData, '启用成功', fn);
+}
+
+// 新增传感器按钮响应
+$("#addSensor").click(function() {
+	$.session.remove('sensorData');
+	transferToNextPage(breadMenuTag.sensorAdd);
 });
 
-// 修改用户
-function editUser(data) {
-  changeToUserDetailInfo({
-      tag: CodeZ.TAG_USER_EDIT,
-      href: CodeZ.HTML_PAGE_USER_EDIT,
-      title: '修改用户',
-      actived : true,
-      bindData : data
-    });
+// 进入到详细页面响应方法
+function getDetailSensorInfo(data) {
+	var bindData = breadMenuTag.updateSensor;
+	bindData.bindData = data;
+	$.session.set('sensorData', JSON.stringify(bindData));
+	transferToNextPage(bindData);
 }
 
-function userList() {
-  changeToUserDetailInfo({
-    tag : CodeZ.TAG_USER_LIST,
-    href : CodeZ.HTML_PAGE_USER_LIST,
-    title : '用户列表',
-    actived : true,
-  });
+// 添加传感器参数显示
+function configureSensorInfoData() {
+	var dataObj;
+	var cacheData = $.session.get('sensorData');
+	if(cacheData != undefined || cacheData != null) {
+		dataObj = JSON.parse(cacheData);
+	}
+	if(dataObj != undefined) {
+		if(dataObj.tag != CodeZ.TAG_SENSOR.ADD) {
+			// 显示数据
+		}
+		return;
+	}
 }
 
-function changeToUserDetailInfo(data) {
-  var ulDom = $(window.parent.document).find('.breadcrumb');
-  BreadMenu.updateBread(ulDom, data);
-  // BreadMenu.updateBread($('.breadcrumb'), data);
-  directHref(data.href);
+
+/*
+* ================
+* 面包屑导航跳转方法
+* ================
+*/
+// 跳转到下一级
+function transferToNextPage(data) {
+	var ulDom = $(window.parent.document).find('.breadcrumb');
+	ulDom.show();
+	BreadMenu.updateBread(ulDom, data);
+	directHref(data.href);
 }
 
-function editData() {
-  // var liDom = $(window.parent.document).find('li .active');
-  // if(liDom.constructor.data != undefined) {
-  //   if (liDom.constructor.data.tag == CodeZ.TAG_USER_EDIT) {
-  //     var userObj = liDom.constructor.data.bindData;
-  //     $('#userName').val(userObj.userName);
-  //     $('#account').val(userObj.account);
-  //     $('#password').val(userObj.password);
-  //     $('#userRole').val(userObj.role.roleId);
-  //   }
-  //   return;
-  // }
-
-  $('#userName').val('userName');
-  $('#userAccount').val('admin');
-  $('#userpassword').val('default123');
-  $('#dep').val('部门');
-  $('#userRole').val('0');
-}
-
-function check(){
-	addIframe($('#userFrame'),$(event.target).constructor.data.href)
+// 面包屑导航选择跳转
+function breadItemTransfer() {
+	addIframe($('#contentFrame'), $(event.target).constructor.data.href)
 	BreadMenu.updateBread($(event.target).parent().parent(), $(event.target).constructor.data);
 }
 
-// 面包屑导航栏
-var BreadMenu = {
-	addItem: function(data) {
-		var item = CodeZComponents.addLi({
-			css: 'userNav',
-			data: data,
-		});
-		item.constructor.data = data;
 
-		if(data.actived) {
-			item.attr('class', 'active');
-			item.html(data.title);
-		} else {
-			var href = CodeZComponents.addHref({
-				css: 'breadItem',
-				href : 'javascript:;',
-				value: data.title,
-			});
-			href.attr('onClick', 'check()');
-			item.append(href);
-		}
 
-		return item;
+/*
+* ================
+* 压铸机管理
+* ================
+*/
+var MachineMan = {
+	/* 
+	* ========
+	* 传感器配置
+	* ========
+	*/
+	showModelSensorInfo : function() {
+		configureSensorInfoData();
 	},
-	/*
-	 * {
-	 *  tag : '',
-	 *  href : '',
-	 *  title : ''
-	 * }
-	 */
-	init: function(parentDomId, data) {
-		var parentDom = $('#' + parentDomId);
-		var breadMenu = $('<ul class="breadcrumb" style="background-color: #FFFFFF; padding-left: 15px;"></ul>');
-		data.forEach(function(i, index) {
-			var actived = false;
-			if(index == parseInt(data.length - 1)) {
-				actived = true;
+
+	// 传感器表格展示
+	configureSensorListData : function() {
+		/*
+		var ulDom = $(window.parent.document).find('.breadcrumb');
+		ulDom.hide();
+		CodeZComponents.postRequest({
+			action: CodeZ.ACTION_SENSOR.LIST,
+		}, function(data) {
+			if(data.success) {
+				var dataRow = data.data;
+				MachineMan.showControlSensorList(dataRow);
 			}
-			i.actived = actived;
-			breadMenu.append(BreadMenu.addItem(i));
 		});
+		*/
+		
 
-		parentDom.append(breadMenu);
+		MachineMan.showControlSensorList({});
 	},
-
-	updateBread: function(ulDom, data) {
-		var childs = ulDom.children();
-		var existed = false;
-		if(childs.length > 1) {
-			childs.each(function(args){
-				var liDom = $(this);
-				var bindData = liDom.constructor.data;
-				if(bindData.tag == data.tag) {
-					liDom.empty();
-					liDom.attr('class', 'active');
-					liDom.html(bindData.title);
-					existed = true;
-					liDom.nextAll().remove();
-					return false;
-				}
-			});
-		} else {
-			if(childs.constructor.data.tag == data.tag) {
-				childs.empty();
-				childs.attr('class', 'active');
-				childs.html(childs.constructor.data.title);
-				existed = true;
-				childs.nextAll().remove();
-			}
-		}
-
-		if(!existed) {
-			var lastActiveDom = ulDom.find('.active');
-			var text = lastActiveDom.html();
-			$(lastActiveDom).removeClass('active');
-			lastActiveDom.empty();
-			var hrefDom = CodeZComponents.addHref({
-				css: 'breadItem',
-				value: text,
-				href : 'javascript:;',
-			})
-			hrefDom.attr('onClick', 'check()');
-			$(lastActiveDom).append(hrefDom);
-			
-			ulDom.append(this.addItem(data));
-			
-		}
-	},
-}
-
-
-
-
-var UserMan = {
-  // 注销用户
-	banObject: function(data, fn) {
-		BootstrapDialog.show({
-			title: BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING],
-			message: '是否确认注销该用户',
-			type: BootstrapDialog.TYPE_PRIMARY,
-			cssClass: "login-dialog",
-			data: {'bindData' : data},
-			buttons: [{
-				label: '确定',
-				action: function(dialog) {
-					dialog.close();
-          CodeZComponents.showSuccessTip({title : '提示',text : '注销成功'});
-          var user = dialog.getData('bindData');
-          user.deleted = 1;
-          if (fn) {
-            fn(user);
-          }
-				}
-			}, {
-				label: '取消',
-				action: function(dialog) {
-					dialog.close();
-				}
-			}]
-		});
-		// BootstrapDialog.confirm("确认提示框");
-		// BootstrapDialog.warning("警告框");
-		// BootstrapDialog.danger("危险框");
-	},
-
-  // 激活用户
-  activeObject: function(data, fn) {
-    CodeZComponents.showSuccessTip({title : '提示',text : '激活成功'});
-    var user = data;
-    user.deleted = 0;
-    if (fn) {
-      fn(user);
-    }
-  },
-
-  /*
-  {
-    uri : ,
-    params : {},
-    rowStyle : fn,
-    column : [],
-    pageSize : ,
-    localData : [],
-    showSearch : true,
-    refresh : true,
-    currentPage : 1,
-    showPager : true
-  }
-  */
-	configureUserList: function() {
-    var dataRow = new Array();
-    for (var i = 0; i < parseInt(Math.random(1, 1000) * 1000); i++) {
-      var user = new User();
-      user.userId = parseInt(Math.random(1, 1000) * 1000);
-      user.userName = 'admin';
-      user.account = 'admin' + parseInt(Math.random(100, 1000) * 100) + '';
-      user.password = 'password123';
-      user.dep = '部门' + Math.random(100, 1000) * 100 + '';
-      user.deleted = parseInt(Math.random(10, 100) * 100 % 2);
-      var role = new Role();
-      role.roleId = parseInt(Math.random(10, 100) * 100 / 2);
-      role.roleName = role.roleId ? '系统管理员' : '普通用户';
-      role.description = '角色描述';
-      role.deleted = parseInt(Math.random(10, 100) * 100 % 2);
-      user.role = role;
-
-      dataRow.push(user);
-    }
-
-		var datas = {
-			queryParams: function(params) {
-				return {action : 'usrList'};
+	
+	showControlSensorList: function(dataList) {
+		var parameters = {
+			pageSize : 10,
+			uri : undefined,
+			loadSuccessFn : undefined,
+			loadFailedFn : undefined,
+			refreshFn : function() {
+				MachineMan.configureSensorListData();
 			},
-			// uri: '/machineControlSys/service/Routers.php',
-			parentDom: $("#table-container"),
-			pageSize: 8,
-			refresh: function(params) {
-				UserMan.configureUserList();
-			},
-			rowStyle: function(row, index) {
-				if(row == undefined){
-					return {};
-				}
-				if(row.deleted == 1 || row.deleted == "1") {
-          return {
-            classes: "danger"
-          };
-				}
-				return {};
-			},
-			column: [{
-				field: "userId",
-				title: "用户ID",
-				width: 1000,
-			}, {
-				field: "account",
-				title: "账号",
-				width: 1000
-			}, {
-				field: "userName",
-				title: "用户",
-				width: 1000
-			}, {
-				field: "deleted",
+			column : [{
+				field : 'sensorName',
+				title: "名称",
+				width: '25%',
+				valign : 'middle',
+			},{
+				field : 'sensorType',
+				title: "型号",
+				width: '10%',
+				valign : 'middle',
+			},{
+				field : 'sensorNO1',
+				title: "类型",
+				width: '10%',
+				valign : 'middle',
+			},{
+				field : 'sensorPort',
+				title: "端口号",
+				valign : 'middle',
+				width: '10%',
+			},{
+				field : 'address',
+				title: "安装位置",
+				valign : 'middle',
+				width: '20%',
+			},{
+				field : 'sensorNO',
+				title: "地址编号",
+				width: '10%',
+				valign : 'middle',
+			},{
+				field : 'updateTime',
+				title: "更新时间",
+				width: '15%',
+				valign : 'middle',
+			},{
+				field : 'deleted',
 				title: "状态",
-				align: "center",
-				sortable: true,
+				valign : 'middle',
+				width : '10%',
 				formatter: function(value, row, index) {
 					if(value == 1 || value == '1') {
-            return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"未激活\"><span class= \"fa fa-ban fa-fw text-warning\"></span></a>";
-					} else {
-            return "<a href=\"#\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"已激活\"><span class= \"fa fa-check fa-fw text-success\"></span></a>";
+
+						return '未注册';
 					}
+
+					return '注册';
 				},
-				width: 1000
-			}, {
-				field: "action",
+			},{
+				field : 'action',
 				title: "操作",
-				width: 500,
+				valign : 'middle',
+				align : 'center',
+				width : '20%',
 				formatter: function(value, row, index) {
-					if(row.deleted == "0" || row.deleted == 0) {
-						return "<div class=\"row\">" +
-							"<div class=\"col-md-12\">" +
-							"<a href=\"#\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-pencil fa-fw\"></span></a>" +
-							"<a href=\"#\" class=\"tooltip-show cancel\" data-toggle=\"tooltip\" title=\"注销\"><span class=\"fa fa-user-times text-danger fa-fw\"></span></a>" +
-							"</div></div>";
+					if(row.deleted == 1 || row.deleted == '1') {
+							return "<div class=\"row\">" +
+								"<div class=\"col-sm-8 col-sm-offset-2\">" +
+								"<a href=\"javascript:;\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-edit fa-fw\"></span></a>" +
+								"<a href=\"javascript:;\" class=\"tooltip-show connect\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"注册\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
+								"</div></div>";
 					}
 					return "<div class=\"row\">" +
-						"<div class=\"col-md-12\">" +
-						"<a href=\"#\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-pencil fa-fw\"></span></a>" +
-						"<a href=\"#\" class=\"tooltip-show activited\" data-toggle=\"tooltip\" title=\"启用\"><span class=\"fa fa-circle-o-notch fa-fw text-success\"></span></a>" +
+						"<div class=\"col-sm-8 col-sm-offset-2\">" +
+						"<a href=\"javascript:;\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-edit fa-fw\"></span></a>" +
+						"<a href=\"javascript:;\" class=\"tooltip-show disconnect\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"注销\"><span class=\"fa fa-unlink text-danger fa-fw\"></span></a>" +
 						"</div></div>";
 				},
 				events: {
-					"click .edit": function(e, value, row, index) {
-						editUser(row);
+					'click .edit': function(e, value, row, index) {
+						updateData(row);
 					},
-					"click .cancel": function(e, value, row, index) {
-						UserMan.banObject(row, function(data){
-              datas.parentDom.bootstrapTable('updateRow', {index : index, row : data});
-            });
+					"click .disconnect": function(e, value, row, index) {
+						connectedSensor(row, true, function(data){
+							$("#table-container").bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+						});
 					},
-					"click .activited": function(e, value, row, index) {
-            UserMan.activeObject(row, function(data) {
-              datas.parentDom.bootstrapTable('updateRow', {index : index, row : data});
-            })
+					"click .connect": function(e, value, row, index) {
+						connectedSensor(row, false, function(data){
+							$("#table-container").bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+						});
 					}
-				}
+				},
 			}],
-      datas : dataRow,
+			dataRows : dataList,
+			rowStyleFn : function(row, index) {
+				if (row.deleted == 1 || row.deleted == '1') {
+					return {css :{'font-size' : '10px', 'height' : '40px'}, classes : 'warning'};
+				}
+				return {css :{'font-size' : '10px', 'height' : '40px'}};
+			},
+		};
+		this.tablePluginsConfigure(parameters);
+	},
+
+	/* 
+	* ==========
+	* 数据库连接
+	* ==========
+	*/
+
+	configureDataBaseList : function() {
+		/*
+		var ulDom = $(window.parent.document).find('.breadcrumb');
+		ulDom.hide();
+		CodeZComponents.postRequest({
+			action: CodeZ.ACTION_DATA_BASE_LIST,
+		}, function(data) {
+			if(data.success) {
+				var dataRow = data.data;
+				SoftMan.showDataBaseList(dataRow);
+			}
+		});
+		*/
+
+		//e .g
+		this.showDataBaseList({});
+	},
+
+	showDataBaseList : function(dataList) {
+		var parameters = {
+			pageSize : 10,
+			uri : undefined,
+			loadSuccessFn : undefined,
+			loadFailedFn : undefined,
+			refreshFn : function() {
+				SoftMan.configureDataBaseList();
+			},
+			column : [{
+				field : 'dataBaseName',
+				title: "数据库名称",
+				width: 1000,
+				valign : 'middle',
+			},{
+				field : 'connectable',
+				title: "状态",
+				valign : 'middle',
+				align : 'center',
+				width: 1000,
+				formatter: function(value, row, index) {
+					if(value == 1 || value == '1') {
+
+						return '已打开';
+					}
+
+					return '已关闭';
+				},
+			},{
+				field : 'deleted',
+				title: "注销",
+				valign : 'middle',
+				align : 'center',
+				width : 1000,
+				formatter: function(value, row, index) {
+					if(value == 1 || value == '1') {
+
+						return '已注销';
+					}
+
+					return '正常';
+				},
+			},{
+				field : 'action',
+				title: "操作",
+				valign : 'middle',
+				align : 'center',
+				width : 1000,
+				formatter: function(value, row, index) {
+					if(row.deleted == 1 || row.deleted == '1') {
+							return "<div class=\"row\">" +
+								"<div class=\"col-sm-8 col-sm-offset-2\">" +
+								"<a href=\"javascript:;\" class=\"tooltip-show open\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"打开\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
+								"</div></div>";
+					}
+					return "<div class=\"row\">" +
+						"<div class=\"col-sm-8 col-sm-offset-2\">" +
+						"<a href=\"javascript:;\" class=\"tooltip-show close\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"断开\"><span class=\"fa fa-unlink text-danger fa-fw\"></span></a>" +
+						"</div></div>";
+				},
+				events: {
+					"click .close": function(e, value, row, index) {
+						$("#table-container").bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+					},
+					"click .open": function(e, value, row, index) {
+						driveConnected(row, true, function(data){
+						$("#table-container").bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							})
+						});
+					}
+				},
+			}],
+			dataRows : dataList,
+			rowStyleFn : function(row, index) {
+				if (row.deleted == 1 || row.deleted == '1') {
+					return {css :{'font-size' : '10px', 'height' : '40px'}, classes : 'warning'};
+				}
+				return {css :{'font-size' : '10px', 'height' : '40px'}};
+			},
+		};
+		this.tablePluginsConfigure(parameters);
+	},
+
+	/*
+	* ================================
+	* baseComponents
+	* ================================
+	*/
+	tablePluginsConfigure : function(parameters) {
+		var datas = {
+			queryParams: parameters.queryFn,
+			uri : parameters.uri,
+			parentDom: $("#table-container"),
+			pageSize: parameters.pageSize,
+			refresh: parameters.refreshFn,
+			rowStyle: parameters.rowStyleFn,
+			column: parameters.column,
+      		datas : parameters.dataRows,
 		};
 
-		CodeZComponents.tablePlugins(datas.parentDom, datas.uri, datas.queryParams, datas.rowStyle, datas.showSearch, datas.refresh, datas.currentPage, datas.pageSize, datas.showPager, datas.column, datas.datas);
-	},
+		CodeZComponents.tablePlugins(datas.parentDom, datas.uri, datas.queryParams, datas.rowStyle, datas.showSearch, datas.refresh, datas.currentPage, datas.pageSize, datas.showPager, datas.column, datas.datas, datas.loadSuccessFn, datas.loadFailedFn, parameters.onClick, parameters.onCheck, parameters.onUncheck, null, parameters.showDetail, parameters.detailFormatter);
+	}
 }
+
