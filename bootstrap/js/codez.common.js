@@ -211,7 +211,8 @@ function goIndexPage() {
 * }
 */
 function goTablePage() {
-	$('.panle-title').html('&nbsp;<h4>' + categoryTag.INDEXTITLE + '</h4></div>');
+	$('#panelTitle').html('&nbsp;<h4>' + categoryTag.INDEXTITLE + '</h4></div>');
+	console.info($('#panelTitle'));
 	BreadMenu.init('breadNav', [breadMenuTag.tableBread]);
 	addIframe('#contentFrame', urls.LIST);
 }
