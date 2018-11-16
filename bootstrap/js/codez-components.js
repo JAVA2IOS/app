@@ -78,9 +78,9 @@ var CodeZ = {
 	HTML_PAGE_DATABASE_LIST: 'dataBaseList.html',
 
 	HTML_PAGE_SENSOR : { 
-		INDEX: 'sensor.html',
-		LIST: 'sensorList.html',
-		INFO: 'sensorInfo.html',
+		INDEX: 'dataIndex.html',
+		LIST: 'dataList.html',
+		INFO: 'dataInfo.html',
 	},
 	HTML_PAGE_MACHINE : {
 		INDEX : 'machine.html',
