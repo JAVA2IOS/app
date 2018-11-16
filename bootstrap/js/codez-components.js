@@ -86,7 +86,7 @@ var CodeZ = {
 		INDEX : 'machine.html',
 		LIST: 'machineList.html',
 		INFO: 'machineInfo.html',
-	}
+	},
 
 	HTML_PAGE_COUNTER: 'counter.html',
 	HTML_PAGE_CONTROLPARAMETER: 'controlParameters.html',
@@ -123,7 +123,7 @@ var CodeZ = {
 		DATABASE_CONNECT: 'database.html',
 	},
 	URI_MACHINEMAN: {
-		SENSOR: 'sensor.html',
+		SENSOR: 'dataIndex.html',
 		MACHINE: 'machine.html',
 		COUNTER: 'counter.html',
 	},
