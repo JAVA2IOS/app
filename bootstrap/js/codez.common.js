@@ -1,52 +1,51 @@
 var sessionCacheKeyTag = $.session.get('cacheKey');
-var categoryTag = $.session.get('tag');
-var actions = $.session.get('action');
-var urls = $.session.get('page');
+var categoryTag = JSON.parse($.session.get('tag'));
+var actions = JSON.parse($.session.get('action'));
+var urls = JSON.parse($.session.get('page'));
 
 var breadMenuTag = {
 
-	indexBread : {
-		tag : categoryTag.INDEX,
-		href : urls.INDEX,
-		title : categoryTag.INDEXTITLE,
-		actived : true,
+	indexBread: {
+		tag: categoryTag.INDEX,
+		href: urls.INDEX,
+		title: categoryTag.INDEXTITLE,
+		actived: true,
 	},
 
-	tableBread : {
-		tag : categoryTag.LIST,
-		href : urls.LIST,
-		title : categoryTag.LISTTITLE,
-		actived : true,
+	tableBread: {
+		tag: categoryTag.LIST,
+		href: urls.LIST,
+		title: categoryTag.LISTTITLE,
+		actived: true,
 	},
 
-	newBread : {
-		tag : categoryTag.ADD,
-		href : urls.ADD,
-		title : categoryTag.ADDTITLE,
-		actived : true,
+	newBread: {
+		tag: categoryTag.ADD,
+		href: urls.INFO,
+		title: categoryTag.ADDTITLE,
+		actived: true,
 	},
 
-	editBread : {
-		tag : categoryTag.EDIT,
-		href : urls.EDIT,
-		title : categoryTag.EDITTITLE,
-		actived : true,
+	editBread: {
+		tag: categoryTag.EDIT,
+		href: urls.INFO,
+		title: categoryTag.EDITTITLE,
+		actived: true,
 	},
 
-	infoBread : {
-		tag : categoryTag.INFO,
-		href : urls.INFO,
-		title : categoryTag.INFOTITLE,
-		actived : true,
+	infoBread: {
+		tag: categoryTag.INFO,
+		href: urls.INFO,
+		title: categoryTag.INFOTITLE,
+		actived: true,
 	}
 }
 
-
 /*
-* ================
-* 传感器
-* ================
-*/
+ * ================
+ * 传感器
+ * ================
+ */
 
 // 断开或者启用传感器
 function connectedSensor(connectedData, connect = false, fn) {
@@ -56,46 +55,46 @@ function connectedSensor(connectedData, connect = false, fn) {
 // 配置列表参数信息
 function configureSensorListStyle() {
 	var tableParam = {
-		column : [{
-			field : 'sensorName',
+		column: [{
+			field: 'sensorName',
 			title: "名称",
 			width: '25%',
-			valign : 'middle',
-		},{
-			field : 'sensorType',
+			valign: 'middle',
+		}, {
+			field: 'sensorType',
 			title: "型号",
 			width: '10%',
-			valign : 'middle',
-		},{
-			field : 'sensorNO1',
+			valign: 'middle',
+		}, {
+			field: 'sensorModel',
 			title: "类型",
 			width: '10%',
-			valign : 'middle',
-		},{
-			field : 'sensorPort',
+			valign: 'middle',
+		}, {
+			field: 'sensorPort',
 			title: "端口号",
-			valign : 'middle',
+			valign: 'middle',
 			width: '10%',
-		},{
-			field : 'address',
+		}, {
+			field: 'location',
 			title: "安装位置",
-			valign : 'middle',
+			valign: 'middle',
 			width: '20%',
-		},{
-			field : 'sensorNO',
+		}, {
+			field: 'address',
 			title: "地址编号",
 			width: '10%',
-			valign : 'middle',
-		},{
-			field : 'updateTime',
+			valign: 'middle',
+		}, {
+			field: 'updateTime',
 			title: "更新时间",
 			width: '15%',
-			valign : 'middle',
-		},{
-			field : 'deleted',
+			valign: 'middle',
+		}, {
+			field: 'deleted',
 			title: "状态",
-			valign : 'middle',
-			width : '10%',
+			valign: 'middle',
+			width: '10%',
 			formatter: function(value, row, index) {
 				if(value == 1 || value == '1') {
 
@@ -104,19 +103,19 @@ function configureSensorListStyle() {
 
 				return '注册';
 			},
-		},{
-			field : 'action',
+		}, {
+			field: 'action',
 			title: "操作",
-			valign : 'middle',
-			align : 'center',
-			width : '20%',
+			valign: 'middle',
+			align: 'center',
+			width: '20%',
 			formatter: function(value, row, index) {
 				if(row.deleted == 1 || row.deleted == '1') {
-						return "<div class=\"row\">" +
-							"<div class=\"col-sm-8 col-sm-offset-2\">" +
-							"<a href=\"javascript:;\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-edit fa-fw\"></span></a>" +
-							"<a href=\"javascript:;\" class=\"tooltip-show connect\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"注册\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
-							"</div></div>";
+					return "<div class=\"row\">" +
+						"<div class=\"col-sm-8 col-sm-offset-2\">" +
+						"<a href=\"javascript:;\" class=\"tooltip-show edit\" data-toggle=\"tooltip\" title=\"修改\"><span class=\"fa fa-edit fa-fw\"></span></a>" +
+						"<a href=\"javascript:;\" class=\"tooltip-show connect\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"注册\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
+						"</div></div>";
 				}
 				return "<div class=\"row\">" +
 					"<div class=\"col-sm-8 col-sm-offset-2\">" +
@@ -129,7 +128,7 @@ function configureSensorListStyle() {
 					getDetailItemInfo(row);
 				},
 				"click .disconnect": function(e, value, row, index) {
-					connectedSensor(row, true, function(data){
+					connectedSensor(row, true, function(data) {
 						$("#table-container").bootstrapTable('updateRow', {
 							index: index,
 							row: data
@@ -137,7 +136,7 @@ function configureSensorListStyle() {
 					});
 				},
 				"click .connect": function(e, value, row, index) {
-					connectedSensor(row, false, function(data){
+					connectedSensor(row, false, function(data) {
 						$("#table-container").bootstrapTable('updateRow', {
 							index: index,
 							row: data
@@ -146,11 +145,22 @@ function configureSensorListStyle() {
 				}
 			},
 		}],
-		rowStyle : function(row, index) {
-			if (row.deleted == 1 || row.deleted == '1') {
-				return {css :{'font-size' : '10px', 'height' : '40px'}, classes : 'warning'};
+		rowStyle: function(row, index) {
+			if(row.deleted == 1 || row.deleted == '1') {
+				return {
+					css: {
+						'font-size': '10px',
+						'height': '40px'
+					},
+					classes: 'warning'
+				};
 			}
-			return {css :{'font-size' : '10px', 'height' : '40px'}};
+			return {
+				css: {
+					'font-size': '10px',
+					'height': '40px'
+				}
+			};
 		},
 	};
 
@@ -162,11 +172,13 @@ function sensorUIComponents() {
 	var title = ['用户名', '用户名', '用户名'];
 	var identifiers = ['uerName', 'uerName', 'uerName'];
 	var inputDoms;
-	identifiers.foreach(function(data, index) {
-		inputDoms += '<div class="form-group"><label for="'+ data +'" class="col-sm-2 control-label text-center">' + title[index] + '</label><div class="col-sm-9">'+
-		'<input required="required" type="text" class="form-control dialog-form" id="'+ data +'" placeholder="请输入' + title[index] + '">'+
-		'</div></div>';
-	});
+	for (i = 0; i < identifiers.length; i ++) {
+		var data = identifiers[i];
+		var itemTitle = title[i];
+		inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
+			'<input required="required" type="text" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
+			'</div></div>';
+	}
 
 	return inputDoms;
 }
@@ -183,21 +195,17 @@ function updateSensorData(updatedData) {
 	return updatedData;
 }
 
-
-
-
-
 /*
-* ================
-* 通用
-* ================
-*/
+ * ================
+ * 通用
+ * ================
+ */
 /* 跳转首页
-* {
-*	sessionKey : 需要移除的session数据的键值,
-*	uri : 跳转的地址
-* }
-*/
+ * {
+ *	sessionKey : 需要移除的session数据的键值,
+ *	uri : 跳转的地址
+ * }
+ */
 function goIndexPage() {
 	$.session.remove(sessionCacheKeyTag);
 	var frameDom = $(window.top.document).find('#contentFrame');
@@ -205,13 +213,13 @@ function goIndexPage() {
 }
 
 /* 表格页面跳转
-* {
-*	breadItem : 面包屑数据,
-*	uri : 跳转的地址
-* }
-*/
+ * {
+ *	breadItem : 面包屑数据,
+ *	uri : 跳转的地址
+ * }
+ */
 function goTablePage() {
-	$('#panelTitle').html('&nbsp;<h4>' + categoryTag.INDEXTITLE + '</h4></div>');
+	$('#panelTitle').html('&nbsp;<h4>' + categoryTag.INDEXTILE + '</h4></div>');
 	console.info($('#panelTitle'));
 	BreadMenu.init('breadNav', [breadMenuTag.tableBread]);
 	addIframe('#contentFrame', urls.LIST);
@@ -231,14 +239,16 @@ function addNewData(action, newSensorData, callback) {
 // 进入到详细页面响应方法
 function getDetailItemInfo(data) {
 	var bindData = breadMenuTag.updateBread;
-	bindData.bindData = data;
+	if(data) {
+		bindData.bindData = data;
+	}
 	$.session.set(sessionCacheKeyTag, JSON.stringify(bindData));
 	transferToNextPage(bindData);
 }
 
 // 添加详情页面UI
 function configureUIComponents() {
-	var categoryStr = cacheKey.substr(0, cacheKey.length - '_key'.length);
+	var categoryStr = sessionCacheKeyTag.substr(0, sessionCacheKeyTag.length - '_key'.length);
 	var components;
 	switch(categoryStr) {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
@@ -249,7 +259,7 @@ function configureUIComponents() {
 		case CodeZ.NAV_MACHINEMAN.SENSOR:
 			//传感器处理
 			components = sensorUIComponents();
-		break;
+			break;
 		case CodeZ.NAV_MACHINEMAN.MACHINE:
 
 			break;
@@ -279,7 +289,6 @@ function configureUIComponents() {
 	$('.form-horizontal').prepend(components);
 }
 
-
 // 添加数据参数显示
 function configureItemInfoData() {
 	var dataObj;
@@ -288,44 +297,49 @@ function configureItemInfoData() {
 		dataObj = JSON.parse(cacheData);
 	}
 	if(dataObj != undefined) {
-		var categoryStr = cacheKey.substr(0, cacheKey.length - '_key'.length);
+		var categoryStr = sessionCacheKeyTag.substr(0, sessionCacheKeyTag.length - '_key'.length);
 		switch(categoryStr) {
-				case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
+			case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
 
-				case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
+			case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
 
-					break;
-				case CodeZ.NAV_MACHINEMAN.SENSOR:
-					//传感器处理
-					confgiureSensorDataInfo(dataObj);
 				break;
-				case CodeZ.NAV_MACHINEMAN.MACHINE:
+			case CodeZ.NAV_MACHINEMAN.SENSOR:
+				//传感器处理
+				confgiureSensorDataInfo(dataObj);
+				break;
+			case CodeZ.NAV_MACHINEMAN.MACHINE:
 
-					break;
-				case CodeZ.NAV_MACHINEMAN.COUNTER:
+				break;
+			case CodeZ.NAV_MACHINEMAN.COUNTER:
 
-					break;
-				case CodeZ.NAV_CONTROLPARAMETER:
+				break;
+			case CodeZ.NAV_CONTROLPARAMETER:
 
-					break;
-				case CodeZ.NAV_AUTO_CONTROL:
+				break;
+			case CodeZ.NAV_AUTO_CONTROL:
 
-					break;
-				case CodeZ.NAV_CONTROL_DATA:
+				break;
+			case CodeZ.NAV_CONTROL_DATA:
 
-					break;
-				case CodeZ.NAV_SECURITY_MAN.USERMAN:
+				break;
+			case CodeZ.NAV_SECURITY_MAN.USERMAN:
 
-					break;
-				case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
+				break;
+			case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
 
-					break;
-				default:
-					break;
+				break;
+			default:
+				break;
 		}
 	}
 }
 
+// 取消按钮响应
+$("#addNewItem").click(function() {
+	$.session.remove(sessionCacheKeyTag);
+	transferToNextPage(breadMenuTag.newBread);
+});
 
 /* ======================= 详情页面 "确认" , "取消" 按钮响应============================ */
 // 取消按钮响应
@@ -355,7 +369,7 @@ $("#dataSubmit").click(function() {
 		case CodeZ.NAV_MACHINEMAN.SENSOR:
 			//传感器处理
 			updateSensorData(dataObj);
-		break;
+			break;
 		case CodeZ.NAV_MACHINEMAN.MACHINE:
 
 			break;
@@ -383,16 +397,15 @@ $("#dataSubmit").click(function() {
 
 	updateSingleData(actionParameters, dataObj, infoTip, function(data) {
 		$.session.remove(sessionCacheKeyTag);
-			goIndexPage();
+		goIndexPage();
 	});
 });
 
-
 /*
-* ================
-* 面包屑导航跳转方法
-* ================
-*/
+ * ================
+ * 面包屑导航跳转方法
+ * ================
+ */
 // 跳转到下一级
 function transferToNextPage(data) {
 	var ulDom = $(window.parent.document).find('.breadcrumb');
@@ -410,9 +423,9 @@ function breadItemTransfer() {
 // 更新数据
 function updateSingleData(tag, updatedData, successTip = '更新成功', callback) {
 	CodeZComponents.postRequest({
-		action : tag,
-		data : JSON.stringify(updatedData)
-	},function(data){
+		action: tag,
+		data: JSON.stringify(updatedData)
+	}, function(data) {
 		if(data.success) {
 			CodeZComponents.showSuccessTip({
 				title: '提示',
@@ -430,12 +443,11 @@ function updateSingleData(tag, updatedData, successTip = '更新成功', callbac
 	});
 }
 
-
 /*
-* ================
-* 通用页面数据管理
-* ================
-*/
+ * ================
+ * 通用页面数据管理
+ * ================
+ */
 var CommonMan = {
 	// /* 
 	// * ==========
@@ -658,59 +670,57 @@ var CommonMan = {
 	// },
 
 	/*
-	* ================================
-	* baseComponents
-	* ================================
-	*/
+	 * ================================
+	 * baseComponents
+	 * ================================
+	 */
 	// 表格数据展示
-	configureTableListData : function(fn) {
+	configureTableListData: function(parameters) {
 		var ulDom = $(window.parent.document).find('.breadcrumb');
 		ulDom.hide();
-		if (fn) {
-			var tableConfigureData = fn();
-			MachineMan.showTableList(tableConfigureData);
+		if(parameters) {
+			CommonMan.showTableList(parameters);
 		}
 	},
 	/*
-	* {
-	*	data : [],表格数据
-	*	column : [], 列的格式,
-	*	rowStyle : fn, 行的格式
-	* }
-	*/
+	 * {
+	 *	data : [],表格数据
+	 *	column : [], 列的格式,
+	 *	rowStyle : fn, 行的格式
+	 * }
+	 */
 	showTableList: function(dataSource) {
 		var parameters = {
-			pageSize : 10,
-			refreshFn : function() {
-				MachineMan.configureTableListData();
+			pageSize: 10,
+			refreshFn: function() {
+				configureCategoryData();
 			},
-			column : dataSource.column,
-			dataRows : dataSource.data,
-			rowStyleFn : dataSource.rowStyle(row, index),
+			column: dataSource.column,
+			dataRows: dataSource.data,
+			rowStyleFn: dataSource.rowStyle,
 		};
 		this.tablePluginsConfigure(parameters);
 	},
 
-	tablePluginsConfigure : function(parameters) {
+	tablePluginsConfigure: function(parameters) {
 		var datas = {
 			queryParams: parameters.queryFn,
-			uri : parameters.uri,
+			uri: parameters.uri,
 			parentDom: $("#table-container"),
 			pageSize: parameters.pageSize,
 			refresh: parameters.refreshFn,
 			rowStyle: parameters.rowStyleFn,
 			column: parameters.column,
-      		datas : parameters.dataRows,
+			datas: parameters.dataRows,
 		};
 
 		CodeZComponents.tablePlugins(datas.parentDom, datas.uri, datas.queryParams, datas.rowStyle, datas.showSearch, datas.refresh, datas.currentPage, datas.pageSize, datas.showPager, datas.column, datas.datas, datas.loadSuccessFn, datas.loadFailedFn, parameters.onClick, parameters.onCheck, parameters.onUncheck, null, parameters.showDetail, parameters.detailFormatter);
 	}
 }
 
-
 // 列表数据展示
 function configureCategoryData() {
-	var categoryStr = cacheKey.substr(0, cacheKey.length - '_key'.length);
+	var categoryStr = sessionCacheKeyTag.substr(0, sessionCacheKeyTag.length - '_key'.length);
 	var tableParam;
 	switch(categoryStr) {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
@@ -723,7 +733,7 @@ function configureCategoryData() {
 			{
 				tableParam = configureSensorListStyle();
 			}
-		break;
+			break;
 		case CodeZ.NAV_MACHINEMAN.MACHINE:
 
 			break;
@@ -748,16 +758,13 @@ function configureCategoryData() {
 		default:
 			break;
 	}
-
 	// 请求数据
-	CommonMan.configureTableListData(function() {
-		CodeZComponents.postRequest({
-			action: action.LIST,
-		}, function(data) {
-			if(data.success) {
-				tableParam.data = data.data;
-				return tableParam;
-			}
-		});
+	CodeZComponents.postRequest({
+		action: actions.LIST,
+	}, function(data) {
+		if(data.success) {
+			tableParam.data = data.data;
+			CommonMan.configureTableListData(tableParam);
+		}
 	});
 }

@@ -164,7 +164,7 @@ var UserMan = {
 					});
 					var user = dialog.getData('bindData');
 					user.deleted = 1;
-					updateUser(user, function(data) {
+					updateUser(CodeZ.ACTION_USR_EDIT, user, function(data) {
 						if(data.success) {
 							if(fn) {
 								fn(user);
@@ -190,7 +190,7 @@ var UserMan = {
 	activeObject: function(data, fn) {
 		var user = data;
 		user.deleted = 0;
-		updateUser(user, function(data) {
+		updateUser(CodeZ.ACTION_USR_EDIT,user, function(data) {
 			if(data.success) {
 				if(fn) {
 					fn(user);
