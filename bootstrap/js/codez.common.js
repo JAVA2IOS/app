@@ -442,7 +442,6 @@ function updateCounterData(updatedData) {
 	return updatedData;
 }
 
-
 /*
  * ================
  * 标准参数配置
@@ -451,36 +450,41 @@ function updateCounterData(updatedData) {
 function configureParametersListStyle() {
 	var tableParam = {
 		column: [{
-			field: 'counterName',
+			field: 'rollName',
+			title: "连铸连轧名称",
+			width: '30%',
+			valign: 'middle',
+		}, {
+			field: 'ctrlNo',
 			title: "压铸单号",
 			width: '30%',
 			valign: 'middle',
 		}, {
-			field: 'counterModel',
+			field: 'rollWeight',
 			title: "连铸连轧重量",
 			width: '10%',
 			valign: 'middle',
 		}, {
-			field: 'counterType',
+			field: 'material',
 			title: "材质",
 			width: '10%',
 			valign: 'middle',
 		}, {
-			field: 'counterPort',
+			field: 'rollNumber',
 			title: "连铸连轧个数",
 			valign: 'middle',
 		}, {
-			field: 'counterDecimal',
-			title: "连铸连轧个数",
+			field: 'rollIntervals',
+			title: "间隔时间",
 			valign: 'middle',
 			width: '20%',
-		},{
-			field: 'pressure',
+		}, {
+			field: 'rollPressure',
 			title: "压铸压力",
 			valign: 'middle',
 			width: '20%',
-		},{
-			field: 'times',
+		}, {
+			field: 'rollTimes',
 			title: "连铸连轧次数",
 			valign: 'middle',
 			width: '20%',
@@ -530,8 +534,8 @@ function configureParametersListStyle() {
 
 // UI配置
 function parametersUIComponents() {
-	var title = ['压铸单号', '连铸连轧重量', '材质', '连铸连轧个数', '压铸压力', '连铸连轧次数', 'pressure', 'times'];
-	var identifiers = ['counterName', 'counterModel', 'counterType', 'counterPort'];
+	var title = ['连铸连轧名称', '压铸单号', '连铸连轧重量', '材质', '连铸连轧个数', '间隔时间', '压铸压力', '连铸连轧次数'];
+	var identifiers = ['rollName', 'ctrlNo', 'rollWeight', 'material', 'rollNumber', 'rollIntervals', 'rollPressure', 'rollTimes'];
 	var inputDoms = '';
 	for(i = 0; i < identifiers.length; i++) {
 		var data = identifiers[i];
@@ -548,27 +552,30 @@ function parametersUIComponents() {
 function confgiureParametersDataInfo(data) {
 	var bindObj = data.bindData;
 	if(bindObj) {
-		$('#counterName').val(bindObj.counterName);
-		$('#counterModel').val(bindObj.counterModel);
-		$('#counterType').val(bindObj.counterType);
-		$('#counterPort').val(bindObj.counterPort);
-		$('#counterDecimal').val(bindObj.counterDecimal);
-		$('#address').val(bindObj.address);
+		$('#rollName').val(bindObj.rollName);
+		$('#ctrlNo').val(bindObj.ctrlNo);
+		$('#rollWeight').val(bindObj.rollWeight);
+		$('#material').val(bindObj.material);
+		$('#rollNumber').val(bindObj.rollNumber);
+		$('#rollIntervals').val(bindObj.rollIntervals);
+		$('#rollPressure').val(bindObj.rollPressure);
+		$('#rollTimes').val(bindObj.rollTimes);
+		$('#ctrlNo').attr("disabled", "disabled");
 	}
 }
 
 // 更新当前的参数数据
 function updateParametersData(updatedData) {
-	updatedData.counterName = $('#counterName').val();
-	updatedData.counterModel = $('#counterModel').val();
-	updatedData.counterType = $('#counterType').val();
-	updatedData.counterPort = $('#counterPort').val();
-	updatedData.counterDecimal = $('#counterDecimal').val();
-	updatedData.address = $('#address').val();
-
+	updatedData.rollName = $('#rollName').val();
+	updatedData.ctrlNo = $('#ctrlNo').val();
+	updatedData.rollWeight = $('#rollWeight').val();
+	updatedData.material = $('#material').val();
+	updatedData.rollNumber = $('#rollNumber').val();
+	updatedData.rollIntervals = $('#rollIntervals').val();
+	updatedData.rollPressure = $('#rollPressure').val();
+	updatedData.rollTimes = $('#rollTimes').val();
 	return updatedData;
 }
-
 
 /*
  * ================
@@ -578,41 +585,41 @@ function updateParametersData(updatedData) {
 function configureAutoControlListStyle() {
 	var tableParam = {
 		column: [{
-			field: 'counterName',
+			field: 'ctrlId',
 			title: "压铸单号",
 			width: '30%',
 			valign: 'middle',
 		}, {
-			field: 'counterModel',
+			field: 'rollWeight',
 			title: "连铸连轧毛重",
 			width: '10%',
 			valign: 'middle',
 		}, {
-			field: 'counterType',
+			field: 'material',
 			title: "材质",
 			width: '10%',
 			valign: 'middle',
 		}, {
-			field: 'counterPort',
+			field: 'rollPressure',
 			title: "压铸压力",
 			valign: 'middle',
 		}, {
-			field: 'counterDecimal',
-			title: "连铸连轧数据",
+			field: 'rollNumber',
+			title: "连铸连轧数量",
 			valign: 'middle',
 			width: '20%',
 		}, {
-			field: 'counterDecimal',
+			field: 'totalTime',
 			title: "总时长",
 			valign: 'middle',
 			width: '20%',
 		}, {
-			field: 'counterDecimal',
+			field: 'rollTimes',
 			title: "连铸连轧次数",
 			valign: 'middle',
 			width: '20%',
 		}, {
-			field: 'opendSensor',
+			field: 'openedSensor',
 			title: "开启质量传感器",
 			valign: 'middle',
 			width: '20%',
@@ -625,7 +632,7 @@ function configureAutoControlListStyle() {
 				return '未开启';
 			},
 		}, {
-			field: 'opendSensor',
+			field: 'openedCounter',
 			title: "开启计数器",
 			valign: 'middle',
 			width: '20%',
@@ -638,7 +645,7 @@ function configureAutoControlListStyle() {
 				return '未开启';
 			},
 		}, {
-			field: 'opendSensor',
+			field: 'openedMachine',
 			title: "开启自动压铸机",
 			valign: 'middle',
 			width: '20%',
@@ -697,23 +704,22 @@ function configureAutoControlListStyle() {
 // UI配置
 function autoControlUIComponents() {
 	var title = ['压铸单号', '连铸连轧重量', '材质', '连铸连轧个数', '开启质量传感器', '开启计数器', '开启自动压铸机'];
-	var identifiers = ['counterName', 'counterModel', 'counterType', 'counterPort', 'openedSensor', 'opendedCounter', 'openedMachine'];
+	var identifiers = ['ctrlId', 'rollWeight', 'material', 'rollNumber', 'openedSensor', 'openedCounter', 'openedMachine'];
 	var inputDoms = '';
-	for(i = 0; i < identifiers.length; i++) {
+	for(i = 0; i < parseInt(identifiers.length); i++) {
 		var data = identifiers[i];
 		var itemTitle = title[i];
-		if (data == 'openedSensor' || data == 'opendedCounter' || data == 'openedMachine') {
-			inputDoms += '<div class="form-group">'+
-			'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>'+
-			'<div class="col-sm-9">'+
-			'<select class="form-control" id="' + data + '"><option value="0" selected="selected">关闭</option><option value="1">开启</option>'+
-			'</select></div></div>';
-			break;
+		if(data == 'openedSensor' || data == 'openedCounter' || data == 'openedMachine') {
+			inputDoms += '<div class="form-group">' +
+				'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>' +
+				'<div class="col-sm-9">' +
+				'<select class="form-control" id="' + data + '"><option value="0" selected="selected">关闭</option><option value="1">开启</option>' +
+				'</select></div></div>';
+		}else {
+			inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
+				'<input required="required" type="text" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
+				'</div></div>';
 		}
-
-		inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
-			'<input required="required" type="text" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
-			'</div></div>';
 	}
 
 	return inputDoms;
@@ -723,27 +729,28 @@ function autoControlUIComponents() {
 function confgiureAutoControlDataInfo(data) {
 	var bindObj = data.bindData;
 	if(bindObj) {
-		$('#counterName').val(bindObj.counterName);
-		$('#counterModel').val(bindObj.counterModel);
-		$('#counterType').val(bindObj.counterType);
-		$('#counterPort').val(bindObj.counterPort);
-		$('#counterDecimal').val(bindObj.counterDecimal);
-		$('#address').val(bindObj.address);
+		$('#ctrlId').val(bindObj.ctrlId);
+		$('#rollWeight').val(bindObj.rollWeight);
+		$('#material').val(bindObj.material);
+		$('#rollNumber').val(bindObj.rollNumber);
+		$('#openedSensor').val(bindObj.openedSensor);
+		$('#openedCounter').val(bindObj.openedCounter);
+		$('#openedMachine').val(bindObj.openedMachine);
+		$('#ctrlId').attr("disabled", "disabled");
 	}
 }
 
 // 更新当前的参数数据
 function updateAutoControlData(updatedData) {
 	updatedData.counterName = $('#counterName').val();
-	updatedData.counterModel = $('#counterModel').val();
-	updatedData.counterType = $('#counterType').val();
-	updatedData.counterPort = $('#counterPort').val();
-	updatedData.counterDecimal = $('#counterDecimal').val();
-	updatedData.address = $('#address').val();
-
+	updatedData.rollWeight = $('#rollWeight').val();
+	updatedData.material = $('#material').val();
+	updatedData.rollNumber = $('#rollNumber').val();
+	updatedData.openedSensor = $('#openedSensor').val();
+	updatedData.openedCounter = $('#openedCounter').val();
+	updatedData.openedMachine = $('#openedMachine').val();
 	return updatedData;
 }
-
 
 /*
  * ================
@@ -759,10 +766,9 @@ $('#searchByTime').click(function() {
 	alert('按照时间查询');
 });
 
-
 function configureControlDataListStyle() {
 	var tableParam = {
-		showSearch : false,
+		showSearch: false,
 		column: [{
 			field: 'counterName',
 			title: "冲压单号",
@@ -787,12 +793,12 @@ function configureControlDataListStyle() {
 			title: "连冲数量",
 			valign: 'middle',
 			width: '20%',
-		},{
+		}, {
 			field: 'counterDecimal',
 			title: "冲压压力",
 			valign: 'middle',
 			width: '20%',
-		},{
+		}, {
 			field: 'counterDecimal',
 			title: "连冲次数",
 			valign: 'middle',
@@ -860,10 +866,9 @@ function confgiureControlDataDataInfo(data) {
 
 // 更新当前的参数数据
 function updateControlDataData(updatedData) {
-	
+
 	return updatedData;
 }
-
 
 /*
  * ================
@@ -934,20 +939,20 @@ function roleUIComponents() {
 	for(i = 0; i < identifiers.length; i++) {
 		var data = identifiers[i];
 		var itemTitle = title[i];
-		if (data == 'description') {
-			inputDoms += '<div class="form-group">'+
-			'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>'+
-			'<div class="col-sm-9">'+
-			'<textarea class="form-control"></textarea></div></div>';
+		if(data == 'description') {
+			inputDoms += '<div class="form-group">' +
+				'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>' +
+				'<div class="col-sm-9">' +
+				'<textarea class="form-control"></textarea></div></div>';
 			break;
 		}
 
-		if (data == 'deleted') {
-			inputDoms += '<div class="form-group">'+
-			'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>'+
-			'<div class="col-sm-9">'+
-			'<select class="form-control" id="' + data + '"><option value="0" selected="selected">注销</option><option value="1">恢复</option>'+
-			'</select></div></div>';
+		if(data == 'deleted') {
+			inputDoms += '<div class="form-group">' +
+				'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>' +
+				'<div class="col-sm-9">' +
+				'<select class="form-control" id="' + data + '"><option value="0" selected="selected">注销</option><option value="1">恢复</option>' +
+				'</select></div></div>';
 			break;
 		}
 
@@ -983,7 +988,6 @@ function updateRoleData(updatedData) {
 
 	return updatedData;
 }
-
 
 /*
  * ================
@@ -1062,8 +1066,8 @@ function configureUIComponents() {
 			components = autoControlUIComponents();
 			break;
 		case CodeZ.NAV_CONTROL_DATA:
-		$('#dataCancel').hide();
-		components = controlDataUIComponents();
+			$('#dataCancel').hide();
+			components = controlDataUIComponents();
 			break;
 		case CodeZ.NAV_SECURITY_MAN.USERMAN:
 
@@ -1108,10 +1112,10 @@ function configureItemInfoData() {
 				confgiureParametersDataInfo(dataObj);
 				break;
 			case CodeZ.NAV_AUTO_CONTROL:
-			confgiureAutoControlDataInfo(dataObj);
+				confgiureAutoControlDataInfo(dataObj);
 				break;
 			case CodeZ.NAV_CONTROL_DATA:
-confgiureControlDataDataInfo(dataObj);
+				confgiureControlDataDataInfo(dataObj);
 				break;
 			case CodeZ.NAV_SECURITY_MAN.USERMAN:
 
@@ -1170,7 +1174,7 @@ $("#dataSubmit").click(function() {
 			updateParametersData(dataObj);
 			break;
 		case CodeZ.NAV_AUTO_CONTROL:
-		updateAutoControlData(dataObj);
+			updateAutoControlData(dataObj);
 			break;
 		case CodeZ.NAV_CONTROL_DATA:
 			goIndexPage();
@@ -1503,7 +1507,7 @@ var CommonMan = {
 			rowStyle: parameters.rowStyleFn,
 			column: parameters.column,
 			datas: parameters.dataRows,
-			showSearch : parameters.showSearch,
+			showSearch: parameters.showSearch,
 		};
 
 		CodeZComponents.tablePlugins(datas.parentDom, datas.uri, datas.queryParams, datas.rowStyle, datas.showSearch, datas.refresh, datas.currentPage, datas.pageSize, datas.showPager, datas.column, datas.datas, datas.loadSuccessFn, datas.loadFailedFn, parameters.onClick, parameters.onCheck, parameters.onUncheck, null, parameters.showDetail, parameters.detailFormatter);
@@ -1561,6 +1565,10 @@ function configureCategoryData() {
 		if(data.success) {
 			tableParam.data = data.data;
 			CommonMan.configureTableListData(tableParam);
+		} else {
+			CodeZComponents.showErrorTip({
+				text: data.error
+			});
 		}
 	});
 }

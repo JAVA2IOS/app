@@ -39,15 +39,15 @@ var CodeZ = {
 	},
 
 	ACTION_PARAMETERS: {
-		ADD: 'Add',
-		LIST: 'List',
-		EDIT: 'Edit',
+		ADD: 'parameterAdd',
+		LIST: 'parameterList',
+		EDIT: 'parameterEdit',
 	},
 
 	ACTION_AUTO_CONTROL: {
-		ADD: 'Add',
-		LIST: 'List',
-		EDIT: 'Edit',
+		ADD: 'operatorAdd',
+		LIST: 'operatorList',
+		EDIT: 'operatorEdit',
 	},
 
 	ACTION_CONTROL_DATA: {
@@ -305,7 +305,7 @@ var SessionMan = {
 				}
 				break;
 			case CodeZ.NAV_CONTROLPARAMETER:
-{
+				{
 					$.session.set('tag', JSON.stringify(CodeZ.TAG_PARAMETERS));
 					$.session.set('action', JSON.stringify(CodeZ.ACTION_PARAMETERS));
 					$.session.set('page', JSON.stringify(CodeZ.HTML_PAGE_PARAMETERS));
@@ -314,7 +314,7 @@ var SessionMan = {
 
 				break;
 			case CodeZ.NAV_AUTO_CONTROL:
-{
+				{
 					$.session.set('tag', JSON.stringify(CodeZ.TAG_AUTO_CONTROL));
 					$.session.set('action', JSON.stringify(CodeZ.ACTION_AUTO_CONTROL));
 					$.session.set('page', JSON.stringify(CodeZ.HTML_PAGE_AUTO_CONTROL));
@@ -323,7 +323,7 @@ var SessionMan = {
 
 				break;
 			case CodeZ.NAV_CONTROL_DATA:
-{
+				{
 					$.session.set('tag', JSON.stringify(CodeZ.TAG_CONTROL_DATA));
 					$.session.set('action', JSON.stringify(CodeZ.ACTION_CONTROL_DATA));
 					$.session.set('page', JSON.stringify(CodeZ.HTML_PAGE_CONTROL_DATA));
@@ -334,7 +334,7 @@ var SessionMan = {
 
 				break;
 			case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
-{
+				{
 					$.session.set('tag', JSON.stringify(CodeZ.TAG_ROLEMAN));
 					$.session.set('action', JSON.stringify(CodeZ.ACTION_ROLEMAN));
 					$.session.set('page', JSON.stringify(CodeZ.HTML_PAGE_ROLEMAN));
@@ -569,11 +569,13 @@ var CodeZComponents = {
 
 	// 请求服务
 	postRequest: function(parameters, callback) {
+		console.info('参数:' + parameters);
 		$.ajax({
 			type: 'post',
 			url: CodeZ.RQUEST_URI,
 			data: parameters,
 			success: function(result) {
+				console.info('result :' + result);
 				if(isJSON(result)) {
 					var data = JSON.parse(result);
 					if(!data.success) {
