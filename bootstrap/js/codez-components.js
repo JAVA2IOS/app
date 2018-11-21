@@ -202,7 +202,7 @@ var CodeZ = {
 
 	HTML_PAGE_AUTO_CONTROL: {
 		INDEX: 'dataIndex.html',
-		LIST: 'dataList.html',
+		LIST: 'controlDataList.html',
 		INFO: 'dataInfo.html',
 	},
 

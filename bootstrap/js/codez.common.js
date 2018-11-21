@@ -43,6 +43,151 @@ var breadMenuTag = {
 
 /*
  * ================
+ * 数据库
+ * ================
+ */
+
+// 配置列表参数信息
+function configureDataBaseListStyle() {
+	var tableParam = {
+		column: [{
+				field : 'dataBaseName',
+				title: "数据库名称",
+				width: 1000,
+				valign : 'middle',
+			},{
+				field : 'opened',
+				title: "状态",
+				valign : 'middle',
+				align : 'center',
+				width: 1000,
+				formatter: function(value, row, index) {
+					if(value == 1 || value == '1') {
+
+						return '已打开';
+					}
+
+					return '已关闭';
+				},
+			},{
+				field : 'deleted',
+				title: "注销",
+				valign : 'middle',
+				align : 'center',
+				width : 1000,
+				formatter: function(value, row, index) {
+					if(value == 1 || value == '1') {
+
+						return '已注销';
+					}
+
+					return '正常';
+				},
+			},{
+				field : 'action',
+				title: "操作",
+				valign : 'middle',
+				align : 'center',
+				width : 1000,
+				formatter: function(value, row, index) {
+					if(row.deleted == 1 || row.deleted == '1') {
+							return "<div class=\"row\">" +
+								"<div class=\"col-sm-8 col-sm-offset-2\">" +
+								"<a href=\"javascript:;\" class=\"tooltip-show open\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"打开\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
+								"</div></div>";
+					}
+					return "<div class=\"row\">" +
+						"<div class=\"col-sm-8 col-sm-offset-2\">" +
+						"<a href=\"javascript:;\" class=\"tooltip-show close\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"断开\"><span class=\"fa fa-unlink text-danger fa-fw\"></span></a>" +
+						"</div></div>";
+				},
+				events: {
+					"click .close": function(e, value, row, index) {
+						row.opened = 0;
+						updateSingleData(actions.edit, row, '数据库关闭', function(data) {
+							$("#table-container").bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+						});
+					},
+					"click .open": function(e, value, row, index) {
+						row.opened = 1;
+						updateSingleData(actions.edit, row, '数据库打开成功', function(data) {
+							$("#table-container").bootstrapTable('updateRow', {
+								index: index,
+								row: data
+							});
+						});
+					}
+				},
+			}],
+		rowStyle: function(row, index) {
+			if(row.connected == 0 || row.connected == '0') {
+				return {
+					css: {
+						'font-size': '10px',
+						'height': '40px'
+					},
+					classes: 'warning'
+				};
+			}
+			return {
+				css: {
+					'font-size': '10px',
+					'height': '40px'
+				}
+			};
+		},
+	};
+
+	return tableParam;
+}
+
+// UI配置
+function dataBaseUIComponents() {
+	var title = ['数据库名称', '打开数据库'];
+	var identifiers = ['dataBaseName', 'opened'];
+	var inputDoms = '';
+	for(i = 0; i < identifiers.length; i++) {
+		var data = identifiers[i];
+		var itemTitle = title[i];
+		if (itemTitle == 'opened') {
+			inputDoms += '<div class="form-group"><div class="checkbox"><label>'+
+			'<input id = "' + data + '" type="checkbox">&nbsp;"'+ itemTitle +'"</label></div></div>';
+			continue;
+		}
+
+		inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
+			'<input required="required" type="text" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
+			'</div></div>';
+	}
+
+	return inputDoms;
+}
+
+// 配置显示参数数据
+function confgiureDataBaseDataInfo(data) {
+	var bindObj = data.bindData;
+	if(bindObj) {
+		$('#dataBaseName').val(bindObj.dataBaseName);
+		$('#opened').val(bindObj.opened);
+		if (data.deleted == '1' || data.deleted == 1) {
+			$('#opened').attr('disabled', 'disabled');
+		}
+	}
+}
+
+// 更新当前的参数数据
+function updateDataBaseData(updatedData) {
+	updatedData.dataBaseName = $('#dataBaseName').val();
+	updatedData.opened = $('#opened').val();
+
+	return updatedData;
+}
+
+/*
+ * ================
  * 传感器
  * ================
  */
@@ -583,11 +728,22 @@ function updateParametersData(updatedData) {
  * ================
  */
 function configureAutoControlListStyle() {
+	var openedStyle = function(value, row, index) {
+		if (value == '1' || value == 1) {
+			return '<a href=\"javascript:;\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"开启\"><span class=\"fa fa-check fa-fw text-success\"></span></a>';
+		}
+		return '<a href=\"javascript:;\" class=\"tooltip-show\" data-toggle=\"tooltip\" title=\"关闭\"><span class=\"fa fa-close fa-fw text-warning\"></span></a>';
+	};
 	var tableParam = {
 		column: [{
 			field: 'ctrlId',
 			title: "压铸单号",
 			width: '30%',
+			valign: 'middle',
+		}, {
+			field: 'startTime',
+			title: "开始时间",
+			width: '20%',
 			valign: 'middle',
 		}, {
 			field: 'rollWeight',
@@ -607,55 +763,38 @@ function configureAutoControlListStyle() {
 			field: 'rollNumber',
 			title: "连铸连轧数量",
 			valign: 'middle',
-			width: '20%',
 		}, {
 			field: 'totalTime',
 			title: "总时长",
 			valign: 'middle',
-			width: '20%',
+			width: '10%',
 		}, {
 			field: 'rollTimes',
 			title: "连铸连轧次数",
 			valign: 'middle',
-			width: '20%',
 		}, {
 			field: 'openedSensor',
 			title: "开启质量传感器",
 			valign: 'middle',
-			width: '20%',
+			width: '5%',
 			formatter: function(value, row, index) {
-				if(value == 1 || value == '1') {
-
-					return '已开启';
-				}
-
-				return '未开启';
+				return openedStyle(value, row, index);
 			},
 		}, {
 			field: 'openedCounter',
 			title: "开启计数器",
 			valign: 'middle',
-			width: '20%',
+			width: '5%',
 			formatter: function(value, row, index) {
-				if(value == 1 || value == '1') {
-
-					return '已开启';
-				}
-
-				return '未开启';
+				return openedStyle(value, row, index);
 			},
 		}, {
 			field: 'openedMachine',
 			title: "开启自动压铸机",
 			valign: 'middle',
-			width: '20%',
+			width: '5%',
 			formatter: function(value, row, index) {
-				if(value == 1 || value == '1') {
-
-					return '已开启';
-				}
-
-				return '未开启';
+				return openedStyle(value, row, index);
 			},
 		}, {
 			field: 'deleted',
@@ -751,6 +890,8 @@ function updateAutoControlData(updatedData) {
 	updatedData.openedMachine = $('#openedMachine').val();
 	return updatedData;
 }
+
+
 
 /*
  * ================
@@ -1196,6 +1337,7 @@ $("#dataSubmit").click(function() {
 	});
 });
 
+
 /*
  * ================
  * 面包屑导航跳转方法
@@ -1237,6 +1379,7 @@ function updateSingleData(tag, updatedData, successTip = '更新成功', callbac
 		}
 	});
 }
+
 
 /*
  * ================
@@ -1354,115 +1497,6 @@ var CommonMan = {
 	// 	this.tablePluginsConfigure(parameters);
 	// },
 
-	// /* 
-	// * ==========
-	// * 计数器列表
-	// * ==========
-	// */
-
-	// configureCounterList : function() {
-	// 	/*
-	// 	var ulDom = $(window.parent.document).find('.breadcrumb');
-	// 	ulDom.hide();
-	// 	CodeZComponents.postRequest({
-	// 		action: '',
-	// 	}, function(data) {
-	// 		if(data.success) {
-	// 			var dataRow = data.data;
-	// 			SoftMan.showCounterList(dataRow);
-	// 		}
-	// 	});
-	// 	*/
-
-	// 	//e .g
-	// 	this.showCounterList({});
-	// },
-
-	// showCounterList : function(dataList) {
-	// 	var parameters = {
-	// 		pageSize : 10,
-	// 		uri : undefined,
-	// 		loadSuccessFn : undefined,
-	// 		loadFailedFn : undefined,
-	// 		refreshFn : function() {
-	// 			MachineMan.configureCounterList();
-	// 		},
-	// 		column : [{
-	// 			field : 'dataBaseName',
-	// 			title: "数据库名称",
-	// 			width: 1000,
-	// 			valign : 'middle',
-	// 		},{
-	// 			field : 'connectable',
-	// 			title: "状态",
-	// 			valign : 'middle',
-	// 			align : 'center',
-	// 			width: 1000,
-	// 			formatter: function(value, row, index) {
-	// 				if(value == 1 || value == '1') {
-
-	// 					return '已打开';
-	// 				}
-
-	// 				return '已关闭';
-	// 			},
-	// 		},{
-	// 			field : 'deleted',
-	// 			title: "注销",
-	// 			valign : 'middle',
-	// 			align : 'center',
-	// 			width : 1000,
-	// 			formatter: function(value, row, index) {
-	// 				if(value == 1 || value == '1') {
-
-	// 					return '已注销';
-	// 				}
-
-	// 				return '正常';
-	// 			},
-	// 		},{
-	// 			field : 'action',
-	// 			title: "操作",
-	// 			valign : 'middle',
-	// 			align : 'center',
-	// 			width : 1000,
-	// 			formatter: function(value, row, index) {
-	// 				if(row.deleted == 1 || row.deleted == '1') {
-	// 						return "<div class=\"row\">" +
-	// 							"<div class=\"col-sm-8 col-sm-offset-2\">" +
-	// 							"<a href=\"javascript:;\" class=\"tooltip-show open\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"打开\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
-	// 							"</div></div>";
-	// 				}
-	// 				return "<div class=\"row\">" +
-	// 					"<div class=\"col-sm-8 col-sm-offset-2\">" +
-	// 					"<a href=\"javascript:;\" class=\"tooltip-show close\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"断开\"><span class=\"fa fa-unlink text-danger fa-fw\"></span></a>" +
-	// 					"</div></div>";
-	// 			},
-	// 			events: {
-	// 				"click .close": function(e, value, row, index) {
-	// 					$("#table-container").bootstrapTable('updateRow', {
-	// 							index: index,
-	// 							row: data
-	// 						});
-	// 				},
-	// 				"click .open": function(e, value, row, index) {
-	// 					$("#table-container").bootstrapTable('updateRow', {
-	// 							index: index,
-	// 							row: data
-	// 						})
-	// 				}
-	// 			},
-	// 		}],
-	// 		dataRows : dataList,
-	// 		rowStyleFn : function(row, index) {
-	// 			if (row.deleted == 1 || row.deleted == '1') {
-	// 				return {css :{'font-size' : '10px', 'height' : '40px'}, classes : 'warning'};
-	// 			}
-	// 			return {css :{'font-size' : '10px', 'height' : '40px'}};
-	// 		},
-	// 	};
-	// 	this.tablePluginsConfigure(parameters);
-	// },
 
 	/*
 	 * ================================
@@ -1526,19 +1560,13 @@ function configureCategoryData() {
 			break;
 		case CodeZ.NAV_MACHINEMAN.SENSOR:
 			//传感器处理
-			{
-				tableParam = configureSensorListStyle();
-			}
+			tableParam = configureSensorListStyle();
 			break;
 		case CodeZ.NAV_MACHINEMAN.MACHINE:
-			{
-				tableParam = configureMachineListStyle();
-			}
+			tableParam = configureMachineListStyle();
 			break;
 		case CodeZ.NAV_MACHINEMAN.COUNTER:
-			{
-				tableParam = configureCounterListStyle();
-			}
+			tableParam = configureCounterListStyle();
 			break;
 		case CodeZ.NAV_CONTROLPARAMETER:
 			tableParam = configureParametersListStyle();
