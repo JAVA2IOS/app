@@ -63,7 +63,6 @@ function configureDataBaseListStyle() {
 				width: 1000,
 				formatter: function(value, row, index) {
 					if(value == 1 || value == '1') {
-
 						return '已打开';
 					}
 
@@ -848,6 +847,13 @@ function autoControlUIComponents() {
 	for(i = 0; i < parseInt(identifiers.length); i++) {
 		var data = identifiers[i];
 		var itemTitle = title[i];
+		if (data == 'ctrlId') {
+			inputDoms += '<div class="form-group">' +
+				'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>' +
+				'<div class="col-sm-9">' +
+				'<select class="form-control" id="' + data + '"></select></div></div>';
+			continue;
+		}
 		if(data == 'openedSensor' || data == 'openedCounter' || data == 'openedMachine') {
 			inputDoms += '<div class="form-group">' +
 				'<label for="' + data + '" class="col-sm-2 control-label">' + itemTitle + '</label>' +
@@ -867,6 +873,70 @@ function autoControlUIComponents() {
 // 配置显示参数数据
 function confgiureAutoControlDataInfo(data) {
 	var bindObj = data.bindData;
+	/*
+	amdBase: './',
+      amdLanguageBase: './i18n/',
+      closeOnSelect: true,
+      debug: false,
+      dropdownAutoWidth: false,
+      escapeMarkup: Utils.escapeMarkup,
+      language: EnglishTranslation,
+      matcher: matcher,
+      minimumInputLength: 0,
+      maximumInputLength: 0,
+      maximumSelectionLength: 0,
+      minimumResultsForSearch: 0,
+      selectOnClose: false,
+      sorter: function (data) {
+        return data;
+      },
+      templateResult: function (result) {
+        return result.text;
+      },
+      templateSelection: function (selection) {
+        return selection.text;
+      },
+      theme: 'default',
+      width: 'resolve'
+	*/
+	$('#ctrlId').select2({
+		language: 'zh-CN',
+		ajax : {
+			url : CodeZ.RQUEST_URI,
+			dataType : 'json',
+			data : function(parameters) {
+				return {
+					action : CodeZ.ACTION_PARAMETERS.LIST,
+					data : false,
+					search : parameters.term,
+				};
+			},
+			processResults: function (data, params, success, failure) {
+				console.info(data);
+
+				var mapDataArray = $.map(data, function (obj) {
+				  obj.id = obj.ctrlNo;
+				  obj.text = obj.rollName;
+
+				  return obj;
+				});
+
+				console.info('map :' + mapDataArray);
+                return {
+                    results: mapDataArray,
+                    pagination: {
+                        more: false
+                    }
+                };
+            },
+            cache: true
+		}
+	});
+
+	$('#ctrlId').on('select2:select', function(e) {
+		console.info(e);
+	});
+
 	if(bindObj) {
 		$('#ctrlId').val(bindObj.ctrlId);
 		$('#rollWeight').val(bindObj.rollWeight);
@@ -1188,7 +1258,7 @@ function configureUIComponents() {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
 
 		case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
-
+			components = dataBaseUIComponents();
 			break;
 		case CodeZ.NAV_MACHINEMAN.SENSOR:
 			//传感器处理
@@ -1214,7 +1284,7 @@ function configureUIComponents() {
 
 			break;
 		case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
-
+		components = roleUIComponents();
 			break;
 		default:
 			break;
@@ -1237,7 +1307,7 @@ function configureItemInfoData() {
 			case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
 
 			case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
-
+				confgiureDataBaseDataInfo(dataObj);
 				break;
 			case CodeZ.NAV_MACHINEMAN.SENSOR:
 				//传感器处理
@@ -1262,7 +1332,7 @@ function configureItemInfoData() {
 
 				break;
 			case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
-
+				confgiureRoleDataInfo(dataObj);
 				break;
 			default:
 				break;
@@ -1299,7 +1369,7 @@ $("#dataSubmit").click(function() {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
 
 		case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
-
+			updateDataBaseData(dataObj);
 			break;
 		case CodeZ.NAV_MACHINEMAN.SENSOR:
 			//传感器处理
@@ -1325,7 +1395,7 @@ $("#dataSubmit").click(function() {
 
 			break;
 		case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
-
+			updateRoleData(dataObj);
 			break;
 		default:
 			break;
@@ -1387,117 +1457,6 @@ function updateSingleData(tag, updatedData, successTip = '更新成功', callbac
  * ================
  */
 var CommonMan = {
-	// /* 
-	// * ==========
-	// * 压铸机列表
-	// * ==========
-	// */
-
-	// configureMachineList : function() {
-	// 	/*
-	// 	var ulDom = $(window.parent.document).find('.breadcrumb');
-	// 	ulDom.hide();
-	// 	CodeZComponents.postRequest({
-	// 		action: '',
-	// 	}, function(data) {
-	// 		if(data.success) {
-	// 			var dataRow = data.data;
-	// 			SoftMan.showMachineList(dataRow);
-	// 		}
-	// 	});
-	// 	*/
-
-	// 	//e .g
-	// 	this.showMachineList({});
-	// },
-
-	// showMachineList : function(dataList) {
-	// 	var parameters = {
-	// 		pageSize : 10,
-	// 		uri : undefined,
-	// 		loadSuccessFn : undefined,
-	// 		loadFailedFn : undefined,
-	// 		refreshFn : function() {
-	// 			MachineMan.configureMachineList();
-	// 		},
-	// 		column : [{
-	// 			field : 'dataBaseName',
-	// 			title: "数据库名称",
-	// 			width: 1000,
-	// 			valign : 'middle',
-	// 		},{
-	// 			field : 'connectable',
-	// 			title: "状态",
-	// 			valign : 'middle',
-	// 			align : 'center',
-	// 			width: 1000,
-	// 			formatter: function(value, row, index) {
-	// 				if(value == 1 || value == '1') {
-
-	// 					return '已打开';
-	// 				}
-
-	// 				return '已关闭';
-	// 			},
-	// 		},{
-	// 			field : 'deleted',
-	// 			title: "注销",
-	// 			valign : 'middle',
-	// 			align : 'center',
-	// 			width : 1000,
-	// 			formatter: function(value, row, index) {
-	// 				if(value == 1 || value == '1') {
-
-	// 					return '已注销';
-	// 				}
-
-	// 				return '正常';
-	// 			},
-	// 		},{
-	// 			field : 'action',
-	// 			title: "操作",
-	// 			valign : 'middle',
-	// 			align : 'center',
-	// 			width : 1000,
-	// 			formatter: function(value, row, index) {
-	// 				if(row.deleted == 1 || row.deleted == '1') {
-	// 						return "<div class=\"row\">" +
-	// 							"<div class=\"col-sm-8 col-sm-offset-2\">" +
-	// 							"<a href=\"javascript:;\" class=\"tooltip-show open\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"打开\"><span class=\"fa fa-plug fa-fw text-primary\"></span></a>" +
-	// 							"</div></div>";
-	// 				}
-	// 				return "<div class=\"row\">" +
-	// 					"<div class=\"col-sm-8 col-sm-offset-2\">" +
-	// 					"<a href=\"javascript:;\" class=\"tooltip-show close\" style = \"margin-left:10px;\" data-toggle=\"tooltip\" title=\"断开\"><span class=\"fa fa-unlink text-danger fa-fw\"></span></a>" +
-	// 					"</div></div>";
-	// 			},
-	// 			events: {
-	// 				"click .close": function(e, value, row, index) {
-	// 					$("#table-container").bootstrapTable('updateRow', {
-	// 							index: index,
-	// 							row: data
-	// 						});
-	// 				},
-	// 				"click .open": function(e, value, row, index) {
-	// 					$("#table-container").bootstrapTable('updateRow', {
-	// 							index: index,
-	// 							row: data
-	// 						})
-	// 				}
-	// 			},
-	// 		}],
-	// 		dataRows : dataList,
-	// 		rowStyleFn : function(row, index) {
-	// 			if (row.deleted == 1 || row.deleted == '1') {
-	// 				return {css :{'font-size' : '10px', 'height' : '40px'}, classes : 'warning'};
-	// 			}
-	// 			return {css :{'font-size' : '10px', 'height' : '40px'}};
-	// 		},
-	// 	};
-	// 	this.tablePluginsConfigure(parameters);
-	// },
-
-
 	/*
 	 * ================================
 	 * baseComponents
@@ -1556,7 +1515,7 @@ function configureCategoryData() {
 		case CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG:
 
 		case CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT:
-
+			tableParam = configureDataBaseListStyle();
 			break;
 		case CodeZ.NAV_MACHINEMAN.SENSOR:
 			//传感器处理
@@ -1581,7 +1540,7 @@ function configureCategoryData() {
 
 			break;
 		case CodeZ.NAV_SECURITY_MAN.ROLEMAN:
-
+			tableParam = configureRoleListStyle();
 			break;
 		default:
 			break;
