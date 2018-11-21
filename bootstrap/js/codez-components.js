@@ -48,6 +48,7 @@ var CodeZ = {
 		ADD: 'operatorAdd',
 		LIST: 'operatorList',
 		EDIT: 'operatorEdit',
+		SEARCH: 'operatorSearch',
 	},
 
 	ACTION_CONTROL_DATA: {
