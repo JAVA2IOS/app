@@ -49,6 +49,7 @@ var CodeZ = {
 		LIST: 'operatorList',
 		EDIT: 'operatorEdit',
 		SEARCH: 'operatorSearch',
+		FUZZYSEARCH: 'operatorFuzzySearch',
 	},
 
 	ACTION_CONTROL_DATA: {
@@ -58,9 +59,9 @@ var CodeZ = {
 	},
 
 	ACTION_ROLEMAN: {
-		ADD: 'Add',
-		LIST: 'List',
-		EDIT: 'Edit',
+		ADD: 'roleAdd',
+		LIST: 'roleList',
+		EDIT: 'roleEdit',
 	},
 
 	// 标识符
@@ -583,6 +584,14 @@ var CodeZComponents = {
 		second = second < 10 ? ('0' + second) : second;
 
 		return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+	},
+
+	getFormatterDate : function(dateString) {
+		var date = dateString;
+		date = date.substring(0,19);    
+		date = date.replace(/-/g,'/'); 
+
+		return new Date(date).getTime();
 	},
 
 	// 请求服务
