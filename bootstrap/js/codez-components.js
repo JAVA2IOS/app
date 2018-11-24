@@ -59,9 +59,9 @@ var CodeZ = {
 	},
 
 	ACTION_ROLEMAN: {
-		ADD: 'roleAdd',
+		ADD: 'addRole',
 		LIST: 'roleList',
-		EDIT: 'roleEdit',
+		EDIT: 'editRole',
 	},
 
 	// 标识符
@@ -227,7 +227,7 @@ var CodeZ = {
 
 	HTML_PAGE_ROLEMAN: {
 		INDEX: 'dataIndex.html',
-		LIST: 'controlDataList.html',
+		LIST: 'dataList.html',
 		INFO: 'dataInfo.html',
 	},
 
@@ -596,7 +596,7 @@ var CodeZComponents = {
 
 	// 请求服务
 	postRequest: function(parameters, callback) {
-		console.info('参数:' + parameters);
+		console.info('参数:' + JSON.stringify(parameters));
 		$.ajax({
 			type: 'post',
 			url: CodeZ.RQUEST_URI,
