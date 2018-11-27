@@ -411,6 +411,12 @@ function configureDashboard() {
 		$('#users-info-box').hide();
 	}
 
+	$('#userName').val(userSession.userName);
+	$('#user-password').val(userSession.password);
+	$('#account').val(userSession.userAccount);
+	$('#dep').val(userSession.dep);
+	$('#role').val(userSession.role.roleName);
+
 	CodeZComponents.postRequest({
 		action: 'dashboardData',
 	}, function(data) {

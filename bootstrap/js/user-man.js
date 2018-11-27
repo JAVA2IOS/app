@@ -80,7 +80,7 @@ function editData() {
 				option.text = option.roleName;
 			});
 			$('#userRole').select2({
-				data : optionData;
+				data : optionData
 			});
 		}
 	});
@@ -159,6 +159,24 @@ function updateUser(tag,userObj, callback) {
 
 
 var UserMan = {
+	updatedUser : function() {
+		var dataObj = $.session.get('user');
+		dataObj.userName = $('#userName').val();
+		dataObj.password = $('#user-password').val();
+		updateUser(CodeZ.ACTION_USR_EDIT, dataObj, function(data) {
+			if (data.success) {
+				CodeZComponents.showSuccessTip({
+						title: '提示',
+						text: data.data,
+					});
+			}else {
+				CodeZComponents.showErrorTip({
+					title: '提示',
+					text: data.error,
+				});
+			}
+		});
+	},
 	// 注销用户
 	banObject: function(data, fn) {
 		BootstrapDialog.show({
