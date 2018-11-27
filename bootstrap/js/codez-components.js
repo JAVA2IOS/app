@@ -2,6 +2,7 @@
 var CodeZ = {
 	RQUEST_URI: '/machineControlSys/service/Routers.php',
 
+	ACTION_INDEX: 'dataIndex',
 	ACTION_LOGIN: 'usrLogin',
 	ACTION_LOGOUT: 'usrLogout',
 	ACTION_USR_LIST: 'usrList',
@@ -180,6 +181,7 @@ var CodeZ = {
 
 	// HTML
 	HTML_PAGE_INDEX: 'index.html',
+	HTML_PAGE_DASHBOARD: 'userCenter.html',
 	HTML_PAGE_LOGIN: 'login.html',
 	HTML_PAGE_CTRL_CFG: 'controlCfg.html',
 	HTML_PAGE_CTRL_CFG_LIST: 'controlCfgList.html',
@@ -406,9 +408,12 @@ function navSrc(tag) {
 }
 
 function configureDashboard() {
-	var userSession = JSON.parse($.session.get('user'));
-	if (userSession.role.roleId == '1') {
-		$('#users-info-box').hide();
+	$('#users-info-box').hide();
+	if($.session.get('user')) {
+		var userSession = JSON.parse($.session.get('user'));
+		if(userSession.role.roleId == '1') {
+			$('#users-info-box').show();
+		}
 	}
 
 	$('#userName').val(userSession.userName);
@@ -416,9 +421,10 @@ function configureDashboard() {
 	$('#account').val(userSession.userAccount);
 	$('#dep').val(userSession.dep);
 	$('#role').val(userSession.role.roleName);
-
+	$('#logintTime').val(userSession.lginTime);
+	$('#logoutTime').val(userSession.lgoutTime);
 	CodeZComponents.postRequest({
-		action: 'dashboardData',
+		action: CodeZ.ACTION_INDEX,
 	}, function(data) {
 		if(data.success) {
 			/*
@@ -431,19 +437,20 @@ function configureDashboard() {
 			}
 			*/
 			var dataObj = data.data;
-			if (dataObj.dataBase) {
-				$('#dataBaseBox').html(dataObj.dataBase);
+			if(dataObj.dataBase) {
+				var dataValue = dataObj.dataBase + '&nbsp;&nbsp;&nbsp;<small class = "label label-success">可使用</small>';
+				$('#dataBaseBox').html(dataValue);
 			}
-			if (dataObj.sensor) {
+			if(dataObj.sensor) {
 				$('#sensorBox').html(dataObj.sensor);
 			}
-			if (dataObj.machine) {
+			if(dataObj.machine) {
 				$('#machineBox').html(dataObj.machine);
 			}
-			if (dataObj.counter) {
+			if(dataObj.counter) {
 				$('#counterBox').html(dataObj.counter);
 			}
-			if (dataObj.users) {
+			if(dataObj.users) {
 				$('#usersBox').html(dataObj.users);
 			}
 		}
@@ -630,10 +637,10 @@ var CodeZComponents = {
 		return y + '-' + m + '-' + d + ' ' + h + ':' + minute;
 	},
 
-	getFormatterDate : function(dateString) {
+	getFormatterDate: function(dateString) {
 		var date = dateString;
-		date = date.substring(0,19);    
-		date = date.replace(/-/g,'/'); 
+		date = date.substring(0, 19);
+		date = date.replace(/-/g, '/');
 
 		return new Date(date).getTime();
 	},
@@ -960,103 +967,107 @@ var CodeZComponents = {
 	 ]
 	*/
 	sideBar: function(divDomId, data) {
-		var userSession = JSON.parse($.session.get('user'));
 		var system = false;
-		if (userSession.role.roleId == '1' && userSession.role) {
-			system = true;
+		if($.session.get('user')) {
+			var userSession = JSON.parse($.session.get('user'));
+			if(userSession.role.roleId == '1' && userSession.role) {
+				system = true;
+			}
 		}
 		var softParameterDatas = [{
-							"node": {
-								"text": "控制配置",
-								"iconCss": "fa fa-cogs fa-fw",
-								"target": CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG
-							}
-						}];
-		if (system) {
-			softParameterDatas.push({"node": {
-				"text": "数据库连接",
-				"iconCss": "fa fa-database fa-fw",
-				"target": CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT
-			}});
+			"node": {
+				"text": "控制配置",
+				"iconCss": "fa fa-cogs fa-fw",
+				"target": CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG
+			}
+		}];
+		if(system) {
+			softParameterDatas.push({
+				"node": {
+					"text": "数据库连接",
+					"iconCss": "fa fa-database fa-fw",
+					"target": CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT
+				}
+			});
 		}
 
 		var navTabDatas = [{
-					"node": {
-						"text": "压铸机智能化控制",
-						"iconCss": "fa fa-sitemap fa-fw",
-						"target": CodeZ.NAV_AUTO_CONTROL
-					}
-				},{
-					"node": {
-						"id": "",
-						"href": "softparameters",
-						"text": "软件参数",
-						"iconCss": "fa fa-dashboard fa-fw"
-					},
-					"child": softParameterDatas,
+				"node": {
+					"text": "压铸机智能化控制",
+					"iconCss": "fa fa-sitemap fa-fw",
+					"target": CodeZ.NAV_AUTO_CONTROL
+				}
+			}, {
+				"node": {
+					"id": "",
+					"href": "softparameters",
+					"text": "软件参数",
+					"iconCss": "fa fa-dashboard fa-fw"
 				},
-				{
-					"node": {
-						"id": "",
-						"href": "machineMan",
-						"text": "压铸机管理",
-						"iconCss": "fa fa-asterisk fa-fw"
-					},
-					"child": [{
-							"node": {
-								"text": "控制传感器",
-								"iconCss": "fa fa-microchip fa-fw",
-								"target": CodeZ.NAV_MACHINEMAN.SENSOR
-							}
-						},
-						{
-							"node": {
-								"text": "自动压铸机",
-								"iconCss": "fa fa-magnet fa-fw",
-								"target": CodeZ.NAV_MACHINEMAN.MACHINE
-							}
-						},
-						{
-							"node": {
-								"text": "压铸计数器",
-								"iconCss": "fa fa-cubes fa-fw",
-								"target": CodeZ.NAV_MACHINEMAN.COUNTER
-							}
+				"child": softParameterDatas,
+			},
+			{
+				"node": {
+					"id": "",
+					"href": "machineMan",
+					"text": "压铸机管理",
+					"iconCss": "fa fa-asterisk fa-fw"
+				},
+				"child": [{
+						"node": {
+							"text": "控制传感器",
+							"iconCss": "fa fa-microchip fa-fw",
+							"target": CodeZ.NAV_MACHINEMAN.SENSOR
 						}
-					]
-				},
-				{
-					"node": {
-						"text": "控制参数",
-						"iconCss": "fa fa-wrench fa-fw",
-						"target": CodeZ.NAV_CONTROLPARAMETER
+					},
+					{
+						"node": {
+							"text": "自动压铸机",
+							"iconCss": "fa fa-magnet fa-fw",
+							"target": CodeZ.NAV_MACHINEMAN.MACHINE
+						}
+					},
+					{
+						"node": {
+							"text": "压铸计数器",
+							"iconCss": "fa fa-cubes fa-fw",
+							"target": CodeZ.NAV_MACHINEMAN.COUNTER
+						}
 					}
-				},
-			];
-		if (system) {
+				]
+			},
+			{
+				"node": {
+					"text": "控制参数",
+					"iconCss": "fa fa-wrench fa-fw",
+					"target": CodeZ.NAV_CONTROLPARAMETER
+				}
+			},
+		];
+		if(system) {
 			navTabDatas.push({
-					"node": {
-						"id": "",
-						"href": "securityMan",
-						"text": "安全管理",
-						"iconCss": "fa fa-address-book-o fa-fw"
-					},
-					"child": [{
-							"node": {
-								"text": "用户管理",
-								"iconCss": "fa fa-users fa-fw",
-								"target": CodeZ.NAV_SECURITY_MAN.USERMAN
-							}
-						},
-						{
-							"node": {
-								"text": "权限管理",
-								"iconCss": "fa fa-key fa-fw",
-								"target": CodeZ.NAV_SECURITY_MAN.ROLEMAN
-							}
+				"node": {
+					"id": "",
+					"href": "securityMan",
+					"text": "安全管理",
+					"iconCss": "fa fa-address-book-o fa-fw"
+				},
+				"child": [{
+						"node": {
+							"text": "用户管理",
+							"iconCss": "fa fa-users fa-fw",
+							"target": CodeZ.NAV_SECURITY_MAN.USERMAN
 						}
-					]
-				});
+					},
+					{
+						"node": {
+							"text": "权限管理",
+							"iconCss": "fa fa-key fa-fw",
+							"target": CodeZ.NAV_SECURITY_MAN.ROLEMAN
+						}
+					}
+				]
+			});
 		}
 		var navTabs = {
 			"node": {
@@ -1101,6 +1112,7 @@ var CodeZComponents = {
 				}
 			});
 		});
+		directRoutersUri(CodeZ.HTML_PAGE_DASHBOARD);
 	},
 
 	// 表格数据
