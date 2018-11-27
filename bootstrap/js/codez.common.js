@@ -693,8 +693,12 @@ function parametersUIComponents() {
 	for(i = 0; i < identifiers.length; i++) {
 		var data = identifiers[i];
 		var itemTitle = title[i];
+		var inputType = 'text';
+		if (data == 'rollNumber' || data == 'rollTimes' || || data == 'ctrlNo') {
+			inputType = 'number';
+		}
 		inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
-			'<input required="required" type="text" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
+			'<input required="required" type="' + inputType + '" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
 			'</div></div>';
 	}
 
@@ -862,6 +866,10 @@ function autoControlUIComponents() {
 				'<div class="col-sm-9">' +
 				'<select class="form-control" id="' + data + '"><option value="0" selected="selected">关闭</option><option value="1">开启</option>' +
 				'</select></div></div>';
+		} else if(data == 'rollNumber' || data == 'rollTimes') {
+			inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
+				'<input required="required" type="number" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +
+				'</div></div>';
 		} else {
 			inputDoms += '<div class="form-group"><label for="' + data + '" class="col-sm-2 control-label text-center">' + itemTitle + '</label><div class="col-sm-9">' +
 				'<input required="required" type="text" class="form-control dialog-form" id="' + data + '" placeholder="请输入' + itemTitle + '">' +

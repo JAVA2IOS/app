@@ -69,7 +69,21 @@ function changeToUserDetailInfo(data) {
 function editData() {
 	var dataObj;
 	var cacheData = $.session.get('bindData');
-	console.info(cacheData);
+	CodeZComponents.postRequest({
+		action : CodeZ.ACTION_ROLEMAN.LIST,
+		data : true
+	}, function(data){
+		if (data.success) {
+			var optionData = data.data;
+			$.map(optionData, function(option, index) {
+				option.id = option.roleId;
+				option.text = option.roleName;
+			});
+			$('#userRole').select2({
+				data : optionData;
+			});
+		}
+	});
 	if(cacheData != undefined || cacheData != null) {
 		dataObj = JSON.parse(cacheData);
 	}
@@ -78,7 +92,8 @@ function editData() {
 			var userObj = dataObj.bindData;
 			$("#userAccount").attr("disabled","disabled");
 			$('#userName').val(userObj.userName);
-			$('#userRole').val(userObj.role.roleId);
+			// $('#userRole').val(userObj.role.roleId);
+			$('#userRole').select2(userObj.role.roleId);
 			$('#userAccount').val(userObj.userAccount);
 			$('#userpassword').val(userObj.password);
 			$('#dep').val(userObj.dep);
