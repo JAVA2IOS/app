@@ -405,6 +405,45 @@ function navSrc(tag) {
 	}
 }
 
+function configureDashboard() {
+	var userSession = JSON.parse($.session.get('user'));
+	if (userSession.role.roleId == '1') {
+		$('#users-info-box').hide();
+	}
+
+	CodeZComponents.postRequest({
+		action: 'dashboardData',
+	}, function(data) {
+		if(data.success) {
+			/*
+			data : {
+				dataBase : '',
+				sensor : '',
+				machine : '',
+				counter : '',
+				users : ''
+			}
+			*/
+			var dataObj = data.data;
+			if (dataObj.dataBase) {
+				$('#dataBaseBox').html(dataObj.dataBase);
+			}
+			if (dataObj.sensor) {
+				$('#sensorBox').html(dataObj.sensor);
+			}
+			if (dataObj.machine) {
+				$('#machineBox').html(dataObj.machine);
+			}
+			if (dataObj.counter) {
+				$('#counterBox').html(dataObj.counter);
+			}
+			if (dataObj.users) {
+				$('#usersBox').html(dataObj.users);
+			}
+		}
+	});
+}
+
 // 跳转到登录页面
 function goLogin() {
 	window.top.location.href = CodeZ.HTML_PAGE_LOGIN;
@@ -915,11 +954,27 @@ var CodeZComponents = {
 	 ]
 	*/
 	sideBar: function(divDomId, data) {
-		var navTabs = {
-			"node": {
-				"css": "nav navbar-pills nav-stacked"
-			},
-			"child": [{
+		var userSession = JSON.parse($.session.get('user'));
+		var system = false;
+		if (userSession.role.roleId == '1' && userSession.role) {
+			system = true;
+		}
+		var softParameterDatas = [{
+							"node": {
+								"text": "控制配置",
+								"iconCss": "fa fa-cogs fa-fw",
+								"target": CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG
+							}
+						}];
+		if (system) {
+			softParameterDatas.push({"node": {
+				"text": "数据库连接",
+				"iconCss": "fa fa-database fa-fw",
+				"target": CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT
+			}});
+		}
+
+		var navTabDatas = [{
 					"node": {
 						"text": "压铸机智能化控制",
 						"iconCss": "fa fa-sitemap fa-fw",
@@ -932,21 +987,7 @@ var CodeZComponents = {
 						"text": "软件参数",
 						"iconCss": "fa fa-dashboard fa-fw"
 					},
-					"child": [{
-							"node": {
-								"text": "控制配置",
-								"iconCss": "fa fa-cogs fa-fw",
-								"target": CodeZ.NAV_SOFTPARAMETER.CONTROL_CFG
-							}
-						},
-						{
-							"node": {
-								"text": "数据库连接",
-								"iconCss": "fa fa-database fa-fw",
-								"target": CodeZ.NAV_SOFTPARAMETER.DATABASE_CONNECT
-							}
-						}
-					]
+					"child": softParameterDatas,
 				},
 				{
 					"node": {
@@ -985,14 +1026,9 @@ var CodeZComponents = {
 						"target": CodeZ.NAV_CONTROLPARAMETER
 					}
 				},
-				// {
-				// 	"node": {
-				// 		"text": "控制数据",
-				// 		"iconCss": "fa fa-support fa-fw",
-				// 		"target": CodeZ.NAV_CONTROL_DATA
-				// 	}
-				// },
-				{
+			];
+		if (system) {
+			navTabDatas.push({
 					"node": {
 						"id": "",
 						"href": "securityMan",
@@ -1014,8 +1050,13 @@ var CodeZComponents = {
 							}
 						}
 					]
-				}
-			]
+				});
+		}
+		var navTabs = {
+			"node": {
+				"css": "nav navbar-pills nav-stacked"
+			},
+			"child": navTabDatas
 		};
 
 		var domObj = $(divDomId);

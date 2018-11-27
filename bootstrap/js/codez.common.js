@@ -55,6 +55,14 @@ function configureDataBaseListStyle() {
 			title: "数据库名称",
 			width: 1000,
 			valign: 'middle',
+			formatter: function(value, row, index) {
+				var descriptLabel = value;
+				if(row.deleted == 1 || row.deleted == '1') {
+					descriptLabel += '<span class="label label-danger">已注销</span>';
+				}
+
+				return descriptLabel;
+			},
 		}, {
 			field: 'opened',
 			title: "状态",
@@ -62,27 +70,29 @@ function configureDataBaseListStyle() {
 			align: 'center',
 			width: 1000,
 			formatter: function(value, row, index) {
+				var descriptLabel = '已关闭';
 				if(value == 1 || value == '1') {
-					return '已打开';
+					descriptLabel = '已打开';
 				}
 
-				return '已关闭';
+				return descriptLabel;
 			},
-		}, {
-			field: 'deleted',
-			title: "注销",
-			valign: 'middle',
-			align: 'center',
-			width: 1000,
-			formatter: function(value, row, index) {
-				if(value == 1 || value == '1') {
+		}
+		// , {
+		// 	field: 'deleted',
+		// 	title: "注销",
+		// 	valign: 'middle',
+		// 	align: 'center',
+		// 	width: 1000,
+		// 	formatter: function(value, row, index) {
+		// 		if(value == 1 || value == '1') {
+		// 			return '<span class="label label-danger">已注销</span>';
+		// 		}
 
-					return '已注销';
-				}
-
-				return '正常';
-			},
-		}, {
+		// 		return '<span class="label label-primary">正常</span>';
+		// 	},
+		// }
+		, {
 			field: 'action',
 			title: "操作",
 			valign: 'middle',
@@ -398,10 +408,10 @@ function configureMachineListStyle() {
 			formatter: function(value, row, index) {
 				if(value == 1 || value == '1') {
 
-					return '可连接';
+					return '<span class="label label-success">已连接</span>';
 				}
 
-				return '不可连接';
+				return '<span class="label label-warning">不可连接</span>';
 			},
 		}, {
 			field: 'action',
@@ -518,10 +528,10 @@ function configureCounterListStyle() {
 			formatter: function(value, row, index) {
 				if(value == 1 || value == '1') {
 
-					return '可连接';
+					return '<span class="label label-success">已连接</span>';
 				}
 
-				return '不可连接';
+				return '<span class="label label-warning">不可连接</span>';
 			},
 		}, {
 			field: 'action',
@@ -1103,6 +1113,7 @@ function updateControlDataData(updatedData) {
 	return updatedData;
 }
 
+
 /*
  * ================
  * 角色权限管理
@@ -1213,7 +1224,6 @@ function confgiureRoleDataInfo(data) {
 	var bindObj = data.bindData;
 	if(bindObj) {
 		$('#roleName').val(bindObj.roleName);
-		console.info(bindObj.descript);
 		$('#descript').val(bindObj.descript);
 	}
 }
@@ -1398,7 +1408,6 @@ function configureItemInfoData() {
 
 		$('#ctrlId').on('select2:select', function(e) {
 			var dataObj = e.params.data;
-			console.info(dataObj);
 			$('#rollWeight').val(dataObj.rollWeight);
 			$('#material').val(dataObj.material);
 			$('#rollNumber').val(dataObj.rollNumber);
