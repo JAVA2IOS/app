@@ -775,6 +775,14 @@ function configureAutoControlListStyle() {
 			title: "压铸单号",
 			width: '30%',
 			valign: 'middle',
+			formatter: function(value, row, index) {
+				if(row.deleted == 0 || row.deleted == '0') {
+
+					return value + '&nbsp;&nbsp;&nbsp;<span class="label label-success">正常</span>';
+				}
+
+				return value + '&nbsp;&nbsp;&nbsp;<span class="label label-danger">已注销</span>';
+			},
 		}, {
 			field: 'startTime',
 			title: "开始时间",
@@ -833,19 +841,6 @@ function configureAutoControlListStyle() {
 			width: '5%',
 			formatter: function(value, row, index) {
 				return openedStyle(value, row, index);
-			},
-		}, {
-			field: 'deleted',
-			title: "状态",
-			valign: 'middle',
-			width: '20%',
-			formatter: function(value, row, index) {
-				if(value == 1 || value == '1') {
-
-					return '已注销';
-				}
-
-				return '正常';
 			},
 		}, {
 			field: 'action',
@@ -1030,6 +1025,14 @@ function configureControlDataListStyle() {
 			title: "冲压单号",
 			width: '30%',
 			valign: 'middle',
+			formatter: function(value, row, index) {
+				if(row.deleted == 0 || row.deleted == '0') {
+
+					return value + '&nbsp;&nbsp;&nbsp;<span class="label label-success">正常</span>';
+				}
+
+				return value + '&nbsp;&nbsp;&nbsp;<span class="label label-danger">已注销</span>';
+			},
 		}, {
 			field: 'counterModel',
 			title: "连铸连轧名称",
@@ -1059,19 +1062,6 @@ function configureControlDataListStyle() {
 			title: "连冲次数",
 			valign: 'middle',
 			width: '20%',
-		}, {
-			field: 'deleted',
-			title: "状态",
-			valign: 'middle',
-			width: '20%',
-			formatter: function(value, row, index) {
-				if(value == 1 || value == '1') {
-
-					return '已注销';
-				}
-
-				return '正常';
-			},
 		}, {
 			field: 'action',
 			title: "操作",
